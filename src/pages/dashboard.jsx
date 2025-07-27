@@ -4,8 +4,7 @@ import SixPCard from "../components/SixPCard";
 import AgendaReport from "../components/agendareport";
 import SDGReport from "../components/SDG";
 import Header from "../components/header";
-import UserAccount from "../components/useraccount";
-import { FaFileAlt, FaLightbulb, FaCogs, FaUsers, FaHandshake, FaGavel } from "react-icons/fa";
+import { FaFileAlt, FaLightbulb, FaCogs, FaUsers, FaHandshake, FaGavel, FaCalendarAlt } from "react-icons/fa";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -23,6 +22,7 @@ const sixPData = [
   { icon: <FaHandshake />, label: "Places and Partnerships", value: 15 },
   { icon: <FaGavel />, label: "Policies", value: 3 },
 ];
+
 //Example of dynamic agenda data by year
 const agendaDataByYear = {
   2023: [
@@ -53,6 +53,7 @@ const agendaDataByYear = {
     { label: 'Peace and Security', rdeg: 0, kttd: 0, ext: 0 },
   ],
 };
+
 const sdgData = {
   2023: {
     rde: [1, 2, 3, 1, 1, 2, 1, 2, 1, 3, 2, 2, 1, 2, 1, 1, 1],
@@ -108,31 +109,18 @@ const sdgLabels = [
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: false,
-  cutout: '60%',
   plugins: {
-    legend: { display: false },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          const index = context.dataIndex;
-          const value = context.parsed;
-          const sdgNumber = index + 1;
-          const sdgName = sdgLabels[index] || `SDG ${sdgNumber}`;
-          return `SDG ${sdgNumber} - ${sdgName}: ${value} project${value !== 1 ? 's' : ''}`;
-        }
-      }
-    }
-  }
+    legend: {
+      position: 'bottom',
+    },
+  },
 };
 
-// Summing across a year range
 function sumAcrossYears(data, from, to) {
   const result = { rde: [], ext: [], kttd: [] };
 
   for (let year = from; year <= to; year++) {
-    const yearData = data[year];
-    if (!yearData) continue;
+    const yearData = data[year] || { rde: [], ext: [], kttd: [] };
 
     ['rde', 'ext', 'kttd'].forEach((key) => {
       result[key] = result[key].length
@@ -165,70 +153,79 @@ function combineAgendaData(data, from, to) {
   return Array.from(agendaMap.values());
 }
 
-
-
 export default function Dashboard() {
   const [year, setYear] = useState({ from: 2023, to: 2025 });
   const yearRangeData = sumAcrossYears(sdgData, year.from, year.to);
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden">
-      {/* Fixed Header */}
-      <div className="fixed top-0 left-0 right-0 z-50">
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <Sidebar />
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col ml-64">
+        {/* Header */}
         <Header />
-      </div>
+        
+        {/* Main Content Area */}
+        <main className="flex-1 p-4 overflow-auto">
+          <div className="max-w-7xl mx-auto space-y-6">
+            {/* Year Filter with Better UI */}
+            <div className="bg-white rounded-lg shadow-lg p-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-800 flex items-center">
+                  <FaCalendarAlt className="mr-2 text-red-600" />
+                  Year Range Filter
+                </h2>
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
+                    <label className="text-sm font-medium text-gray-700">From:</label>
+                    <select
+                      className="border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-sm"
+                      value={year.from}
+                      onChange={(e) => setYear({ ...year, from: +e.target.value })}
+                    >
+                      <option value={2023}>2023</option>
+                      <option value={2024}>2024</option>
+                      <option value={2025}>2025</option>
+                    </select>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <label className="text-sm font-medium text-gray-700">To:</label>
+                    <select
+                      className="border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-sm"
+                      value={year.to}
+                      onChange={(e) => setYear({ ...year, to: +e.target.value })}
+                    >
+                      <option value={2023}>2023</option>
+                      <option value={2024}>2024</option>
+                      <option value={2025}>2025</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <div className="flex flex-1 pt-[80px] overflow-hidden"> {/* Adjust top padding to header height */}
-        {/* Sidebar */}
-        <aside className="hidden md:block w-64 bg-white border-r h-full fixed left-0 top-[80px] bottom-0 z-40">
-          <Sidebar />
-        </aside>
+            {/* Six P Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+              {sixPData.map((item, idx) => (
+                <SixPCard key={idx} {...item} />
+              ))}
+            </div>
 
-        {/* Main content */}
-        <main className="flex-1 ml-0 md:ml-64 overflow-y-auto p-4 sm:p-6 space-y-6 bg-gray-100">
-          {/* Year Filter */}
-          <div className="flex justify-end items-center space-x-2">
-            <select
-              className="border p-1 rounded"
-              value={year.from}
-              onChange={(e) => setYear({ ...year, from: +e.target.value })}
-            >
-              <option>2023</option>
-              <option>2024</option>
-              <option>2025</option>
-            </select>
-            <span>to</span>
-            <select
-              className="border p-1 rounded"
-              value={year.to}
-              onChange={(e) => setYear({ ...year, to: +e.target.value })}
-            >
-              <option>2023</option>
-              <option>2024</option>
-              <option>2025</option>
-            </select>
+            {/* Agenda Report */}
+            <AgendaReport data={combineAgendaData(agendaDataByYear, year.from, year.to)} />
+
+            {/* SDG Report */}
+            <SDGReport
+              data={{
+                rde: getChartData(yearRangeData.rde),
+                ext: getChartData(yearRangeData.ext),
+                kttd: getChartData(yearRangeData.kttd),
+              }}
+              options={chartOptions}
+            />
           </div>
-
-          {/* Six P Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-            {sixPData.map((item, idx) => (
-              <SixPCard key={idx} {...item} />
-            ))}
-          </div>
-
-          {/* Agenda Report */}
-          <AgendaReport data={combineAgendaData(agendaDataByYear, year.from, year.to)} />
-
-          {/* SDG Report */}
-          <SDGReport
-            data={{
-              rde: getChartData(yearRangeData.rde),
-              ext: getChartData(yearRangeData.ext),
-              kttd: getChartData(yearRangeData.kttd),
-            }}
-            options={chartOptions}
-          />
-          <UserAccount />
         </main>
       </div>
     </div>
