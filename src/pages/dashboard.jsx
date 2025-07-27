@@ -163,12 +163,12 @@ export default function Dashboard() {
       <Sidebar />
       
       {/* Main Content */}
-      <div className="flex-1 flex flex-col ml-64">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <Header />
         
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-auto">
+        <main className="flex-1 p-4 overflow-auto ml-64">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Year Filter with Better UI */}
             <div className="bg-white rounded-lg shadow-lg p-4">
@@ -190,6 +190,7 @@ export default function Dashboard() {
                       <option value={2025}>2025</option>
                     </select>
                   </div>
+                  <span className="text-gray-500 font-medium">to</span>
                   <div className="flex items-center space-x-2">
                     <label className="text-sm font-medium text-gray-700">To:</label>
                     <select

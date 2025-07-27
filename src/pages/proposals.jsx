@@ -75,12 +75,12 @@ const Proposals = () => {
       <Sidebar />
       
       {/* Main Content */}
-      <div className="flex-1 flex flex-col ml-64">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <Header />
         
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-auto">
+        <main className="flex-1 p-4 overflow-auto ml-64">
           <div className="max-w-4xl mx-auto">
             {/* Page Title */}
             <h1 className="text-3xl font-bold text-gray-800 mb-6">List of Proposals</h1>

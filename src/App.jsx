@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Account from "./pages/useraccount";
 import Proposals from "./pages/proposals";
 import ProposalViewer from "./pages/ProposalViewer";
+import Notifications from "./pages/notifications";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/useraccount" element={<Account />} />
         <Route path="/proposals" element={<Proposals />} />
         <Route path="/proposal/:id" element={<ProposalViewer />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Routes>
     </BrowserRouter>
   );
