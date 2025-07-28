@@ -218,7 +218,7 @@ export default function SDGReport({ data, options }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* RDE */}
         <div className="flex flex-col items-center">
-          <div className="w-60 h-60 flex items-center justify-center mb-4">
+          <div className="w-70 h-70 flex items-center justify-center mb-4">
             <Doughnut
               data={enhancedData.rde}
               options={enhancedOptions}
@@ -231,7 +231,7 @@ export default function SDGReport({ data, options }) {
 
         {/* EXT */}
         <div className="flex flex-col items-center">
-          <div className="w-60 h-60 flex items-center justify-center mb-4">
+          <div className="w-70 h-70 flex items-center justify-center mb-4">
             <Doughnut
               data={enhancedData.ext}
               options={enhancedOptions}
@@ -244,7 +244,7 @@ export default function SDGReport({ data, options }) {
 
         {/* KTTD */}
         <div className="flex flex-col items-center">
-          <div className="w-60 h-60 flex items-center justify-center mb-4">
+          <div className="w-70 h-70 flex items-center justify-center mb-4">
             <Doughnut
               data={enhancedData.kttd}
               options={enhancedOptions}
