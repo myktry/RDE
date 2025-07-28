@@ -82,8 +82,7 @@ export default function Header() {
               e.target.nextSibling.style.display = 'flex';
             }}
           />
-          <div className="w-full h-full bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg hidden">
-            U
+          <div className="w-full h-full bg-green-500 rounded-full items-center justify-center text-white font-bold text-lg hidden">
           </div>
         </div>
         <div>

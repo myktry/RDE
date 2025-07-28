@@ -4,7 +4,7 @@ import { Doughnut } from 'react-chartjs-2';
 // SDG Labels array - these should match the data array indices
 const sdgLabels = [
   'No Poverty',
-  'Zero Hunger', 
+  'Zero Hunger',
   'Good Health and Well-being',
   'Quality Education',
   'Gender Equality',
@@ -54,16 +54,39 @@ export default function SDGReport({ data, options }) {
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
-            const label = sdgLabels[context.dataIndex] || `SDG ${context.dataIndex + 1}`;
+          label: function (context) {
+            const label = sdgLabels?.[context.dataIndex] || `SDG ${context.dataIndex + 1}`;
             const value = context.parsed;
-            return `${label}: ${value}`;
+
+            // Custom word-wrapping at ~30 characters per line
+            function wrapText(text, maxLength = 50) {
+              const words = text.split(' ');
+              let lines = [];
+              let currentLine = '';
+
+              for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                  lines.push(currentLine.trim());
+                  currentLine = '';
+                }
+                currentLine += word + ' ';
+              }
+
+              if (currentLine.trim() !== '') {
+                lines.push(currentLine.trim());
+              }
+
+              return lines.join('\n');
+            }
+
+            const wrappedLabel = wrapText(label, 100);
+            return `${wrappedLabel}: ${value}`;
           },
-          title: function(context) {
+          title: function (context) {
             return `SDG ${context[0].dataIndex + 1}`;
           }
         },
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        backgroundColor: 'rgba(245, 245, 245, 0.80)',
         titleColor: '#1f2937',
         bodyColor: '#374151',
         borderColor: 'rgba(0, 0, 0, 0.1)',
@@ -76,13 +99,15 @@ export default function SDGReport({ data, options }) {
           weight: 'bold'
         },
         bodyFont: {
-          size: 13
+          size: 13,
+          lineHeight: 1.4
         },
         boxPadding: 6,
         usePointStyle: true,
         boxWidth: 12,
         boxHeight: 12
       }
+
     },
     interaction: {
       intersect: false,
@@ -193,9 +218,9 @@ export default function SDGReport({ data, options }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* RDE */}
         <div className="flex flex-col items-center">
-          <div className="w-48 h-48 flex items-center justify-center mb-4">
-            <Doughnut 
-              data={enhancedData.rde} 
+          <div className="w-60 h-60 flex items-center justify-center mb-4">
+            <Doughnut
+              data={enhancedData.rde}
               options={enhancedOptions}
             />
           </div>
@@ -206,9 +231,9 @@ export default function SDGReport({ data, options }) {
 
         {/* EXT */}
         <div className="flex flex-col items-center">
-          <div className="w-48 h-48 flex items-center justify-center mb-4">
-            <Doughnut 
-              data={enhancedData.ext} 
+          <div className="w-60 h-60 flex items-center justify-center mb-4">
+            <Doughnut
+              data={enhancedData.ext}
               options={enhancedOptions}
             />
           </div>
@@ -219,9 +244,9 @@ export default function SDGReport({ data, options }) {
 
         {/* KTTD */}
         <div className="flex flex-col items-center">
-          <div className="w-48 h-48 flex items-center justify-center mb-4">
-            <Doughnut 
-              data={enhancedData.kttd} 
+          <div className="w-60 h-60 flex items-center justify-center mb-4">
+            <Doughnut
+              data={enhancedData.kttd}
               options={enhancedOptions}
             />
           </div>
@@ -237,7 +262,7 @@ export default function SDGReport({ data, options }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {sdgLabels.map((label, index) => (
             <div key={index} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white hover:shadow-sm transition-all duration-200">
-              <div 
+              <div
                 className="w-4 h-4 rounded-full border-2 border-gray-300 shadow-sm"
                 style={{ backgroundColor: sdgColors[index] }}
               ></div>
