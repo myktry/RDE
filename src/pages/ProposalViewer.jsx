@@ -84,7 +84,7 @@ const ProposalViewer = () => {
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition-colors"
               >
                 <FaArrowLeft className="w-4 h-4" />
-                <span>← Back to Proposals</span>
+                <span>Back to Proposals</span>
               </button>
             </div>
 

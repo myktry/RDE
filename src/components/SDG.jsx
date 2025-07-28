@@ -251,7 +251,7 @@ export default function SDGReport({ data, options }) {
             />
           </div>
           <span className="text-sm font-medium text-gray-700 text-center">
-            KTTD
+            Knowledge Transfer & Technology Development
           </span>
         </div>
       </div>
