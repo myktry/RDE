@@ -95,9 +95,6 @@ export default function Header() {
 
       {/* Right: User info and icons */}
       <div className="flex items-center space-x-3">
-        <span className="text-sm font-medium hidden sm:block">
-          John Henry Talite
-        </span>
         <div className="flex items-center space-x-2">
           {/* Notification Bell */}
           <div className="relative" ref={notificationRef}>
@@ -160,13 +157,6 @@ export default function Header() {
               </div>
             )}
           </div>
-
-          <button
-            className="flex items-center space-x-2 hover:bg-white/10 rounded-full p-1.5 transition-colors"
-            onClick={handleProfileClick}
-          >
-            <FaUserCircle className="text-xl" />
-          </button>
         </div>
       </div>
     </header>

@@ -55,57 +55,35 @@ export default function SDGReport({ data, options }) {
       tooltip: {
         callbacks: {
           label: function (context) {
-            const label = sdgLabels?.[context.dataIndex] || `SDG ${context.dataIndex + 1}`;
             const value = context.parsed;
-
-            // Custom word-wrapping at ~30 characters per line
-            function wrapText(text, maxLength = 50) {
-              const words = text.split(' ');
-              let lines = [];
-              let currentLine = '';
-
-              for (const word of words) {
-                if ((currentLine + word).length > maxLength) {
-                  lines.push(currentLine.trim());
-                  currentLine = '';
-                }
-                currentLine += word + ' ';
-              }
-
-              if (currentLine.trim() !== '') {
-                lines.push(currentLine.trim());
-              }
-
-              return lines.join('\n');
-            }
-
-            const wrappedLabel = wrapText(label, 100);
-            return `${wrappedLabel}: ${value}`;
+            return `Proposals: ${value}`;
           },
           title: function (context) {
             return `SDG ${context[0].dataIndex + 1}`;
           }
         },
-        backgroundColor: 'rgba(245, 245, 245, 0.80)',
+        backgroundColor: 'rgba(245, 245, 245, 0.98)',
         titleColor: '#1f2937',
         bodyColor: '#374151',
         borderColor: 'rgba(0, 0, 0, 0.1)',
         borderWidth: 1,
         cornerRadius: 12,
         displayColors: true,
-        padding: 12,
+        padding: 16,
         titleFont: {
           size: 14,
           weight: 'bold'
         },
         bodyFont: {
           size: 13,
-          lineHeight: 1.4
+          lineHeight: 1.6
         },
-        boxPadding: 6,
+        boxPadding: 8,
         usePointStyle: true,
         boxWidth: 12,
-        boxHeight: 12
+        boxHeight: 12,
+        bodySpacing: 4,
+        bodyAlign: 'left'
       }
 
     },
