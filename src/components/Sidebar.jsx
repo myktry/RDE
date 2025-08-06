@@ -54,7 +54,7 @@ const Sidebar = ({ activePage, onPageChange }) => {
   };
 
   return (
-    <aside className="bg-red-800 text-white w-64 flex-shrink-0 flex flex-col">
+    <aside className="bg-red-900 text-white w-64 flex-shrink-0 flex flex-col">
       <nav className="flex-1 p-4 space-y-2">
         {navItems.map((item) => (
           <button
@@ -63,7 +63,7 @@ const Sidebar = ({ activePage, onPageChange }) => {
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
               activePage === item.id
                 ? 'bg-gray-300 text-gray-800'
-                : 'text-white hover:bg-red-700'
+                : 'text-white hover:bg-red-800'
             }`}
           >
             {getIcon(item.icon)}

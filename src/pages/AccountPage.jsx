@@ -1,143 +1,162 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const AccountPage = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  
   const userProfile = {
     name: 'John Henry Talite',
+    username: 'OP Staff',
+    office: 'Office of the President',
     email: 'john.talite@usep.edu.ph',
-    role: 'Research Coordinator',
-    department: 'Research, Development and Extension',
     phone: '+63 912 345 6789',
     joinDate: 'January 2020',
-    avatar: 'JH'
+    avatar: '/path-to-avatar.jpg' // You can replace this with actual avatar path
   };
 
-  const recentActivities = [
-    {
-      id: 1,
-      action: 'Updated project progress',
-      project: 'ARAY KO: Identifying pain through eye contact',
-      date: '2025-01-15 14:30'
-    },
-    {
-      id: 2,
-      action: 'Submitted endorsement request',
-      project: 'Digital Transformation in Local Government',
-      date: '2025-01-12 09:15'
-    },
-    {
-      id: 3,
-      action: 'Downloaded resource',
-      project: 'Research Methodology Guide',
-      date: '2025-01-10 16:45'
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleDeleteAccount = () => {
+    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      // Handle account deletion
+      console.log('Account deletion requested');
     }
-  ];
+  };
+
+  const handlePhotoChange = () => {
+    // Handle photo upload
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        // Handle file upload
+        console.log('Photo changed:', file.name);
+      }
+    };
+    input.click();
+  };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Account</h1>
-        <p className="text-gray-600">Manage your profile and settings</p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Red gradient bar at top */}
+      <div className="h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profile Card */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="text-center mb-6">
-              <div className="w-24 h-24 bg-red-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                {userProfile.avatar}
-              </div>
-              <h2 className="text-xl font-bold text-gray-800">{userProfile.name}</h2>
-              <p className="text-gray-600">{userProfile.role}</p>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <p className="text-sm text-gray-900">{userProfile.email}</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                <p className="text-sm text-gray-900">{userProfile.department}</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <p className="text-sm text-gray-900">{userProfile.phone}</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Member Since</label>
-                <p className="text-sm text-gray-900">{userProfile.joinDate}</p>
-              </div>
-            </div>
-            
-            <div className="mt-6">
-              <button className="w-full bg-red-600 text-white px-4 py-2 rounded-md font-medium hover:bg-red-700 transition-colors">
-                Edit Profile
-              </button>
-            </div>
+      <div className="p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Page Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-900">Account</h1>
           </div>
-        </div>
-        
-        {/* Settings and Activities */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Settings */}
+
+          {/* Profile Overview Card */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Settings</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-800">Email Notifications</h4>
-                  <p className="text-sm text-gray-600">Receive updates about your projects</p>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" className="sr-only peer" defaultChecked />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
-                </label>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-800">Dark Mode</h4>
-                  <p className="text-sm text-gray-600">Switch to dark theme</p>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
-                </label>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-800">Two-Factor Authentication</h4>
-                  <p className="text-sm text-gray-600">Add an extra layer of security</p>
-                </div>
-                <button className="text-red-600 hover:text-red-800 text-sm font-medium">
-                  Enable
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Recent Activities */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Activities</h3>
-            
-            <div className="space-y-4">
-              {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-red-600 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-800">{activity.action}</p>
-                    <p className="text-sm text-gray-600">{activity.project}</p>
-                    <p className="text-xs text-gray-500">{activity.date}</p>
+            <div className="flex items-start space-x-6">
+              {/* Profile Picture */}
+              <div className="flex-shrink-0">
+                <div className="relative">
+                  <div className="w-24 h-24 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg overflow-hidden">
+                    {userProfile.avatar ? (
+                      <img 
+                        src={userProfile.avatar} 
+                        alt={userProfile.name}
+                        className="w-24 h-24 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span>{userProfile.name.split(' ').map(n => n[0]).join('')}</span>
+                    )}
                   </div>
+                  <button
+                    onClick={handlePhotoChange}
+                    className="absolute -bottom-1 -right-1 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white shadow-lg transition-colors duration-200"
+                    title="Change Photo"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </button>
                 </div>
-              ))}
+              </div>
+
+              {/* Profile Info */}
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                  {userProfile.name}
+                </h2>
+                <p className="text-gray-600 mb-4">({userProfile.username})</p>
+                
+                <button
+                  onClick={handlePhotoChange}
+                  className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 shadow-sm"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Change Photo
+                </button>
+                
+                <p className="text-sm text-gray-500 mt-2">
+                  PNG, JPEG or PNG, Max size 10mb
+                </p>
+              </div>
             </div>
+          </div>
+
+          {/* User Details Card */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-6">User Details</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <span className="text-sm font-medium text-gray-700">Name:</span>
+                  <p className="text-sm text-gray-900 mt-1">{userProfile.name}</p>
+                </div>
+                
+                <div>
+                  <span className="text-sm font-medium text-gray-700">Office:</span>
+                  <p className="text-sm text-gray-900 mt-1">{userProfile.office}</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <span className="text-sm font-medium text-gray-700">Username:</span>
+                  <p className="text-sm text-gray-900 mt-1">{userProfile.username}</p>
+                </div>
+                
+                <div>
+                  <span className="text-sm font-medium text-gray-700">Password:</span>
+                  <p className="text-sm text-gray-900 mt-1">••••••••••</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={handleEdit}
+              className="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 shadow-sm"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Edit
+            </button>
+            <button
+              onClick={handleDeleteAccount}
+              className="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 shadow-sm"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Delete Account
+            </button>
           </div>
         </div>
       </div>

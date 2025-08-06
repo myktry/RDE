@@ -183,16 +183,14 @@ const ResourcesPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-              Document Resources
-            </h1>
-            <p className="text-red-100 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-              Access and download important documents and reports
-            </p>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+            Document Resources
+          </h1>
+          <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Access and download important documents and reports
+          </p>
         </div>
       </div>
 
@@ -355,33 +353,26 @@ const ResourcesPage = () => {
 
         {/* PDF Modal */}
         {showPDFModal && (
-          <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-            onClick={closeModal}
-          >
-            <div 
-              className="relative bg-white rounded-3xl shadow-2xl w-full max-w-6xl h-5/6 overflow-hidden transform transition-all duration-300 scale-100 flex flex-col"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header */}
-              <div className="flex items-center justify-end p-2 border-b border-gray-200 bg-gray-50">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50">
+            {/* Header */}
+            <div className="absolute top-0 left-0 right-0 z-10 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center space-x-4">
                 <button
                   onClick={closeModal}
-                  className="p-3 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-200"
+                  className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-200"
                   aria-label="Close PDF Viewer"
                 >
                   <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
               </div>
-              
-              {/* PDF Content with scroll */}
-              <div className="w-full flex-1 overflow-y-auto p-6 bg-gray-50" style={{ height: 'calc(100% - 73px)' }}>
-                <div className="h-full min-h-[800px] bg-white rounded-2xl shadow-inner p-4">
-                  <PDFViewer pdfPath="/Balbuena_Concept+Paper.pdf" />
-                </div>
+              <div className="flex items-center space-x-2">
               </div>
+            </div>
+            {/* PDF Content - Full Screen */}
+            <div className="absolute inset-0 pt-16">
+              <PDFViewer pdfPath="/Balbuena_Concept+Paper.pdf" title={selectedDocument?.title} />
             </div>
           </div>
         )}

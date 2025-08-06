@@ -45,13 +45,15 @@ const Header = ({ onPageChange }) => {
   };
 
   return (
-    <header className="bg-red-800 text-white px-6 py-4 flex justify-between items-center">
+    <header className="bg-red-900 text-white px-6 py-4 flex justify-between items-center">
       <div className="flex items-center space-x-4">
         {/* University Logo */}
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 via-yellow-400 to-blue-500 flex items-center justify-center">
-          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-            <div className="w-4 h-4 rounded-full bg-red-600"></div>
-          </div>
+        <div className="w-12 h-12 flex items-center justify-center">
+          <img 
+            src="/usep-logo.png" 
+            alt="University of Southeastern Philippines Logo"
+            className="w-12 h-12 object-contain"
+          />
         </div>
         
         {/* University Title */}
@@ -131,15 +133,6 @@ const Header = ({ onPageChange }) => {
                 </div>
               </div>
             )}
-          </div>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <span className="text-sm">John Henry Talite</span>
-          <div className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
           </div>
         </div>
       </div>

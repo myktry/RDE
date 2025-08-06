@@ -148,15 +148,27 @@ const ProjectDetails = ({ project, onBack }) => {
             </div>
           </div>
           
-          {/* Enhanced Timeline */}
+          {/* Horizontal Timeline */}
           <div className="relative">
-            <div className="overflow-x-auto pb-8">
-              <div className="flex items-center space-x-6 min-w-max px-4">
+            {/* Scrollable Timeline Container */}
+            <div className="overflow-x-auto pb-4">
+              <div className="flex justify-between items-start relative min-w-max px-4">
                 {timelineStages.map((stage, index) => (
-                  <div key={stage.id} className="flex flex-col items-center relative">
-                    {/* Timeline connector */}
+                  <div key={stage.id} className="flex flex-col items-center relative mx-8">
+                    {/* Stage Dot */}
+                    <div className={`w-12 h-12 rounded-full ${getStatusColor(stage.status)} mb-4 relative z-10`}>
+                      {stage.status === 'completed' && (
+                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-green-200">
+                          <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Connecting Line */}
                     {index < timelineStages.length - 1 && (
-                      <div className="absolute top-6 left-8 w-16 h-0.5 bg-gray-200 z-0">
+                      <div className="absolute top-3 left-full w-16 h-0.5 bg-gray-300 z-0">
                         <div 
                           className="h-full bg-green-500 transition-all duration-500"
                           style={{ 
@@ -166,35 +178,13 @@ const ProjectDetails = ({ project, onBack }) => {
                       </div>
                     )}
                     
-                    {/* Stage indicator */}
-                    <div className="relative z-10 mb-4">
-                      <div className={`w-12 h-12 rounded-full ${getStatusColor(stage.status)} flex items-center justify-center transition-all duration-300 shadow-lg`}>
-                        {stage.status === 'completed' ? (
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        ) : stage.status === 'current' ? (
-                          <svg className="w-6 h-6 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        ) : (
-                          <div className="w-3 h-3 bg-white rounded-full opacity-50"></div>
-                        )}
-                      </div>
-                      
-                      {/* Current stage indicator */}
-                      {stage.status === 'current' && (
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 rounded-full animate-ping"></div>
-                      )}
-                    </div>
-                    
-                    {/* Stage name */}
-                    <div className={`text-center min-w-[100px] max-w-[120px] px-2 py-2 rounded-lg transition-all duration-200 ${
+                    {/* Stage Label */}
+                    <div className={`px-4 py-2 rounded-lg text-center min-w-32 ${
                       stage.status === 'current' ? 'bg-red-50 border border-red-200' : 
                       stage.status === 'completed' ? 'bg-green-50 border border-green-200' : 
                       'bg-gray-50 border border-gray-200'
                     }`}>
-                      <span className={`text-sm font-medium ${getStatusTextColor(stage.status)}`}>
+                      <span className={`text-sm font-medium ${getStatusTextColor(stage.status)} leading-tight`}>
                         {stage.name}
                       </span>
                     </div>

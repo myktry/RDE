@@ -124,21 +124,20 @@ const EndorsementPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50 to-teal-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Page Header */}
-        <div className="text-center py-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Research Endorsements</h1>
-          <p className="text-gray-600">Manage and track research project endorsements across centers</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Header Section */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+            Research Endorsements
+          </h1>
+          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            Manage and track research project endorsements across centers
+          </p>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Main Table Section */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           {/* Header */}

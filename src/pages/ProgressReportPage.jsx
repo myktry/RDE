@@ -235,14 +235,20 @@ const ProgressReportPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Page Header */}
-        <div className="text-center py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Progress Reports</h1>
-          <p className="text-gray-600">Monitor and track project progress across divisions and research centers</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Header Section */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+            Progress Reports
+          </h1>
+          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            Monitor and track project progress across divisions and research centers
+          </p>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Section 1: Completed Project Reports */}
         <TableSection
           title="Completed Project Reports"

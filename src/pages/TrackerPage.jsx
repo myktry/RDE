@@ -173,16 +173,14 @@ const TrackerPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 text-white">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-              Research Project Tracker
-            </h1>
-            <p className="text-red-100 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-              Monitor and manage all research projects with comprehensive tracking and analytics
-            </p>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+            Research Project Tracker
+          </h1>
+          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            Monitor and manage all research projects with comprehensive tracking and analytics
+          </p>
         </div>
       </div>
 

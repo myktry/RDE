@@ -86,7 +86,20 @@ const StatisticsPage = () => {
   const maxSDGValue = getMaxSDGValue(sdgData);
 
   return (
-    <div className="p-6 bg-gray-100 h-full overflow-y-auto" onMouseMove={handleMouseMove}>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Header Section */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+            Statistics
+          </h1>
+          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            Comprehensive analytics and insights for research, development, and extension activities
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8" onMouseMove={handleMouseMove}>
       {/* Filter Bar */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center justify-between">
@@ -534,6 +547,7 @@ const StatisticsPage = () => {
             <span className="text-sm text-gray-600">Extension Division</span>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

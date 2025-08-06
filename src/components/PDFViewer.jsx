@@ -59,18 +59,18 @@ const PDFViewer = ({ pdfPath, title = 'Document' }) => {
       </div>
 
       {/* PDF Content */}
-      <div className="bg-gray-50 p-4 min-h-[800px]">
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div className={`bg-gray-50 ${isFullscreen ? 'h-full' : 'p-4 min-h-[800px]'}`}>
+        <div className={`bg-white border border-gray-200 rounded-lg overflow-hidden ${isFullscreen ? 'h-full' : ''}`}>
           {pdfPath && !pdfError ? (
             <iframe
               src={pdfPath}
-              className="w-full h-[800px] border-0"
+              className={`w-full border-0 ${isFullscreen ? 'h-full' : 'h-[800px]'}`}
               title={title}
               onLoad={handlePdfLoad}
               onError={handlePdfError}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center h-[800px] text-gray-500 text-center px-4">
+            <div className={`flex flex-col items-center justify-center text-gray-500 text-center px-4 ${isFullscreen ? 'h-full' : 'h-[800px]'}`}>
               <FaFilePdf className="w-16 h-16 mb-4 text-red-300" />
               <p className="text-lg font-semibold">
                 {pdfError ? 'PDF could not be loaded' : 'PDF not available'}
