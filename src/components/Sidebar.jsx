@@ -20,7 +20,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-blue-900 text-white py-5 shadow-lg">
+    <div className="h-full bg-blue-900 text-white py-5 shadow-lg overflow-y-auto">
       {/* Navigation Menu */}
       <nav className="flex flex-col">
         {menuItems.map((item) => {

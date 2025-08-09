@@ -73,7 +73,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gray-800 text-white px-8 py-4 flex justify-between items-center shadow-md">
+    <header className="bg-gray-800 text-white h-20 px-8 flex justify-between items-center shadow-md">
       <div className="flex items-center">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 flex items-center justify-center">
