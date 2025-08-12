@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ProgressReportDetails from '../components/ProgressReportDetails';
+import { DollarSign, TrendingUp, Target, BarChart3 } from 'lucide-react';
 
 const ProgressReportPage = () => {
   const [fromYear, setFromYear] = useState('2025');
@@ -215,6 +216,7 @@ const ProgressReportPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+
         {/* Completed Project Reports */}
         <TableSection
           title="Completed Project Reports"

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BiSearch, BiShow } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import { DollarSign } from 'lucide-react';
 import StatsCard from '../components/StatsCard';
 
 const Dashboard = () => {
@@ -30,7 +31,9 @@ const Dashboard = () => {
       college: 'College of Computer Science',
       status: 'Under Review',
       progress: 20,
-      submittedDate: '4/2/2025'
+      submittedDate: '4/2/2025',
+      funding: '₱600,000',
+      priority: 'High Priority'
     },
     {
       id: 'PRO-2025-00025',
@@ -39,7 +42,9 @@ const Dashboard = () => {
       college: 'College of Engineering',
       status: 'Completed',
       progress: 100,
-      submittedDate: '1/15/2025'
+      submittedDate: '1/15/2025',
+      funding: '₱500,000',
+      priority: 'High Priority'
     },
     {
       id: 'PRO-2025-00028',
@@ -48,7 +53,9 @@ const Dashboard = () => {
       college: 'College of Medicine',
       status: 'Ongoing',
       progress: 45,
-      submittedDate: '3/20/2025'
+      submittedDate: '3/20/2025',
+      funding: '₱900,000',
+      priority: 'Medium Priority'
     },
     {
       id: 'PRO-2025-00026',
@@ -57,7 +64,9 @@ const Dashboard = () => {
       college: 'College of Business',
       status: 'Completed',
       progress: 100,
-      submittedDate: '2/10/2025'
+      submittedDate: '2/10/2025',
+      funding: '₱750,000',
+      priority: 'Medium Priority'
     },
     {
       id: 'PRO-2025-00030',
@@ -66,7 +75,9 @@ const Dashboard = () => {
       college: 'College of Marine Sciences',
       status: 'Ongoing',
       progress: 30,
-      submittedDate: '4/15/2025'
+      submittedDate: '4/15/2025',
+      funding: '₱1,200,000',
+      priority: 'High Priority'
     }
   ];
 
@@ -117,7 +128,7 @@ const Dashboard = () => {
 
       {/* Statistics Cards Section */}
       <div className="p-5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {statsData.map((stat, index) => (
             <StatsCard
               key={index}
@@ -125,6 +136,19 @@ const Dashboard = () => {
               label={stat.label}
             />
           ))}
+          
+          {/* Total Funding Card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-2">Total Funding</p>
+                <p className="text-2xl font-bold text-red-600">₱2.5M</p>
+                <p className="text-sm text-gray-600 font-medium mt-1">
+                  Research investment
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -167,17 +191,18 @@ const Dashboard = () => {
       <div className="p-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Table Header */}
-          <div className="grid grid-cols-[2fr_1fr_1fr_120px] gap-4 p-4 border-b border-gray-200 font-semibold text-gray-700">
+          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_120px] gap-4 p-4 border-b border-gray-200 font-semibold text-gray-700">
             <div>Project Details</div>
             <div>Author & Research Center</div>
             <div>Status & Progress</div>
+            <div>Funding</div>
             <div>Actions</div>
           </div>
 
           {/* Table Body */}
           <div className="divide-y divide-gray-100">
             {filteredResearch.map((research, index) => (
-              <div key={index} className="grid grid-cols-[2fr_1fr_1fr_120px] gap-4 p-4 hover:bg-gray-50 transition-colors duration-150">
+              <div key={index} className="grid grid-cols-[2fr_1fr_1fr_1fr_120px] gap-4 p-4 hover:bg-gray-50 transition-colors duration-150">
                 {/* Project Details */}
                 <div>
                   <Link 
@@ -212,6 +237,12 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="text-xs text-gray-600">{research.progress}% complete</div>
+                </div>
+
+                {/* Funding */}
+                <div>
+                  <div className="font-bold text-gray-900">{research.funding}</div>
+                  <div className="text-sm text-gray-600">{research.priority}</div>
                 </div>
 
                 {/* Actions */}
