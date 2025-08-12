@@ -11,7 +11,7 @@ const ProgressReportDetails = ({ report, onBack }) => {
       <div className="mb-4">
         <button
           onClick={onBack}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm transition"
+          className="inline-flex items-center bg-white text-blue-800 hover:text-blue-900 font-medium text-sm px-4 py-2 rounded-lg shadow-md transition-all duration-200 hover:shadow-lg"
         >
           <FaArrowLeft className="mr-2" />
           Back to Progress Reports

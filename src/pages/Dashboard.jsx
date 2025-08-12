@@ -169,7 +169,7 @@ const Dashboard = () => {
           {/* Table Header */}
           <div className="grid grid-cols-[2fr_1fr_1fr_120px] gap-4 p-4 border-b border-gray-200 font-semibold text-gray-700">
             <div>Project Details</div>
-            <div>Author & College</div>
+            <div>Author & Research Center</div>
             <div>Status & Progress</div>
             <div>Actions</div>
           </div>

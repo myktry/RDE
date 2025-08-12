@@ -3,24 +3,51 @@ import PDFViewer from './PDFViewer';
 
 const ProposalDetails = ({ proposal, onBack }) => {
   const [showEndorsementForm, setShowEndorsementForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [signedSpecialOrder, setSignedSpecialOrder] = useState(null);
+  const [showDocumentModal, setShowDocumentModal] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState(null);
+  
+  // Edit form state
+  const [editFormData, setEditFormData] = useState({
+    title: 'HaHaHa Katawa: Analyzing Smile Dynamics for Psychopath Detection Using CNN',
+    proposalId: '2005-00025',
+    researcher: 'Dr. John Balbuena',
+    department: 'Computer Science',
+    email: 'john.balbuena@usep.edu.ph',
+    phone: '+63 912 345 6789',
+    budget: '150,000',
+    duration: '12 months',
+    startDate: '2025-03-01',
+    endDate: '2026-02-28',
+    description: 'This research aims to develop a CNN-based system for detecting psychopathic tendencies through smile dynamics analysis.',
+    objectives: [
+      'Analyze smile patterns in psychopathic individuals',
+      'Develop CNN model for pattern recognition',
+      'Validate findings through clinical studies'
+    ],
+    methodology: 'The study will use deep learning techniques with CNN architecture to analyze facial expressions and smile dynamics.',
+    expectedOutcomes: 'A reliable system for early detection of psychopathic tendencies through non-invasive smile analysis.'
+  });
 
-  // Path to PDF file in the public folder
-  const pdfPath = '/Balbuena_Concept+Paper.pdf';
+  // Path to PDF files in the public folder
+  const conceptPaperPath = '/Balbuena_Concept+Paper.pdf';
+  const applicationLetterPath = '/Sample Application Letter Format.pdf';
 
+  // Attached documents with availability status - all will show as PDFs
   const attachedDocuments = [
-    'Revised Proposal Form (Center Manager Level)',
-    'SETI Scorecard',
-    'GAD Checklist and Certificate',
-    'Matrix of Compliance (Central Manager Level)',
-    'Signed Endorsement Letter (Center Manager Level)',
-    'Drafted Special Order',
-    'Revised Proposal Form (R&D Level)',
-    'Matrix of Compliance (R&D/R&D Level)',
-    'Ethics Certificate (If Applicable)',
-    'Signed Endorsement Letter (R&D Level)',
-    'Signed Special Order (RDE Level)'
+    { name: 'Revised Proposal Form (Center Manager Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'SETI Scorecard', available: false, pdfPath: applicationLetterPath },
+    { name: 'GAD Checklist and Certificate', available: true, pdfPath: applicationLetterPath },
+    { name: 'Matrix of Compliance (Central Manager Level)', available: false, pdfPath: applicationLetterPath },
+    { name: 'Signed Endorsement Letter (Center Manager Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Drafted Special Order', available: false, pdfPath: applicationLetterPath },
+    { name: 'Revised Proposal Form (R&D Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Matrix of Compliance (R&D/R&D Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Ethics Certificate (If Applicable)', available: false, pdfPath: applicationLetterPath },
+    { name: 'Signed Endorsement Letter (R&D Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Signed Special Order (RDE Level)', available: false, pdfPath: applicationLetterPath }
   ];
 
   const handleFileChange = (e, setter) => {
@@ -34,8 +61,47 @@ const ProposalDetails = ({ proposal, onBack }) => {
     setShowEndorsementForm(true);
   };
 
+  const handleEdit = () => {
+    setShowEditForm(true);
+  };
+
   const handleBackToDetails = () => {
     setShowEndorsementForm(false);
+    setShowEditForm(false);
+  };
+
+  const handleEditFormChange = (field, value) => {
+    setEditFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleAddObjective = () => {
+    setEditFormData(prev => ({
+      ...prev,
+      objectives: [...prev.objectives, '']
+    }));
+  };
+
+  const handleRemoveObjective = (index) => {
+    setEditFormData(prev => ({
+      ...prev,
+      objectives: prev.objectives.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleObjectiveChange = (index, value) => {
+    setEditFormData(prev => ({
+      ...prev,
+      objectives: prev.objectives.map((obj, i) => i === index ? value : obj)
+    }));
+  };
+
+  const handleSaveEdit = () => {
+    // Handle saving the edited proposal
+    alert('Proposal updated successfully!');
+    setShowEditForm(false);
   };
 
   const handleSubmitEndorsement = () => {
@@ -43,6 +109,300 @@ const ProposalDetails = ({ proposal, onBack }) => {
     alert('Endorsement submitted successfully!');
     setShowEndorsementForm(false);
   };
+
+  const handleDocumentClick = (document) => {
+    if (document.available) {
+      setSelectedDocument(document);
+      setShowDocumentModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowDocumentModal(false);
+    setSelectedDocument(null);
+  };
+
+  // Document Modal Component
+  const DocumentModal = () => {
+    if (!selectedDocument) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-800">{selectedDocument.name}</h2>
+            <button
+              onClick={handleCloseModal}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Modal Content - All documents show as PDFs */}
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+            <div className="h-full">
+              <PDFViewer 
+                pdfPath={selectedDocument.pdfPath || applicationLetterPath} 
+                title={selectedDocument.name}
+                isFullscreen={true}
+              />
+              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 mt-4">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  Close
+                </button>
+                <button className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  if (showEditForm) {
+    return (
+      <div className="p-6 bg-gray-100 h-full overflow-y-auto">
+        {/* Back Button */}
+        <div className="mb-6">
+          <button
+            onClick={handleBackToDetails}
+            className="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>← Back to Proposal Details</span>
+          </button>
+        </div>
+
+        {/* Edit Form */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">
+              Edit Research Proposal
+            </h1>
+            <div className="flex space-x-3">
+              <button
+                onClick={handleBackToDetails}
+                className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+
+          {/* Basic Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Research Title *
+              </label>
+              <input
+                type="text"
+                value={editFormData.title}
+                onChange={(e) => handleEditFormChange('title', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Proposal ID
+              </label>
+              <input
+                type="text"
+                value={editFormData.proposalId}
+                disabled
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Principal Researcher *
+              </label>
+              <input
+                type="text"
+                value={editFormData.researcher}
+                onChange={(e) => handleEditFormChange('researcher', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Department *
+              </label>
+              <input
+                type="text"
+                value={editFormData.department}
+                onChange={(e) => handleEditFormChange('department', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email *
+              </label>
+              <input
+                type="email"
+                value={editFormData.email}
+                onChange={(e) => handleEditFormChange('email', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                value={editFormData.phone}
+                onChange={(e) => handleEditFormChange('phone', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Project Details */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Budget (PHP) *
+              </label>
+              <input
+                type="text"
+                value={editFormData.budget}
+                onChange={(e) => handleEditFormChange('budget', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Duration *
+              </label>
+              <input
+                type="text"
+                value={editFormData.duration}
+                onChange={(e) => handleEditFormChange('duration', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Start Date *
+              </label>
+              <input
+                type="date"
+                value={editFormData.startDate}
+                onChange={(e) => handleEditFormChange('startDate', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Research Description */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Research Description *
+            </label>
+            <textarea
+              value={editFormData.description}
+              onChange={(e) => handleEditFormChange('description', e.target.value)}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Research Objectives */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Research Objectives *
+              </label>
+              <button
+                onClick={handleAddObjective}
+                className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm transition-colors"
+              >
+                + Add Objective
+              </button>
+            </div>
+            {editFormData.objectives.map((objective, index) => (
+              <div key={index} className="flex items-center space-x-3 mb-3">
+                <span className="text-sm font-medium text-gray-600 w-8">{index + 1}.</span>
+                <input
+                  type="text"
+                  value={objective}
+                  onChange={(e) => handleObjectiveChange(index, e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  onClick={() => handleRemoveObjective(index)}
+                  className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm transition-colors"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Methodology */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Methodology *
+            </label>
+            <textarea
+              value={editFormData.methodology}
+              onChange={(e) => handleEditFormChange('methodology', e.target.value)}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Expected Outcomes */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Expected Outcomes *
+            </label>
+            <textarea
+              value={editFormData.expectedOutcomes}
+              onChange={(e) => handleEditFormChange('expectedOutcomes', e.target.value)}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+            <button
+              onClick={handleBackToDetails}
+              className="px-6 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSaveEdit}
+              className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showEndorsementForm) {
     return (
@@ -63,17 +423,17 @@ const ProposalDetails = ({ proposal, onBack }) => {
         {/* Endorsement Form */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            {proposal.title}
+            HaHaHa Katawa: Ananlyzing Smile Dynamics for Psychopath Detection Using CNN
           </h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <span className="text-sm font-medium text-gray-600">Proposal ID:</span>
-              <span className="text-sm text-gray-900 ml-2">{proposal.id.toString().padStart(4, '0')}</span>
+              <span className="text-sm text-gray-900 ml-2">2005-00025</span>
             </div>
             <div>
               <span className="text-sm font-medium text-gray-600">Date of Endorsement:</span>
-              <span className="text-sm text-gray-900 ml-2">{proposal.dateSubmitted}</span>
+              <span className="text-sm text-gray-900 ml-2">February 24, 2005</span>
             </div>
           </div>
 
@@ -83,10 +443,17 @@ const ProposalDetails = ({ proposal, onBack }) => {
             <ul className="space-y-2">
               {attachedDocuments.map((document, index) => (
                 <li key={index} className="flex items-center">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
-                  <a href="#" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    {document}
-                  </a>
+                  <span className={`w-2 h-2 rounded-full mr-3 ${document.available ? 'bg-blue-500' : 'bg-red-500'}`}></span>
+                  <button 
+                    onClick={() => handleDocumentClick(document)}
+                    disabled={!document.available}
+                    className={`text-sm text-left ${document.available ? 'text-blue-600 hover:text-blue-800 underline cursor-pointer' : 'text-red-600 cursor-not-allowed'}`}
+                  >
+                    {document.name}
+                  </button>
+                  {!document.available && (
+                    <span className="ml-2 text-xs text-red-500 font-medium">(Not Available)</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -110,7 +477,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
               <input
                 type="file"
                 onChange={(e) => handleFileChange(e, setSelectedFile)}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
               <p className="text-sm text-gray-500 mt-1">
                 {selectedFile ? selectedFile.name : 'No file chosen'}
@@ -124,7 +491,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
               <input
                 type="file"
                 onChange={(e) => handleFileChange(e, setSignedSpecialOrder)}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
               <p className="text-sm text-gray-500 mt-1">
                 {signedSpecialOrder ? signedSpecialOrder.name : 'No file chosen'}
@@ -165,7 +532,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
       <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border border-gray-100">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2 leading-tight">
-            {proposal.title}
+            HaHaHa Katawa: Analyzing Smile Dynamics for Psychopath Detection Using CNN
           </h1>
           <p className="text-gray-600 text-lg">Research Proposal Details</p>
         </div>
@@ -181,7 +548,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
               </div>
               <h3 className="text-sm font-semibold text-gray-800">Proposal ID</h3>
             </div>
-            <p className="text-lg font-bold text-red-600">{proposal.id.toString().padStart(4, '0')}</p>
+            <p className="text-lg font-bold text-blue-600">2005-00025</p>
           </div>
           
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-100">
@@ -193,7 +560,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
               </div>
               <h3 className="text-sm font-semibold text-gray-800">Endorsement Date</h3>
             </div>
-            <p className="text-lg font-bold text-purple-600">{proposal.dateSubmitted}</p>
+            <p className="text-lg font-bold text-purple-600">February 24, 2025</p>
           </div>
         </div>
 
@@ -210,21 +577,54 @@ const ProposalDetails = ({ proposal, onBack }) => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {attachedDocuments.map((document, index) => (
-              <div key={index} className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all duration-200 cursor-pointer group">
-                                  <div className="w-3 h-3 bg-red-500 rounded-full mr-4 group-hover:bg-red-600 transition-colors"></div>
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm flex-1 group-hover:underline">
-                  {document}
-                </a>
-                                  <svg className="w-4 h-4 text-gray-400 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+              <div 
+                key={index} 
+                className={`flex items-center p-4 rounded-lg border transition-all duration-200 cursor-pointer group ${
+                  document.available 
+                    ? 'bg-blue-50 hover:bg-blue-100 border-blue-200' 
+                    : 'bg-red-50 hover:bg-red-100 border-red-200'
+                }`}
+                onClick={() => handleDocumentClick(document)}
+              >
+                <div className={`w-3 h-3 rounded-full mr-4 transition-colors ${
+                  document.available 
+                    ? 'bg-blue-500 group-hover:bg-blue-600' 
+                    : 'bg-red-500 group-hover:bg-red-600'
+                }`}></div>
+                <span 
+                  className={`font-medium text-sm flex-1 ${
+                    document.available 
+                      ? 'text-blue-700 hover:text-blue-800 group-hover:underline' 
+                      : 'text-red-700 hover:text-red-800'
+                  }`}
+                >
+                  {document.name}
+                </span>
+                {document.available ? (
+                  <svg className="w-4 h-4 text-blue-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4 text-red-500 group-hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Endorse Button */}
-        <div className="flex justify-end">
+        {/* Action Buttons */}
+        <div className="flex justify-end space-x-4">
+          <button 
+            onClick={handleEdit}
+            className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit Proposal
+          </button>
           <button 
             onClick={handleEndorse}
             className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
@@ -238,7 +638,10 @@ const ProposalDetails = ({ proposal, onBack }) => {
       </div>
 
       {/* PDF Viewer */}
-      <PDFViewer pdfPath={pdfPath} title="Balbuena_Concept+Paper.pdf" />
+      <PDFViewer pdfPath={conceptPaperPath} title="Balbuena_Concept+Paper.pdf" />
+
+      {/* Document Modal */}
+      {showDocumentModal && <DocumentModal />}
     </div>
   );
 };

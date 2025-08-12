@@ -10,6 +10,7 @@ import Resources from './pages/Resources';
 import Account from './pages/Account';
 import ProposalDetail from './pages/ProposalDetail';
 import NotificationsPage from './pages/Notifications';
+import MessagesPage from './pages/Messages';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/proposal/:id" element={<ProposalDetail />} />
           <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
         </Routes>
       </Layout>
     </Router>

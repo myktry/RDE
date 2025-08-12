@@ -8,41 +8,55 @@ const ProgressReportPage = () => {
 
   const [selectedReport, setSelectedReport] = useState(null);
 
+  const [selectedResearchCenter, setSelectedResearchCenter] = useState('all');
+
+  const researchCenters = [
+    { id: 'all', name: 'All Research Centers' },
+    { id: 'RC-001', name: 'Center for Research and Development' },
+    { id: 'RC-002', name: 'Center for Technology Innovation' },
+    { id: 'RC-003', name: 'Center for Agricultural Research' },
+    { id: 'RC-004', name: 'Center for Environmental Studies' },
+    { id: 'RC-005', name: 'Center for Health Sciences' },
+    { id: 'RC-006', name: 'Center for Engineering Research' },
+    { id: 'RC-007', name: 'Center for Social Sciences' },
+    { id: 'RC-008', name: 'Center for Business and Economics' }
+  ];
+
   const completedProjects = [
     {
       id: 1,
-      divisionId: 'RDE-001',
-      division: 'Research and Development Division',
+      researchCenterId: 'RC-001',
+      researchCenter: 'Center for Research and Development',
       dateSubmitted: 'March 20, 2025'
     },
     {
       id: 2,
-      divisionId: 'RDE-002',
-      division: 'Knowledge and Technology Transfer Division',
+      researchCenterId: 'RC-002',
+      researchCenter: 'Center for Technology Innovation',
       dateSubmitted: 'March 25, 2025'
     },
     {
       id: 3,
-      divisionId: 'RDE-003',
-      division: 'Extension Division',
+      researchCenterId: 'RC-003',
+      researchCenter: 'Center for Agricultural Research',
       dateSubmitted: 'March 20, 2025'
     },
     {
       id: 4,
-      divisionId: 'RDE-001',
-      division: 'Research and Development Division',
+      researchCenterId: 'RC-004',
+      researchCenter: 'Center for Environmental Studies',
       dateSubmitted: 'March 20, 2025'
     },
     {
       id: 5,
-      divisionId: 'RDE-002',
-      division: 'Knowledge and Technology Transfer Division',
+      researchCenterId: 'RC-005',
+      researchCenter: 'Center for Health Sciences',
       dateSubmitted: 'March 25, 2025'
     },
     {
       id: 6,
-      divisionId: 'RDE-003',
-      division: 'Extension Division',
+      researchCenterId: 'RC-006',
+      researchCenter: 'Center for Engineering Research',
       dateSubmitted: 'March 28, 2025'
     }
   ];
@@ -54,6 +68,13 @@ const ProgressReportPage = () => {
   const handleBack = () => {
     setSelectedReport(null);
   };
+
+  // Filter projects based on search and research center
+  const filteredProjects = completedProjects.filter(project => {
+    const matchesSearch = project.researchCenter.toLowerCase().includes(search.toLowerCase());
+    const matchesResearchCenter = selectedResearchCenter === 'all' || project.researchCenterId === selectedResearchCenter;
+    return matchesSearch && matchesResearchCenter;
+  });
 
   if (selectedReport) {
     return <ProgressReportDetails report={selectedReport} onBack={handleBack} />;
@@ -77,7 +98,7 @@ const ProgressReportPage = () => {
     </svg>
   );
 
-  const FilterBar = ({ fromYear, setFromYear, toYear, setToYear, search, setSearch }) => (
+  const FilterBar = ({ fromYear, setFromYear, toYear, setToYear, search, setSearch, selectedResearchCenter, setSelectedResearchCenter }) => (
     <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
       <div className="flex flex-wrap items-center gap-4">
         {/* Search Input */}
@@ -94,10 +115,26 @@ const ProgressReportPage = () => {
           />
         </div>
         
+        {/* Research Center Filter */}
+        <div className="flex items-center space-x-2">
+          <FilterIcon />
+          <span className="text-sm font-medium text-gray-700">Research Center:</span>
+          <select
+            value={selectedResearchCenter}
+            onChange={(e) => setSelectedResearchCenter(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors min-w-48"
+          >
+            {researchCenters.map(center => (
+              <option key={center.id} value={center.id}>
+                {center.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        
         {/* Year Filters */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <FilterIcon />
             <span className="text-sm font-medium text-gray-700">From:</span>
             <input
               type="text"
@@ -123,7 +160,7 @@ const ProgressReportPage = () => {
     </div>
   );
 
-  const TableSection = ({ title, data, headers, renderRow, fromYear, setFromYear, toYear, setToYear, search, setSearch }) => (
+  const TableSection = ({ title, data, headers, renderRow, fromYear, setFromYear, toYear, setToYear, search, setSearch, selectedResearchCenter, setSelectedResearchCenter }) => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       {/* Header */}
       <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -139,6 +176,8 @@ const ProgressReportPage = () => {
         setToYear={setToYear}
         search={search}
         setSearch={setSearch}
+        selectedResearchCenter={selectedResearchCenter}
+        setSelectedResearchCenter={setSelectedResearchCenter}
       />
       
       {/* Table */}
@@ -170,7 +209,7 @@ const ProgressReportPage = () => {
             Progress Reports
           </h1>
           <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            Monitor and track project progress across divisions
+            Monitor and track project progress across research centers
           </p>
         </div>
       </div>
@@ -179,28 +218,30 @@ const ProgressReportPage = () => {
         {/* Completed Project Reports */}
         <TableSection
           title="Completed Project Reports"
-          data={completedProjects}
-          headers={['No', 'Division ID', 'Division', 'Date Submitted', 'Action']}
+          data={filteredProjects}
+          headers={['No', 'Research Center ID', 'Research Center', 'Date Submitted', 'Action']}
           fromYear={fromYear}
           setFromYear={setFromYear}
           toYear={toYear}
           setToYear={setToYear}
           search={search}
           setSearch={setSearch}
+          selectedResearchCenter={selectedResearchCenter}
+          setSelectedResearchCenter={setSelectedResearchCenter}
           renderRow={(project, index) => (
-                            <tr key={project.id} className="hover:bg-red-50 transition-colors duration-150">
+            <tr key={project.id} className="hover:bg-red-50 transition-colors duration-150">
               <td className="px-6 py-4 whitespace-nowrap">
-                                  <span className="inline-flex items-center justify-center w-8 h-8 bg-red-100 text-red-800 text-sm font-medium rounded-full">
+                <span className="inline-flex items-center justify-center w-8 h-8 bg-red-100 text-red-800 text-sm font-medium rounded-full">
                   {String(index + 1).padStart(2, '0')}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                  {project.divisionId}
+                  {project.researchCenterId}
                 </span>
               </td>
               <td className="px-6 py-4">
-                <div className="text-sm font-medium text-gray-900">{project.division}</div>
+                <div className="text-sm font-medium text-gray-900">{project.researchCenter}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-700">{project.dateSubmitted}</div>

@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import ProposalDetails from '../components/ProposalDetails';
 
 const ReviewProposal = () => {
+  const location = useLocation();
   const [year, setYear] = useState('2025');
   const [search, setSearch] = useState('');
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  // Check if we're coming from tracker with a selected proposal
+  useEffect(() => {
+    if (location.state?.selectedProposal) {
+      setSelectedProposal(location.state.selectedProposal);
+    }
+  }, [location.state]);
 
   const reviewProposals = [
     { id: 1, author: 'Kyla Bea Dorin', dateSubmitted: 'July 11, 2025', title: 'Renewable Energy Implementation' },
@@ -105,10 +114,10 @@ const ReviewProposal = () => {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
-            Review Proposals
+            Endorsement
           </h1>
           <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            Manage and review research project proposals submitted by researchers
+            Manage and endorse research project proposals submitted by researchers
           </p>
         </div>
       </div>

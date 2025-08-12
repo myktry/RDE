@@ -1,21 +1,31 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from 'react-icons/bi';
 
 const ProposalDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  // Mock project data - in a real app this would come from props or API
+  const project = {
+    id: id || 'PRO-2025-00022',
+    title: 'ARAY KO: Identifying pain through eye contact',
+    author: 'Nico Eslawan',
+    proposalId: id || 'PRO-2025-00022'
+  };
 
   // Timeline stages data
   const timelineStages = [
-    { id: 1, name: 'Endorsement', status: 'completed' },
+    { id: 1, name: 'College Endorsement', status: 'completed' },
     { id: 2, name: 'R&D Division', status: 'completed' },
     { id: 3, name: 'Proposal Review', status: 'completed' },
     { id: 4, name: 'Ethics Review', status: 'current' },
     { id: 5, name: 'OVPRDE', status: 'pending' },
     { id: 6, name: 'President', status: 'pending' },
-    { id: 7, name: 'Implementation', status: 'pending' },
-    { id: 8, name: 'Monitoring', status: 'pending' },
-    { id: 9, name: 'For Completion', status: 'pending' }
+    { id: 7, name: 'OSOURU', status: 'pending' },
+    { id: 8, name: 'Implementation', status: 'pending' },
+    { id: 9, name: 'Monitoring', status: 'pending' },
+    { id: 10, name: 'For Completion', status: 'pending' }
   ];
 
   // Status history data
@@ -80,51 +90,95 @@ const ProposalDetail = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Link 
-                to="/" 
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >
-                <BiArrowBack className="w-5 h-5 mr-2" />
-                <span className="text-sm font-medium">Back to Research Projects</span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-500">
-                Proposal ID: {id || 'PRO-2025-00022'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  const handleEndorse = () => {
+    // Store the project data in localStorage so the endorsement page can access it
+    localStorage.setItem('selectedProjectForEndorsement', JSON.stringify(project));
+    navigate('/review-proposal', { state: { selectedProposal: project } });
+  };
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Proposal Header */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              ARAY KO: Identifying pain through eye contact
-            </h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-              <div>
-                <span className="font-medium">Proposal ID:</span> PRO-2025-00022
+  const getCompletionPercentage = () => {
+    const completedStages = timelineStages.filter(stage => stage.status === 'completed').length;
+    const currentStage = timelineStages.find(stage => stage.status === 'current') ? 1 : 0;
+    return Math.round(((completedStages + currentStage * 0.5) / timelineStages.length) * 100);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="max-w-7xl mx-auto p-6 space-y-8">
+        {/* Header Section */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+          {/* Back Button and Endorse Button */}
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-xl transition-all duration-200 group"
+            >
+              <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="font-medium">Back to Projects</span>
+            </button>
+
+            {/* Endorse Button */}
+            <button
+              onClick={handleEndorse}
+              className="flex items-center bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Endorse Project
+            </button>
+          </div>
+
+          {/* Project Title and Info */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+            <div className="flex-1">
+              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                {project.title}
+              </h1>
+
+              <div className="flex flex-wrap gap-4 text-gray-600">
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="font-medium">ID:</span>
+                  <span className="ml-1">{project.proposalId}</span>
+                </div>
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span className="font-medium">Author:</span>
+                  <span className="ml-1">{project.author}</span>
+                </div>
               </div>
-              <div>
-                <span className="font-medium">Author:</span> Nico Eslawan
+            </div>
+
+            {/* Progress Card */}
+            <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-6 min-w-[280px]">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-red-600 mb-1">
+                  {getCompletionPercentage()}%
+                </div>
+                <div className="text-sm text-red-700 font-medium mb-3">Project Progress</div>
+                <div className="w-full bg-red-200 rounded-full h-2">
+                  <div
+                    className="bg-red-600 h-2 rounded-full transition-all duration-500"
+                    style={{ width: `${getCompletionPercentage()}%` }}
+                  ></div>
+                </div>
+                <div className="text-xs text-red-600 mt-2">
+                  {timelineStages.filter(s => s.status === 'completed').length} of {timelineStages.length} stages completed
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Status Timeline Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           <div className="flex items-center mb-8">
             <div className="p-3 bg-red-100 rounded-xl mr-4">
               <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

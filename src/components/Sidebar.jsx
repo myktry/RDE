@@ -13,7 +13,7 @@ const Sidebar = () => {
   const menuItems = [
     { path: '/', label: 'Tracker', icon: BiSearch },
     { path: '/statistics', label: 'Statistics', icon: BiBarChart },
-    { path: '/review-proposal', label: 'Review of Documents', icon: BiFile },
+    { path: '/review-proposal', label: 'Endorsement', icon: BiFile },
     { path: '/progress-report', label: 'Progress Reports', icon: BiBarChart },
     { path: '/submit-report', label: 'Submit Report', icon: BiUpload },
     { path: '/resources', label: 'Resources', icon: BiFolder },
