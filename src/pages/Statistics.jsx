@@ -1,337 +1,556 @@
-import React, { useState, useRef } from 'react';
-import { BarChart3, TrendingUp, Users, Target } from 'lucide-react';
+import React, { useState } from 'react';
 
-const Statistics = () => {
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
+const StatisticsPage = () => {
+  const [fromYear, setFromYear] = useState('2025');
+  const [toYear, setToYear] = useState('2025');
   const [hoveredBar, setHoveredBar] = useState(null);
-  const [hoveredSdg, setHoveredSdg] = useState(null);
-  const tooltipContainerRef = useRef(null);
 
-  // Data for Research Proposal Status per RDE Agenda
-  const rdeAgendaData = [
-    { name: 'Agriculture, Aquatic, and Agro-Forestry', ongoing: 35, completed: 25, total: 60 },
-    { name: 'Business and Trade', ongoing: 30, completed: 20, total: 50 },
-    { name: 'Social Sciences and Education', ongoing: 15, completed: 10, total: 25 },
-    { name: 'Engineering and Technology', ongoing: 18, completed: 12, total: 30 },
-    { name: 'Environment and Natural Resources', ongoing: 25, completed: 20, total: 45 },
-    { name: 'Health and Wellness', ongoing: 12, completed: 8, total: 20 },
-    { name: 'Peace and Security', ongoing: 25, completed: 15, total: 40 },
+  const handleMouseMove = (e) => {
+    if (hoveredBar) {
+      setHoveredBar(prev => ({ ...prev, x: e.clientX, y: e.clientY }));
+    }
+  };
+
+  const divisionData = [
+    {
+      name: 'Research and Development Division',
+      color: 'bg-red-600',
+      ongoing: 45,
+      completed: 23
+    },
+    {
+      name: 'Knowledge and Technology Transfer Division',
+      color: 'bg-orange-500',
+      ongoing: 28,
+      completed: 35
+    },
+    {
+      name: 'Extension Division',
+      color: 'bg-green-600',
+      ongoing: 52,
+      completed: 31
+    }
   ];
 
-  // Data for Distribution of Research Proposals by DOST 6Ps
-  const dost6PsData = [
-    { name: 'Publications', value: 99 },
-    { name: 'Patent', value: 12 },
-    { name: 'Product', value: 10 },
-    { name: 'People Services', value: 23 },
-    { name: 'Places and Partner', value: 12 },
-    { name: 'Policies', value: 68 },
+  const agendaData = [
+    { category: 'AAAF', rddCompleted: 12, rddOngoing: 8, kttdCompleted: 6, kttdOngoing: 4, edCompleted: 9, edOngoing: 5 },
+    { category: 'B & T', rddCompleted: 15, rddOngoing: 10, kttdCompleted: 8, kttdOngoing: 6, edCompleted: 12, edOngoing: 7 },
+    { category: 'SSE', rddCompleted: 9, rddOngoing: 12, kttdCompleted: 11, kttdOngoing: 8, edCompleted: 7, edOngoing: 9 },
+    { category: 'E & T', rddCompleted: 18, rddOngoing: 14, kttdCompleted: 13, kttdOngoing: 9, edCompleted: 15, edOngoing: 11 },
+    { category: 'ENR', rddCompleted: 11, rddOngoing: 16, kttdCompleted: 9, kttdOngoing: 12, edCompleted: 13, edOngoing: 8 },
+    { category: 'H & W', rddCompleted: 14, rddOngoing: 11, kttdCompleted: 16, kttdOngoing: 7, edCompleted: 10, edOngoing: 14 },
+    { category: 'P & S', rddCompleted: 13, rddOngoing: 9, kttdCompleted: 12, kttdOngoing: 10, edCompleted: 11, edOngoing: 13 }
   ];
 
-  const maxValue = Math.max(...rdeAgendaData.map(item => item.total));
-  const maxDostValue = Math.max(...dost6PsData.map(item => item.value));
+  const dostData = [
+    { category: 'Publication', rddCompleted: 8, rddOngoing: 5, kttdCompleted: 6, kttdOngoing: 4, edCompleted: 7, edOngoing: 3 },
+    { category: 'Patent', rddCompleted: 12, rddOngoing: 8, kttdCompleted: 9, kttdOngoing: 6, edCompleted: 10, edOngoing: 5 },
+    { category: 'Product', rddCompleted: 15, rddOngoing: 10, kttdCompleted: 11, kttdOngoing: 7, edCompleted: 13, edOngoing: 8 },
+    { category: 'People Services', rddCompleted: 9, rddOngoing: 12, kttdCompleted: 14, kttdOngoing: 9, edCompleted: 11, edOngoing: 6 },
+    { category: 'Places and Partnership', rddCompleted: 11, rddOngoing: 7, kttdCompleted: 8, kttdOngoing: 11, edCompleted: 12, edOngoing: 9 },
+    { category: 'Policies', rddCompleted: 6, rddOngoing: 9, kttdCompleted: 7, kttdOngoing: 8, edCompleted: 9, edOngoing: 7 }
+  ];
 
-  // Data for Distribution by Sustainable Development Goal
   const sdgData = [
-    { name: '1', fullName: 'No Poverty', value: 45, color: '#E5243B' },
-    { name: '2', fullName: 'Zero Hunger', value: 38, color: '#DDA63A' },
-    { name: '3', fullName: 'Good Health and Well-being', value: 41, color: '#4C9F38' },
-    { name: '4', fullName: 'Quality Education', value: 42, color: '#C5192D' },
-    { name: '5', fullName: 'Gender Equality', value: 48, color: '#FF3A21' },
-    { name: '6', fullName: 'Clean Water and Sanitation', value: 25, color: '#26BDE2' },
-    { name: '7', fullName: 'Affordable and Clean Energy', value: 55, color: '#FCC30B' },
-    { name: '8', fullName: 'Decent Work and Economic Growth', value: 40, color: '#A21942' },
-    { name: '9', fullName: 'Industry, Innovation and Infrastructure', value: 43, color: '#FD6925' },
-    { name: '10', fullName: 'Reduced Inequalities', value: 18, color: '#DD1367' },
-    { name: '11', fullName: 'Sustainable Cities and Communities', value: 35, color: '#FD9D24' },
-    { name: '12', fullName: 'Responsible Consumption and Production', value: 52, color: '#BF8B2E' },
-    { name: '13', fullName: 'Climate Action', value: 30, color: '#3F7E44' },
-    { name: '14', fullName: 'Life Below Water', value: 22, color: '#0A97D9' },
-    { name: '15', fullName: 'Life on Land', value: 33, color: '#56C02B' },
-    { name: '16', fullName: 'Peace, Justice and Strong Institutions', value: 46, color: '#00689D' },
-    { name: '17', fullName: 'Partnerships for the Goals', value: 50, color: '#19486A' },
+    { sdg: 1, rdd: 15, kttd: 12, ed: 18 },
+    { sdg: 2, rdd: 22, kttd: 16, ed: 14 },
+    { sdg: 3, rdd: 18, kttd: 20, ed: 25 },
+    { sdg: 4, rdd: 25, kttd: 18, ed: 22 },
+    { sdg: 5, rdd: 16, kttd: 14, ed: 19 },
+    { sdg: 6, rdd: 20, kttd: 22, ed: 16 },
+    { sdg: 7, rdd: 14, kttd: 19, ed: 21 },
+    { sdg: 8, rdd: 23, kttd: 17, ed: 15 },
+    { sdg: 9, rdd: 19, kttd: 25, ed: 20 },
+    { sdg: 10, rdd: 17, kttd: 13, ed: 18 },
+    { sdg: 11, rdd: 21, kttd: 16, ed: 23 },
+    { sdg: 12, rdd: 15, kttd: 20, ed: 17 },
+    { sdg: 13, rdd: 24, kttd: 18, ed: 19 },
+    { sdg: 14, rdd: 18, kttd: 21, ed: 22 },
+    { sdg: 15, rdd: 20, kttd: 15, ed: 24 },
+    { sdg: 16, rdd: 16, kttd: 19, ed: 21 },
+    { sdg: 17, rdd: 22, kttd: 23, ed: 18 }
   ];
 
-  const maxSdgValue = Math.max(...sdgData.map(item => item.value));
+  const getMaxValue = (data) => {
+    return Math.max(...data.map(item => 
+      Math.max(item.rddCompleted + item.rddOngoing, item.kttdCompleted + item.kttdOngoing, item.edCompleted + item.edOngoing)
+    ));
+  };
 
-  // Calculate totals for overview cards
-  const totalProposals = rdeAgendaData.reduce((sum, item) => sum + item.total, 0);
-  const totalOngoing = rdeAgendaData.reduce((sum, item) => sum + item.ongoing, 0);
-  const totalCompleted = rdeAgendaData.reduce((sum, item) => sum + item.completed, 0);
-  const completionRate = Math.round((totalCompleted / totalProposals) * 100);
+  const getMaxSDGValue = (data) => {
+    return Math.max(...data.map(item => item.rdd + item.kttd + item.ed));
+  };
+
+  const maxValue = getMaxValue(agendaData);
+  const maxDostValue = getMaxValue(dostData);
+  const maxSDGValue = getMaxSDGValue(sdgData);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Page Header (unified style) */}
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
-              Research Analytics Dashboard
-            </h1>
-            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-              Comprehensive overview of research proposals and outcomes
-            </p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Header Section */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+            Statistics
+          </h1>
+          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            Comprehensive analytics and insights for research, development, and extension activities
+          </p>
         </div>
+      </div>
 
-        {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Total Proposals</p>
-                <p className="text-3xl font-bold text-gray-900">{totalProposals}</p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-xl">
-                <BarChart3 className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Ongoing</p>
-                <p className="text-3xl font-bold text-orange-500">{totalOngoing}</p>
-              </div>
-              <div className="p-3 bg-orange-100 rounded-xl">
-                <TrendingUp className="h-6 w-6 text-orange-500" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Completed</p>
-                <p className="text-3xl font-bold text-green-500">{totalCompleted}</p>
-              </div>
-              <div className="p-3 bg-green-100 rounded-xl">
-                <Target className="h-6 w-6 text-green-500" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Success Rate</p>
-                <p className="text-3xl font-bold text-purple-600">{completionRate}%</p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-xl">
-                <Users className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RDE Agenda Chart Container */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 mb-8">
-          <div className="space-y-6 relative" ref={tooltipContainerRef}>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                Research Proposal Status per RDE Agenda
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              {rdeAgendaData.map((item, index) => (
-                <div key={index} className="group">
-                  <div className="flex items-center space-x-6 p-4 rounded-xl hover:bg-white/50 transition-all duration-200">
-                    <div className="w-72 text-sm font-medium text-gray-700">
-                      {item.name}
-                    </div>
-                    
-                    <div className="flex-1 flex items-center space-x-4">
-                      <div 
-                        className="flex-1 h-12 rounded-xl overflow-hidden cursor-pointer relative flex shadow-inner bg-gray-100"
-                        onMouseEnter={() => setHoveredItem(item)}
-                        onMouseLeave={() => setHoveredItem(null)}
-                        onMouseMove={(e) => {
-                          const rect = tooltipContainerRef.current?.getBoundingClientRect();
-                          if (!rect) return;
-                          setHoverPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-                        }}
-                      >
-                        <div 
-                          className="h-full bg-gradient-to-r from-orange-400 to-orange-500 transition-all duration-300 hover:from-orange-500 hover:to-orange-600 relative"
-                          style={{ width: `${(item.ongoing / maxValue) * 100}%` }}
-                        >
-                          <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-200"></div>
-                        </div>
-                        <div 
-                          className="h-full bg-gradient-to-r from-green-400 to-green-500 transition-all duration-300 hover:from-green-500 hover:to-green-600 relative"
-                          style={{ width: `${(item.completed / maxValue) * 100}%` }}
-                        >
-                          <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-200"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="w-16 text-right">
-                        <span className="text-lg font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                          {item.total}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Enhanced Hover Tooltip */}
-            {hoveredItem && (
-              <div
-                className="absolute bg-white/95 backdrop-blur-sm border border-white/40 rounded-2xl shadow-2xl p-5 text-sm z-50 pointer-events-none"
-                style={{
-                  left: `${hoverPosition.x}px`,
-                  top: `${hoverPosition.y - 16}px`,
-                  transform: 'translate(-50%, -100%)',
-                  minWidth: '280px'
-                }}
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8" onMouseMove={handleMouseMove}>
+      {/* Filter Bar */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-700">From Year:</label>
+              <select
+                value={fromYear}
+                onChange={(e) => setFromYear(e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
               >
-                <div className="font-bold text-gray-900 mb-3 text-base">{hoveredItem.name}</div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-4 h-4 bg-gradient-to-r from-orange-400 to-orange-500 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Ongoing</span>
-                    </div>
-                    <span className="font-bold text-orange-600">{hoveredItem.ongoing}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-green-500 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Completed</span>
-                    </div>
-                    <span className="font-bold text-green-600">{hoveredItem.completed}</span>
-                  </div>
-                  <div className="border-t border-gray-200 pt-2 mt-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-gray-900">Total</span>
-                      <span className="font-bold text-xl text-gray-900">{hoveredItem.total}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Enhanced Legend */}
-            <div className="flex justify-center space-x-8 mt-8">
-              <div className="flex items-center space-x-3 px-4 py-2 bg-orange-50 rounded-xl">
-                <div className="w-4 h-4 bg-gradient-to-r from-orange-400 to-orange-500 rounded-full"></div>
-                <span className="text-sm font-semibold text-gray-700">Ongoing</span>
-              </div>
-              <div className="flex items-center space-x-3 px-4 py-2 bg-green-50 rounded-xl">
-                <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-green-500 rounded-full"></div>
-                <span className="text-sm font-semibold text-gray-700">Completed</span>
-              </div>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+            
+            <span className="text-gray-500">-</span>
+            
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-700">To Year:</label>
+              <select
+                value={toYear}
+                onChange={(e) => setToYear(e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
             </div>
           </div>
-        </div>
-
-        {/* Enhanced DOST 6Ps Chart Container */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 mb-8">
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                Distribution of Research Proposals by DOST 6Ps
-              </h2>
-            </div>
-
-            <div className="flex items-end justify-between space-x-4 h-96 px-4">
-              {dost6PsData.map((item, index) => (
-                <div key={index} className="flex flex-col items-center space-y-4 flex-1 group">
-                  <div className="relative">
-                    <div 
-                      className="w-20 bg-gradient-to-t from-amber-600 via-amber-500 to-yellow-400 rounded-t-xl cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:scale-105 relative overflow-hidden"
-                      style={{ height: `${(item.value / maxDostValue) * 280}px` }}
-                      onMouseEnter={() => setHoveredBar(item)}
-                      onMouseLeave={() => setHoveredBar(null)}
-                    >
-                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/30"></div>
-                    </div>
-                    <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-lg font-bold text-gray-900 bg-white/90 px-3 py-1 rounded-lg shadow-md">
-                      {item.value}
-                    </div>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="text-2xl mb-2">{item.icon}</div>
-                    <div className="text-sm font-semibold text-gray-700 max-w-20 leading-tight">
-                      {item.name}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          
+          <div className="flex items-center space-x-2">
+            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
+            </svg>
           </div>
         </div>
+      </div>
 
-        {/* Enhanced SDG Chart Container */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8">
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                Distribution by Sustainable Development Goals
-              </h2>
-            </div>
+      {/* Project Status Overview of the Three Divisions */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-6">Project Status Overview of the Three Divisions</h3>
+        
+        {/* Bar Chart */}
+        <div className="flex items-end justify-between px-8 mb-6">
+          {divisionData.map((division, index) => {
+            const maxValue = Math.max(...divisionData.map(d => Math.max(d.ongoing, d.completed)));
+            return (
+              <div key={index} className="flex flex-col items-center space-y-4 flex-1">
+                {/* Division Name */}
+                <h4 className="text-sm font-medium text-gray-700 text-center max-w-40">{division.name}</h4>
 
-            <div className="flex items-end justify-between space-x-1 h-80 px-2">
-              {sdgData.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="flex flex-col items-center space-y-2 flex-1 group cursor-pointer"
-                  onMouseEnter={() => setHoveredSdg(item)}
-                  onMouseLeave={() => setHoveredSdg(null)}
-                >
-                  <div className="relative">
+                {/* Bar Group */}
+                <div className="flex items-end space-x-4">
+                  {/* On-going Bar */}
+                  <div className="flex flex-col items-center space-y-2">
                     <div
-                      className="w-10 rounded-t-lg transition-all duration-300 hover:shadow-lg transform hover:scale-110 relative overflow-hidden"
-                      style={{
-                        height: `${(item.value / maxSdgValue) * 250}px`,
-                        backgroundColor: item.color,
-                      }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-white/30"></div>
-                      <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                    </div>
-                    {hoveredSdg === item && (
-                      <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap z-10">
-                        {item.value} proposals
-                      </div>
-                    )}
+                      className={`w-20 rounded-t-sm cursor-pointer transition-all duration-200 hover:opacity-80 ${division.color}`}
+                      style={{ height: `${(division.ongoing / maxValue) * 200}px` }}
+                      onMouseEnter={(e) => setHoveredBar({
+                        type: 'On-going',
+                        value: division.ongoing,
+                        category: division.name,
+                        x: e.clientX,
+                        y: e.clientY
+                      })}
+                      onMouseLeave={() => setHoveredBar(null)}
+                    ></div>
+                    <span className="text-xs text-gray-600">On-going</span>
                   </div>
 
-                  <div className="text-xs font-bold text-gray-700 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center">
-                    {item.name}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center text-sm font-semibold text-gray-600 mt-6 bg-gray-50/50 rounded-xl p-2">
-              Sustainable Development Goals (SDG)
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-sm">
-              {sdgData.map((item) => (
-                <div key={item.name} className="flex items-center space-x-3 p-3 bg-gray-50/50 rounded-xl hover:bg-white/70 transition-all duration-200">
-                  <span 
-                    className="w-5 h-5 rounded-full flex-shrink-0 shadow-sm" 
-                    style={{ backgroundColor: item.color }}
-                  ></span>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-gray-900">SDG {item.name}</span>
-                    <span className="text-xs text-gray-600 leading-tight">{item.fullName}</span>
+                  {/* Completed Bar */}
+                  <div className="flex flex-col items-center space-y-2">
+                  <div 
+                      className={`w-20 rounded-t-sm cursor-pointer transition-all duration-200 hover:opacity-80 ${division.color}`}
+                      style={{ height: `${(division.completed / maxValue) * 200}px` }}
+                      onMouseEnter={(e) => setHoveredBar({
+                        type: 'Completed',
+                        value: division.completed,
+                        category: division.name,
+                        x: e.clientX,
+                        y: e.clientY
+                      })}
+                      onMouseLeave={() => setHoveredBar(null)}
+                  ></div>
+                    <span className="text-xs text-gray-600">Completed</span>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Legend */}
+        <div className="flex justify-center space-x-6">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-red-600 rounded-full"></div>
+            <span className="text-sm text-gray-600">Research and Development Division</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+            <span className="text-sm text-gray-600">Knowledge and Technology Transfer Division</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+            <span className="text-sm text-gray-600">Extension Division</span>
           </div>
         </div>
+      </div>
+
+      {/* RDE Agenda Progress Distribution by Division */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-6">RDE Agenda Progress Distribution by Division</h3>
+        
+        {/* Chart Container with Y-axis */}
+        <div className="flex items-end space-x-6 mb-4">
+          {/* Y-axis */}
+          <div className="flex flex-col justify-between h-52 text-xs text-gray-500">
+            <span>100</span>
+            <span>75</span>
+            <span>50</span>
+            <span>25</span>
+            <span>0</span>
+          </div>
+
+          {/* Bars */}
+          <div className="flex-1 flex items-end justify-between">
+            {agendaData.map((item, index) => {
+              const maxDivisionValue = Math.max(
+                item.rddCompleted + item.rddOngoing,
+                item.kttdCompleted + item.kttdOngoing,
+                item.edCompleted + item.edOngoing
+              );
+              return (
+                <div key={index} className="flex flex-col items-center space-y-2">
+                  {/* Bar Group for each agenda category */}
+                  <div className="flex items-end space-x-2">
+                    {/* RDD Bar */}
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="w-8 relative" style={{ height: `${((item.rddCompleted + item.rddOngoing) / maxDivisionValue) * 200}px` }}>
+                    <div className="h-full flex flex-col">
+                          {/* RDD Ongoing - Blurred/Transparent Red */}
+                      <div 
+                            className="bg-[#b91c1c]/60 hover:bg-red-400/70 backdrop-blur-sm transition-all cursor-pointer"
+                            style={{ height: `${(item.rddOngoing / (item.rddCompleted + item.rddOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'RDD Ongoing', value: item.rddOngoing, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                          {/* RDD Completed - Solid Red */}
+                      <div 
+                            className="bg-red-800 hover:bg-red-700 transition-colors cursor-pointer"
+                            style={{ height: `${(item.rddCompleted / (item.rddCompleted + item.rddOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'RDD Completed', value: item.rddCompleted, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600">RDD</span>
+                    </div>
+
+                    {/* KTTD Bar */}
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="w-8 relative" style={{ height: `${((item.kttdCompleted + item.kttdOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="h-full flex flex-col">
+                          {/* KTTD Ongoing - Blurred/Transparent Yellow */}
+                          <div
+                            className="bg-yellow-300/70 bg-opacity-50 hover:bg-opacity-70 transition-all cursor-pointer"
+                            style={{ height: `${(item.kttdOngoing / (item.kttdCompleted + item.kttdOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'KTTD Ongoing', value: item.kttdOngoing, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                          {/* KTTD Completed - Solid Yellow */}
+                      <div 
+                            className="bg-yellow-600 hover:bg-yellow-500 transition-colors cursor-pointer"
+                            style={{ height: `${(item.kttdCompleted / (item.kttdCompleted + item.kttdOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'KTTD Completed', value: item.kttdCompleted, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600">KTTD</span>
+                    </div>
+
+                    {/* ED Bar */}
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="w-8 relative" style={{ height: `${((item.edCompleted + item.edOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="h-full flex flex-col">
+                          {/* ED Ongoing - Blurred/Transparent Green */}
+                      <div 
+                            className="bg-green-300/70 bg-opacity-50 hover:bg-opacity-70 transition-all cursor-pointer"
+                            style={{ height: `${(item.edOngoing / (item.edCompleted + item.edOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'ED Ongoing', value: item.edOngoing, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                          {/* ED Completed - Solid Green */}
+                      <div 
+                            className="bg-green-700 hover:bg-green-600 transition-colors cursor-pointer"
+                            style={{ height: `${(item.edCompleted / (item.edCompleted + item.edOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'ED Completed', value: item.edCompleted, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600">ED</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-600 text-center mt-2">{item.category}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Hover Tooltip */}
+        {hoveredBar && (
+          <div className="fixed bg-black text-white px-3 py-2 rounded-lg text-sm shadow-lg z-50 pointer-events-none"
+            style={{
+              left: hoveredBar.x,
+              top: hoveredBar.y,
+              transform: 'translate(-50%, -100%)',
+              marginTop: '-10px'
+            }}>
+            <div className="font-semibold">{hoveredBar.category}</div>
+            <div>{hoveredBar.type}: {hoveredBar.value}</div>
+          </div>
+        )}
+
+        {/* Legend */}
+        <div className="flex justify-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-red-800 rounded-full"></div>
+              <span className="text-sm text-gray-600">RDD Completed</span>
+            </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-red-400 bg-opacity-50 rounded-full"></div>
+              <span className="text-sm text-gray-600">RDD On-going</span>
+            </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-yellow-600 rounded-full"></div>
+              <span className="text-sm text-gray-600">KTTD Completed</span>
+          </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-yellow-400 bg-opacity-50 rounded-full"></div>
+              <span className="text-sm text-gray-600">KTTD On-going</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-700 rounded-full"></div>
+              <span className="text-sm text-gray-600">ED Completed</span>
+            </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-400 bg-opacity-50 rounded-full"></div>
+              <span className="text-sm text-gray-600">ED On-going</span>
+          </div>
+        </div>
+      </div>
+
+      {/* DOST 6P's Progress Distribution by Division */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-6">DOST 6P's Progress Distribution by Division</h3>
+        
+                {/* Chart Container with Y-axis */}
+        <div className="flex items-end space-x-6 mb-4">
+          {/* Y-axis */}
+          <div className="flex flex-col justify-between h-52 text-xs text-gray-500">
+            <span>100</span>
+            <span>75</span>
+            <span>50</span>
+            <span>25</span>
+            <span>0</span>
+          </div>
+          
+          {/* Bars */}
+          <div className="flex-1 flex items-end justify-between">
+            {dostData.map((item, index) => {
+              const maxDivisionValue = Math.max(
+                item.rddCompleted + item.rddOngoing,
+                item.kttdCompleted + item.kttdOngoing,
+                item.edCompleted + item.edOngoing
+              );
+              return (
+                <div key={index} className="flex flex-col items-center space-y-2">
+                  {/* Bar Group for each DOST category */}
+                  <div className="flex items-end space-x-2">
+                    {/* RDD Bar */}
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="w-8 relative" style={{ height: `${((item.rddCompleted + item.rddOngoing) / maxDivisionValue) * 200}px` }}>
+                    <div className="h-full flex flex-col">
+                          {/* RDD Ongoing - Blurred/Transparent Red */}
+                      <div 
+                            className="bg-[#b91c1c]/60 hover:bg-red-400/70 backdrop-blur-sm transition-all cursor-pointer"
+                            style={{ height: `${(item.rddOngoing / (item.rddCompleted + item.rddOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'RDD Ongoing', value: item.rddOngoing, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                          {/* RDD Completed - Solid Red */}
+                      <div 
+                            className="bg-red-800 hover:bg-red-700 transition-colors cursor-pointer"
+                            style={{ height: `${(item.rddCompleted / (item.rddCompleted + item.rddOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'RDD Completed', value: item.rddCompleted, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600">RDD</span>
+                    </div>
+
+                    {/* KTTD Bar */}
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="w-8 relative" style={{ height: `${((item.kttdCompleted + item.kttdOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="h-full flex flex-col">
+                          {/* KTTD Ongoing - Blurred/Transparent Yellow */}
+                          <div 
+                            className="bg-yellow-300/70 bg-opacity-50 hover:bg-opacity-70 transition-all cursor-pointer"
+                            style={{ height: `${(item.kttdOngoing / (item.kttdCompleted + item.kttdOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'KTTD Ongoing', value: item.kttdOngoing, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                          {/* KTTD Completed - Solid Yellow */}
+                      <div 
+                            className="bg-yellow-600 hover:bg-yellow-500 transition-colors cursor-pointer"
+                            style={{ height: `${(item.kttdCompleted / (item.kttdCompleted + item.kttdOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'KTTD Completed', value: item.kttdCompleted, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600">KTTD</span>
+                    </div>
+
+                    {/* ED Bar */}
+                    <div className="flex flex-col items-center space-y-1">
+                      <div className="w-8 relative" style={{ height: `${((item.edCompleted + item.edOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="h-full flex flex-col">
+                          {/* ED Ongoing - Blurred/Transparent Green */}
+                      <div 
+                            className="bg-green-300/70 bg-opacity-50 hover:bg-opacity-70 transition-all cursor-pointer"
+                            style={{ height: `${(item.edOngoing / (item.edCompleted + item.edOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'ED Ongoing', value: item.edOngoing, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                          {/* ED Completed - Solid Green */}
+                      <div 
+                            className="bg-green-700 hover:bg-green-600 transition-colors cursor-pointer"
+                            style={{ height: `${(item.edCompleted / (item.edCompleted + item.edOngoing)) * 100}%` }}
+                            onMouseEnter={(e) => setHoveredBar({ type: 'ED Completed', value: item.edCompleted, category: item.category, x: e.clientX, y: e.clientY })}
+                            onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-gray-600">ED</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-600 text-center mt-2 max-w-20">{item.category}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="flex justify-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-red-800 rounded-full"></div>
+              <span className="text-sm text-gray-600">RDD Completed</span>
+            </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-[#b91c1c]/60 rounded-full"></div>
+              <span className="text-sm text-gray-600">RDD On-going</span>
+            </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-yellow-600 rounded-full"></div>
+              <span className="text-sm text-gray-600">KTTD Completed</span>
+          </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-yellow-300/70 rounded-full"></div>
+              <span className="text-sm text-gray-600">KTTD On-going</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-700 rounded-full"></div>
+              <span className="text-sm text-gray-600">ED Completed</span>
+            </div>
+            <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-300/70 rounded-full"></div>
+              <span className="text-sm text-gray-600">ED On-going</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Sustainable Development Goal Distribution by Division */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-6">Sustainable Development Goal Distribution by Division</h3>
+        
+        <div className="overflow-x-auto">
+          <div className="grid grid-cols-17 gap-1 items-end min-w-max">
+            {sdgData.map((item, index) => {
+              const totalHeight = (item.rdd + item.kttd + item.ed) / maxSDGValue * 200;
+              return (
+                <div key={index} className="flex flex-col items-center space-y-2">
+                                    <div className="w-12 relative" style={{ height: `${totalHeight}px` }}>
+                    <div className="h-full flex flex-col">
+                      {/* RDD */}
+                      <div 
+                        className="bg-red-600 hover:bg-red-500 transition-colors cursor-pointer rounded-t-sm"
+                        style={{ height: `${(item.rdd / maxSDGValue) * 200}px` }}
+                        onMouseEnter={(e) => setHoveredBar({ type: 'RDD', value: item.rdd, category: `SDG ${item.sdg}`, x: e.clientX, y: e.clientY })}
+                        onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                      {/* KTTD */}
+                      <div 
+                        className="bg-orange-500 hover:bg-orange-400 transition-colors cursor-pointer"
+                        style={{ height: `${(item.kttd / maxSDGValue) * 200}px` }}
+                        onMouseEnter={(e) => setHoveredBar({ type: 'KTTD', value: item.kttd, category: `SDG ${item.sdg}`, x: e.clientX, y: e.clientY })}
+                        onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                      {/* ED */}
+                      <div 
+                        className="bg-green-600 hover:bg-green-500 transition-colors cursor-pointer rounded-b-sm"
+                        style={{ height: `${(item.ed / maxSDGValue) * 200}px` }}
+                        onMouseEnter={(e) => setHoveredBar({ type: 'ED', value: item.ed, category: `SDG ${item.sdg}`, x: e.clientX, y: e.clientY })}
+                        onMouseLeave={() => setHoveredBar(null)}
+                      ></div>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-600">{item.sdg}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="mt-6 flex justify-center space-x-6">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-red-600 rounded-full"></div>
+            <span className="text-sm text-gray-600">Research and Development Division</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+            <span className="text-sm text-gray-600">Knowledge and Technology Transfer Division</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+            <span className="text-sm text-gray-600">Extension Division</span>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   );
 };
 
-export default Statistics;
+export default StatisticsPage; 
