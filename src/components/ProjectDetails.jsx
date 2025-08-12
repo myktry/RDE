@@ -2,17 +2,16 @@ import React from 'react';
 
 const ProjectDetails = ({ project, onBack, onPageChange }) => {
   const timelineStages = [
-    { id: 1, name: 'Submission', status: 'completed' },
-    { id: 2, name: 'College Endorsement', status: 'completed' },
-    { id: 3, name: 'R&D Division', status: 'completed' },
-    { id: 4, name: 'Proposal Review', status: 'completed' },
-    { id: 5, name: 'Revision Compliance', status: 'completed' },
-    { id: 6, name: 'Ethics Review', status: 'completed' },
-    { id: 7, name: 'CMREC', status: 'completed' },
-    { id: 8, name: 'President', status: 'completed' },
-    { id: 9, name: 'Implementation', status: 'completed' },
-    { id: 10, name: 'Monitoring', status: 'completed' },
-    { id: 11, name: 'For Completion', status: 'completed' }
+    { id: 1, name: 'College Endorsement', status: 'completed' },
+    { id: 2, name: 'R&D Division', status: 'completed' },
+    { id: 3, name: 'Proposal Review', status: 'completed' },
+    { id: 4, name: 'Ethics Review', status: 'current' },
+    { id: 5, name: 'OVPRDE', status: 'pending' },
+    { id: 6, name: 'President', status: 'pending' },
+    { id: 7, name: 'OSOURU', status: 'pending' },
+    { id: 8, name: 'Implementation', status: 'pending' },
+    { id: 9, name: 'Monitoring', status: 'pending' },
+    { id: 10, name: 'For Completion', status: 'pending' }
   ];
 
   const statusHistory = [
