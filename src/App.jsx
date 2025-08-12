@@ -8,6 +8,7 @@ import EndorsementPage from './pages/EndorsementPage';
 import ProgressReportPage from './pages/ProgressReportPage';
 import ResourcesPage from './pages/ResourcesPage';
 import NotificationsPage from './pages/NotificationsPage';
+import MessagesPage from './pages/MessagesPage';
 import AccountPage from './pages/AccountPage';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
   const renderPage = () => {
     switch (activePage) {
       case 'tracker':
-        return <TrackerPage />;
+        return <TrackerPage onPageChange={setActivePage} />;
       case 'statistics':
         return <StatisticsPage />;
       case 'endorsement':
@@ -27,10 +28,12 @@ function App() {
         return <ResourcesPage />;
       case 'notifications':
         return <NotificationsPage />;
+      case 'messages':
+        return <MessagesPage />;
       case 'account':
         return <AccountPage />;
       default:
-        return <TrackerPage />;
+        return <TrackerPage onPageChange={setActivePage} />;
     }
   };
 

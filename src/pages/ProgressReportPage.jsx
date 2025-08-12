@@ -1,124 +1,175 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import ProgressReportDetails from '../components/ProgressReportDetails';
 
 const ProgressReportPage = () => {
-  const [fromYear1, setFromYear1] = useState('2025');
-  const [toYear1, setToYear1] = useState('2025');
-  const [search1, setSearch1] = useState('');
-  
-  const [fromYear2, setFromYear2] = useState('2025');
-  const [toYear2, setToYear2] = useState('2025');
-  const [search2, setSearch2] = useState('');
-
+  const [fromYear, setFromYear] = useState('2025');
+  const [toYear, setToYear] = useState('2025');
+  const [search, setSearch] = useState('');
   const [selectedReport, setSelectedReport] = useState(null);
 
-  const completedProjects = [
+  // Combined data with type indicators
+  const allReports = [
+    // Completed Project Reports
     {
       id: 1,
+      type: 'completed',
+      typeLabel: 'Completed Project Report',
       divisionId: 'RDE-001',
       division: 'Research and Development Division',
       dateSubmitted: 'March 20, 2025'
     },
     {
       id: 2,
+      type: 'completed',
+      typeLabel: 'Completed Project Report',
       divisionId: 'RDE-002',
       division: 'Knowledge and Technology Transfer Division',
       dateSubmitted: 'March 25, 2025'
     },
     {
       id: 3,
+      type: 'completed',
+      typeLabel: 'Completed Project Report',
       divisionId: 'RDE-003',
       division: 'Extension Division',
       dateSubmitted: 'March 20, 2025'
     },
     {
       id: 4,
+      type: 'completed',
+      typeLabel: 'Completed Project Report',
       divisionId: 'RDE-001',
       division: 'Research and Development Division',
       dateSubmitted: 'March 20, 2025'
     },
     {
       id: 5,
+      type: 'completed',
+      typeLabel: 'Completed Project Report',
       divisionId: 'RDE-002',
       division: 'Knowledge and Technology Transfer Division',
       dateSubmitted: 'March 25, 2025'
     },
     {
       id: 6,
+      type: 'completed',
+      typeLabel: 'Completed Project Report',
       divisionId: 'RDE-003',
       division: 'Extension Division',
       dateSubmitted: 'March 28, 2025'
-    }
-  ];
-
-  const monitoringMinutes = [
+    },
+    // Monitoring and Evaluation Minutes
     {
-      id: 1,
+      id: 7,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00000',
       researchCenter: 'Agricultural Research, Technology, and Innovation Center',
       dateSubmitted: 'March 20, 2025'
     },
     {
-      id: 2,
+      id: 8,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00001',
       researchCenter: 'Center for Research in Entrepreneurship and Enterprise Development',
       dateSubmitted: 'March 21, 2025'
     },
     {
-      id: 3,
+      id: 9,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00022',
       researchCenter: 'Center for Research and Innovations in Industrial Technology',
       dateSubmitted: 'March 22, 2025'
     },
     {
-      id: 4,
+      id: 10,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00023',
       researchCenter: 'Center for Technology-Supported Learning',
       dateSubmitted: 'March 22, 2025'
     },
     {
-      id: 5,
+      id: 11,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00024',
       researchCenter: 'Geospatial, IOT, Solutions and Technology',
       dateSubmitted: 'March 24, 2025'
     },
     {
-      id: 6,
+      id: 12,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00025',
       researchCenter: 'Mindanao Center for Educational Research, Training and Innovation',
       dateSubmitted: 'March 25, 2025'
     },
     {
-      id: 7,
+      id: 13,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00026',
       researchCenter: 'Mindanao Center for Informatics and Intelligent Systems',
       dateSubmitted: 'March 26, 2025'
     },
     {
-      id: 8,
+      id: 14,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00027',
       researchCenter: 'Mindanao Center for Policy Studies',
       dateSubmitted: 'March 27, 2025'
     },
     {
-      id: 9,
+      id: 15,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00028',
       researchCenter: 'Mindanao Law and Peace Resource Institute',
       dateSubmitted: 'March 28, 2025'
     },
     {
-      id: 10,
+      id: 16,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00029',
       researchCenter: 'Research and Development Center for Arts and Sciences',
       dateSubmitted: 'March 29, 2025'
     },
     {
-      id: 11,
+      id: 17,
+      type: 'monitoring',
+      typeLabel: 'Monitoring & Evaluation Minutes',
       monitoringId: '2025-00030',
       researchCenter: 'Socio-economic Research and Data Analytics Center Mindanao',
       dateSubmitted: 'March 29, 2025'
     }
   ];
+
+  // Filter reports based on search term
+  const filteredReports = useMemo(() => {
+    if (!search) return allReports;
+    
+    return allReports.filter(report => {
+      const searchLower = search.toLowerCase();
+      if (report.type === 'completed') {
+        return (
+          report.divisionId.toLowerCase().includes(searchLower) ||
+          report.division.toLowerCase().includes(searchLower) ||
+          report.typeLabel.toLowerCase().includes(searchLower)
+        );
+      } else {
+        return (
+          report.monitoringId.toLowerCase().includes(searchLower) ||
+          report.researchCenter.toLowerCase().includes(searchLower) ||
+          report.typeLabel.toLowerCase().includes(searchLower)
+        );
+      }
+    });
+  }, [allReports, search]);
 
   const handleViewClick = (report) => {
     setSelectedReport(report);
@@ -150,7 +201,7 @@ const ProgressReportPage = () => {
     </svg>
   );
 
-  const FilterBar = ({ fromYear, setFromYear, toYear, setToYear, search, setSearch }) => (
+  const FilterBar = () => (
     <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
       <div className="flex flex-wrap items-center gap-4">
         {/* Search Input */}
@@ -196,44 +247,6 @@ const ProgressReportPage = () => {
     </div>
   );
 
-  const TableSection = ({ title, data, headers, renderRow, fromYear, setFromYear, toYear, setToYear, search, setSearch }) => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      {/* Header */}
-      <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-        <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
-        <p className="text-sm text-gray-600 mt-1">{data.length} records found</p>
-      </div>
-      
-      {/* Filter Bar */}
-      <FilterBar 
-        fromYear={fromYear}
-        setFromYear={setFromYear}
-        toYear={toYear}
-        setToYear={setToYear}
-        search={search}
-        setSearch={setSearch}
-      />
-      
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              {headers.map((header, index) => (
-                <th key={index} className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-100">
-            {data.map((item, index) => renderRow(item, index))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header Section */}
@@ -248,88 +261,85 @@ const ProgressReportPage = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {/* Section 1: Completed Project Reports */}
-        <TableSection
-          title="Completed Project Reports"
-          data={completedProjects}
-          headers={['No', 'Division ID', 'Division', 'Date Submitted', 'Action']}
-          fromYear={fromYear1}
-          setFromYear={setFromYear1}
-          toYear={toYear1}
-          setToYear={setToYear1}
-          search={search1}
-          setSearch={setSearch1}
-          renderRow={(project, index) => (
-            <tr key={project.id} className="hover:bg-blue-50 transition-colors duration-150">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                  {project.divisionId}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <div className="text-sm font-medium text-gray-900">{project.division}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-700">{project.dateSubmitted}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button 
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150"
-                  onClick={() => handleViewClick(project)}
-                >
-                  View Details
-                </button>
-              </td>
-            </tr>
-          )}
-        />
-
-        {/* Section 2: Monitoring and Evaluation Minutes */}
-        <TableSection
-          title="Monitoring and Evaluation Minutes"
-          data={monitoringMinutes}
-          headers={['No', 'Monitoring ID', 'Research Center', 'Date Submitted', 'Action']}
-          fromYear={fromYear2}
-          setFromYear={setFromYear2}
-          toYear={toYear2}
-          setToYear={setToYear2}
-          search={search2}
-          setSearch={setSearch2}
-          renderRow={(item, index) => (
-            <tr key={item.id} className="hover:bg-indigo-50 transition-colors duration-150">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="inline-flex items-center justify-center w-8 h-8 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-full">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                  {item.monitoringId}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <div className="text-sm font-medium text-gray-900 max-w-xs">{item.researchCenter}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-700">{item.dateSubmitted}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button 
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150"
-                  onClick={() => handleViewClick(item)}
-                >
-                  View Details
-                </button>
-              </td>
-            </tr>
-          )}
-        />
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Unified Progress Reports Section */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          {/* Header */}
+          <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <h2 className="text-xl font-semibold text-gray-900">All Progress Reports</h2>
+            <p className="text-sm text-gray-600 mt-1">{filteredReports.length} records found</p>
+          </div>
+          
+          {/* Filter Bar */}
+          <FilterBar />
+          
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Report Type</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Division/Center</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date Submitted</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-100">
+                {filteredReports.map((report, index) => (
+                  <tr key={report.id} className={`transition-colors duration-150 ${
+                    report.type === 'completed' ? 'hover:bg-blue-50' : 'hover:bg-indigo-50'
+                  }`}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center justify-center w-8 h-8 text-sm font-medium rounded-full ${
+                        report.type === 'completed' 
+                          ? 'bg-blue-100 text-blue-800' 
+                          : 'bg-indigo-100 text-indigo-800'
+                      }`}>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        report.type === 'completed'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-indigo-100 text-indigo-800'
+                      }`}>
+                        {report.typeLabel}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        {report.type === 'completed' ? report.divisionId : report.monitoringId}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-gray-900 max-w-xs">
+                        {report.type === 'completed' ? report.division : report.researchCenter}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700">{report.dateSubmitted}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <button 
+                        className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                          report.type === 'completed'
+                            ? 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+                            : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'
+                        }`}
+                        onClick={() => handleViewClick(report)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

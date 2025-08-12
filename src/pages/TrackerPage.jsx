@@ -4,7 +4,7 @@ import FilterBar from '../components/FilterBar';
 import ProjectTable from '../components/ProjectTable';
 import ProjectDetails from '../components/ProjectDetails';
 
-const TrackerPage = () => {
+const TrackerPage = ({ onPageChange }) => {
   const [fromYear, setFromYear] = useState('2025');
   const [toYear, setToYear] = useState('2025');
   const [status, setStatus] = useState('');
@@ -102,7 +102,7 @@ const TrackerPage = () => {
       completed: completedProjects,
       ongoing: ongoingProjects,
       underReview: underReviewProjects,
-      totalFunding: totalFunding.toLocaleString()
+      totalFunding: `₱${totalFunding.toLocaleString()}`
     };
   }, [projects]);
 
@@ -127,15 +127,36 @@ const TrackerPage = () => {
 
     // Sort projects
     filtered.sort((a, b) => {
-      let aValue = a[sortBy];
-      let bValue = b[sortBy];
+      let aValue, bValue;
 
-      if (sortBy === 'dateSubmitted') {
-        aValue = new Date(aValue);
-        bValue = new Date(bValue);
-      } else if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
+      switch (sortBy) {
+        case 'title':
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+          break;
+        case 'author':
+          aValue = a.author.toLowerCase();
+          bValue = b.author.toLowerCase();
+          break;
+        case 'status':
+          aValue = a.status.toLowerCase();
+          bValue = b.status.toLowerCase();
+          break;
+        case 'dateSubmitted':
+          aValue = new Date(a.dateSubmitted);
+          bValue = new Date(b.dateSubmitted);
+          break;
+        case 'progress':
+          aValue = a.progress;
+          bValue = b.progress;
+          break;
+        case 'funding':
+          aValue = parseFloat(a.funding.replace('₱', '').replace(',', ''));
+          bValue = parseFloat(b.funding.replace('₱', '').replace(',', ''));
+          break;
+        default:
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
       }
 
       if (sortOrder === 'asc') {
@@ -167,7 +188,7 @@ const TrackerPage = () => {
 
   // If a project is selected, show the details page
   if (selectedProject) {
-    return <ProjectDetails project={selectedProject} onBack={handleBack} />;
+    return <ProjectDetails project={selectedProject} onBack={handleBack} onPageChange={onPageChange} />;
   }
 
   return (
@@ -266,56 +287,54 @@ const TrackerPage = () => {
 
         {/* Enhanced Filter and Search Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div className="flex-1">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Project Filters & Search</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                {/* Year Range Filters */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">From Year</label>
-                  <select 
-                    value={fromYear} 
-                    onChange={(e) => setFromYear(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
-                  >
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">To Year</label>
-                  <select 
-                    value={toYear} 
-                    onChange={(e) => setToYear(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
-                  >
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Status Filter</label>
-                  <select 
-                    value={status} 
-                    onChange={(e) => setStatus(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
-                  >
-                    <option value="">All Status</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Ongoing">Ongoing</option>
-                    <option value="Under Review">Under Review</option>
-                  </select>
-                </div>
-              </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Project Filters & Search</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            {/* From Year Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">From Year</label>
+              <select 
+                value={fromYear} 
+                onChange={(e) => setFromYear(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+              >
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
             </div>
 
-            {/* Search Bar */}
-            <div className="lg:w-96">
+            {/* To Year Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">To Year</label>
+              <select 
+                value={toYear} 
+                onChange={(e) => setToYear(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+              >
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+
+            {/* Status Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Status Filter</label>
+              <select 
+                value={status} 
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+              >
+                <option value="">All Status</option>
+                <option value="Completed">Completed</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Under Review">Under Review</option>
+              </select>
+            </div>
+
+            {/* Search Projects */}
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Search Projects</label>
               <div className="relative">
                 <input
@@ -335,7 +354,7 @@ const TrackerPage = () => {
           </div>
 
           {/* Results Summary */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-200 mt-6">
+          <div className="flex items-center justify-between pt-6 border-t border-gray-200">
             <div className="text-sm text-gray-600">
               Showing <span className="font-semibold text-gray-900">{filteredAndSortedProjects.length}</span> of <span className="font-semibold text-gray-900">{stats.total}</span> projects
               {searchTerm && (

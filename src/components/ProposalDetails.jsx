@@ -5,22 +5,26 @@ const ProposalDetails = ({ proposal, onBack }) => {
   const [showEndorsementForm, setShowEndorsementForm] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [signedSpecialOrder, setSignedSpecialOrder] = useState(null);
+  const [showDocumentModal, setShowDocumentModal] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
-  // Path to PDF file in the public folder
-  const pdfPath = '/Balbuena_Concept+Paper.pdf';
+  // Path to PDF files in the public folder
+  const conceptPaperPath = '/Balbuena_Concept+Paper.pdf';
+  const applicationLetterPath = '/Sample Application Letter Format.pdf';
 
+  // Attached documents with availability status - all will show as PDFs
   const attachedDocuments = [
-    'Revised Proposal Form (Center Manager Level)',
-    'SETI Scorecard',
-    'GAD Checklist and Certificate',
-    'Matrix of Compliance (Central Manager Level)',
-    'Signed Endorsement Letter (Center Manager Level)',
-    'Drafted Special Order',
-    'Revised Proposal Form (R&D Level)',
-    'Matrix of Compliance (R&D/R&D Level)',
-    'Ethics Certificate (If Applicable)',
-    'Signed Endorsement Letter (R&D Level)',
-    'Signed Special Order (RDE Level)'
+    { name: 'Revised Proposal Form (Center Manager Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'SETI Scorecard', available: false, pdfPath: applicationLetterPath },
+    { name: 'GAD Checklist and Certificate', available: true, pdfPath: applicationLetterPath },
+    { name: 'Matrix of Compliance (Central Manager Level)', available: false, pdfPath: applicationLetterPath },
+    { name: 'Signed Endorsement Letter (Center Manager Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Drafted Special Order', available: false, pdfPath: applicationLetterPath },
+    { name: 'Revised Proposal Form (R&D Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Matrix of Compliance (R&D/R&D Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Ethics Certificate (If Applicable)', available: false, pdfPath: applicationLetterPath },
+    { name: 'Signed Endorsement Letter (R&D Level)', available: true, pdfPath: applicationLetterPath },
+    { name: 'Signed Special Order (RDE Level)', available: false, pdfPath: applicationLetterPath }
   ];
 
   const handleFileChange = (e, setter) => {
@@ -42,6 +46,64 @@ const ProposalDetails = ({ proposal, onBack }) => {
     // Handle endorsement submission
     alert('Endorsement submitted successfully!');
     setShowEndorsementForm(false);
+  };
+
+  const handleDocumentClick = (document) => {
+    if (document.available) {
+      setSelectedDocument(document);
+      setShowDocumentModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowDocumentModal(false);
+    setSelectedDocument(null);
+  };
+
+  // Document Modal Component
+  const DocumentModal = () => {
+    if (!selectedDocument) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-800">{selectedDocument.name}</h2>
+            <button
+              onClick={handleCloseModal}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Modal Content - All documents show as PDFs */}
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+            <div className="h-full">
+              <PDFViewer 
+                pdfPath={selectedDocument.pdfPath || applicationLetterPath} 
+                title={selectedDocument.name}
+                isFullscreen={true}
+              />
+              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 mt-4">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                  Close
+                </button>
+                <button className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   if (showEndorsementForm) {
@@ -83,10 +145,17 @@ const ProposalDetails = ({ proposal, onBack }) => {
             <ul className="space-y-2">
               {attachedDocuments.map((document, index) => (
                 <li key={index} className="flex items-center">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full mr-3"></span>
-                  <a href="#" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    {document}
-                  </a>
+                  <span className={`w-2 h-2 rounded-full mr-3 ${document.available ? 'bg-blue-500' : 'bg-red-500'}`}></span>
+                  <button 
+                    onClick={() => handleDocumentClick(document)}
+                    disabled={!document.available}
+                    className={`text-sm text-left ${document.available ? 'text-blue-600 hover:text-blue-800 underline cursor-pointer' : 'text-red-600 cursor-not-allowed'}`}
+                  >
+                    {document.name}
+                  </button>
+                  {!document.available && (
+                    <span className="ml-2 text-xs text-red-500 font-medium">(Not Available)</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -210,14 +279,38 @@ const ProposalDetails = ({ proposal, onBack }) => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {attachedDocuments.map((document, index) => (
-              <div key={index} className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all duration-200 cursor-pointer group">
-                <div className="w-3 h-3 bg-blue-500 rounded-full mr-4 group-hover:bg-blue-600 transition-colors"></div>
-                <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm flex-1 group-hover:underline">
-                  {document}
-                </a>
-                <svg className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+              <div 
+                key={index} 
+                className={`flex items-center p-4 rounded-lg border transition-all duration-200 cursor-pointer group ${
+                  document.available 
+                    ? 'bg-blue-50 hover:bg-blue-100 border-blue-200' 
+                    : 'bg-red-50 hover:bg-red-100 border-red-200'
+                }`}
+                onClick={() => handleDocumentClick(document)}
+              >
+                <div className={`w-3 h-3 rounded-full mr-4 transition-colors ${
+                  document.available 
+                    ? 'bg-blue-500 group-hover:bg-blue-600' 
+                    : 'bg-red-500 group-hover:bg-red-600'
+                }`}></div>
+                <span 
+                  className={`font-medium text-sm flex-1 ${
+                    document.available 
+                      ? 'text-blue-700 hover:text-blue-800 group-hover:underline' 
+                      : 'text-red-700 hover:text-red-800'
+                  }`}
+                >
+                  {document.name}
+                </span>
+                {document.available ? (
+                  <svg className="w-4 h-4 text-blue-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4 text-red-500 group-hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                )}
               </div>
             ))}
           </div>
@@ -237,8 +330,11 @@ const ProposalDetails = ({ proposal, onBack }) => {
         </div>
       </div>
 
-              {/* PDF Viewer */}
-        <PDFViewer pdfPath={pdfPath} title="Balbuena_Concept+Paper.pdf" />
+      {/* PDF Viewer */}
+      <PDFViewer pdfPath={conceptPaperPath} title="Balbuena_Concept+Paper.pdf" />
+
+      {/* Document Modal */}
+      {showDocumentModal && <DocumentModal />}
     </div>
   );
 };

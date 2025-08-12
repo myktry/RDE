@@ -1,36 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProposalDetails from '../components/ProposalDetails';
 
 const EndorsementPage = () => {
   const [year, setYear] = useState('2025');
-  const [researchCenter, setResearchCenter] = useState('');
+  const [division, setDivision] = useState('');
   const [search, setSearch] = useState('');
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const researchCenters = [
-    'Geospatial, IOT, Solutions and Technology',
-    'Mindanao Center for Informatics and Intelligent Systems',
-    'Research and Development Center for Arts and Sciences',
-    'Center for Health Research and Development',
-    'Center for Agricultural Research and Development'
+  const divisions = [
+    'Research and Development Division',
+    'Knowledge and Technology Transfer Division',
+    'Extension Division'
   ];
 
   const endorsements = [
-    { id: 1, researchCenter: 'Geospatial, IOT, Solutions and Technology', dateOfEndorsement: 'February 24, 2025', title: 'Renewable Energy Implementation' },
-    { id: 2, researchCenter: 'Mindanao Center for Informatics and Intelligent Systems', dateOfEndorsement: 'February 24, 2025', title: 'ARAY KO: Identifying pain through eye contact' },
-    { id: 3, researchCenter: 'Research and Development Center for Arts and Sciences', dateOfEndorsement: 'February 24, 2025', title: 'MwaMwa: Family is love' },
-    { id: 4, researchCenter: 'Mindanao Center for Informatics and Intelligent Systems', dateOfEndorsement: 'February 24, 2025', title: 'SportShield: Real-time Monitoring for Athletes' },
-    { id: 5, researchCenter: 'Mindanao Center for Informatics and Intelligent Systems', dateOfEndorsement: 'February 24, 2025', title: 'HaHaHa Katawa: Ananlyzing Smile Dynamics for Psyc' },
-    { id: 6, researchCenter: 'Center for Health Research and Development', dateOfEndorsement: 'February 25, 2025', title: 'AI-Powered Disease Detection System' },
-    { id: 7, researchCenter: 'Center for Agricultural Research and Development', dateOfEndorsement: 'February 26, 2025', title: 'Smart Farming Technology Implementation' },
-    { id: 8, researchCenter: 'Geospatial, IOT, Solutions and Technology', dateOfEndorsement: 'February 27, 2025', title: 'Urban Planning with GIS Integration' },
-    { id: 9, researchCenter: 'Mindanao Center for Informatics and Intelligent Systems', dateOfEndorsement: 'February 28, 2025', title: 'Machine Learning for Climate Prediction' },
-    { id: 10, researchCenter: 'Research and Development Center for Arts and Sciences', dateOfEndorsement: 'March 1, 2025', title: 'Digital Humanities Research Platform' },
-    { id: 11, researchCenter: 'Center for Health Research and Development', dateOfEndorsement: 'March 2, 2025', title: 'Telemedicine Solutions for Rural Areas' },
-    { id: 12, researchCenter: 'Center for Agricultural Research and Development', dateOfEndorsement: 'March 3, 2025', title: 'Sustainable Crop Management System' }
+    { id: 1, division: 'Research and Development Division', dateOfEndorsement: 'February 24, 2025', title: 'Renewable Energy Implementation' },
+    { id: 2, division: 'Knowledge and Technology Transfer Division', dateOfEndorsement: 'February 24, 2025', title: 'ARAY KO: Identifying pain through eye contact' },
+    { id: 3, division: 'Extension Division', dateOfEndorsement: 'February 24, 2025', title: 'MwaMwa: Family is love' },
+    { id: 4, division: 'Knowledge and Technology Transfer Division', dateOfEndorsement: 'February 24, 2025', title: 'SportShield: Real-time Monitoring for Athletes' },
+    { id: 5, division: 'Knowledge and Technology Transfer Division', dateOfEndorsement: 'February 24, 2025', title: 'HaHaHa Katawa: Ananlyzing Smile Dynamics for Psyc' },
+    { id: 6, division: 'Research and Development Division', dateOfEndorsement: 'February 25, 2025', title: 'AI-Powered Disease Detection System' },
+    { id: 7, division: 'Extension Division', dateOfEndorsement: 'February 26, 2025', title: 'Smart Farming Technology Implementation' },
+    { id: 8, division: 'Research and Development Division', dateOfEndorsement: 'February 27, 2025', title: 'Urban Planning with GIS Integration' },
+    { id: 9, division: 'Knowledge and Technology Transfer Division', dateOfEndorsement: 'February 28, 2025', title: 'Machine Learning for Climate Prediction' },
+    { id: 10, division: 'Extension Division', dateOfEndorsement: 'March 1, 2025', title: 'Digital Humanities Research Platform' },
+    { id: 11, division: 'Research and Development Division', dateOfEndorsement: 'March 2, 2025', title: 'Telemedicine Solutions for Rural Areas' },
+    { id: 12, division: 'Extension Division', dateOfEndorsement: 'March 3, 2025', title: 'Sustainable Crop Management System' }
   ];
+
+  // Check for selected project from tracker on component mount
+  useEffect(() => {
+    const selectedProjectData = localStorage.getItem('selectedProjectForEndorsement');
+    if (selectedProjectData) {
+      try {
+        const project = JSON.parse(selectedProjectData);
+        // Create a new endorsement entry for the selected project
+        const newEndorsement = {
+          id: Date.now(), // Generate a unique ID
+          division: 'Research and Development Division', // Default division
+          dateOfEndorsement: new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          title: project.title,
+          author: project.author,
+          proposalId: project.proposalId,
+          college: project.college,
+          status: 'Pending Endorsement'
+        };
+        setSelectedProposal(newEndorsement);
+        // Clear the localStorage data
+        localStorage.removeItem('selectedProjectForEndorsement');
+      } catch (error) {
+        console.error('Error parsing selected project data:', error);
+        localStorage.removeItem('selectedProjectForEndorsement');
+      }
+    }
+  }, []);
 
   const handleViewClick = (proposal) => setSelectedProposal(proposal);
   const handleBack = () => setSelectedProposal(null);
@@ -38,9 +67,9 @@ const EndorsementPage = () => {
   // Filter endorsements based on search and filters
   const filteredEndorsements = endorsements.filter(endorsement => {
     const matchesSearch = endorsement.title.toLowerCase().includes(search.toLowerCase()) ||
-                         endorsement.researchCenter.toLowerCase().includes(search.toLowerCase());
-    const matchesCenter = !researchCenter || endorsement.researchCenter === researchCenter;
-    return matchesSearch && matchesCenter;
+                         endorsement.division.toLowerCase().includes(search.toLowerCase());
+    const matchesDivision = !division || endorsement.division === division;
+    return matchesSearch && matchesDivision;
   });
 
   // Pagination
@@ -104,15 +133,15 @@ const EndorsementPage = () => {
           </div>
           
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-gray-700">Center:</span>
+            <span className="text-sm font-medium text-gray-700">Division:</span>
             <select
-              value={researchCenter}
-              onChange={(e) => setResearchCenter(e.target.value)}
+              value={division}
+              onChange={(e) => setDivision(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors min-w-48"
             >
-              <option value="">All Centers</option>
-              {researchCenters.map((center, index) => (
-                <option key={index} value={center}>{center}</option>
+              <option value="">All Divisions</option>
+              {divisions.map((div, index) => (
+                <option key={index} value={div}>{div}</option>
               ))}
             </select>
           </div>
@@ -132,7 +161,7 @@ const EndorsementPage = () => {
             Research Endorsements
           </h1>
           <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            Manage and track research project endorsements across centers
+            Manage and track research project endorsements across divisions
           </p>
         </div>
       </div>
@@ -155,7 +184,7 @@ const EndorsementPage = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Research Center</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Division</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date of Endorsement</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Title</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
@@ -170,7 +199,7 @@ const EndorsementPage = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-gray-900 max-w-xs">{endorsement.researchCenter}</div>
+                      <div className="text-sm font-medium text-gray-900 max-w-xs">{endorsement.division}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-700">{endorsement.dateOfEndorsement}</div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectDetails = ({ project, onBack }) => {
+const ProjectDetails = ({ project, onBack, onPageChange }) => {
   const timelineStages = [
     { id: 1, name: 'Submission', status: 'completed' },
     { id: 2, name: 'College Endorsement', status: 'completed' },
@@ -72,21 +72,40 @@ const ProjectDetails = ({ project, onBack }) => {
     return Math.round(((completedStages + currentStage * 0.5) / timelineStages.length) * 100);
   };
 
+  const handleEndorse = () => {
+    // Store the project data in localStorage so the endorsement page can access it
+    localStorage.setItem('selectedProjectForEndorsement', JSON.stringify(project));
+    onPageChange('endorsement');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto p-6 space-y-8">
         {/* Header Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          {/* Back Button */}
-          <button
-            onClick={onBack}
-            className="flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-xl transition-all duration-200 mb-6 group"
-          >
-            <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            <span className="font-medium">Back to Projects</span>
-          </button>
+          {/* Back Button and Endorse Button */}
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={onBack}
+              className="flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-xl transition-all duration-200 group"
+            >
+              <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="font-medium">Back to Projects</span>
+            </button>
+
+            {/* Endorse Button */}
+            <button
+              onClick={handleEndorse}
+              className="flex items-center bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Endorse Project
+            </button>
+          </div>
 
           {/* Project Title and Info */}
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
