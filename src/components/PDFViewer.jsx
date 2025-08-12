@@ -4,18 +4,6 @@ import { FaDownload, FaEye, FaExpand, FaCompress, FaFilePdf } from 'react-icons/
 const PDFViewer = ({ pdfPath, title = 'Document' }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [pdfError, setPdfError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleDownload = () => {
-    if (pdfPath) {
-      const link = document.createElement('a');
-      link.href = pdfPath;
-      link.download = title || 'document.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -23,12 +11,10 @@ const PDFViewer = ({ pdfPath, title = 'Document' }) => {
 
   const handlePdfError = () => {
     setPdfError(true);
-    setIsLoading(false);
   };
 
   const handlePdfLoad = () => {
     setPdfError(false);
-    setIsLoading(false);
   };
 
   return (

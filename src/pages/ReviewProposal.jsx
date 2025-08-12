@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProposalDetails from '../components/ProposalDetails';
 
 const ReviewProposal = () => {
@@ -7,6 +7,21 @@ const ReviewProposal = () => {
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  // Check for stored project data from endorsement
+  useEffect(() => {
+    const storedProject = localStorage.getItem('selectedProjectForEndorsement');
+    if (storedProject) {
+      try {
+        const projectData = JSON.parse(storedProject);
+        setSelectedProposal(projectData);
+        // Clear the stored data after using it
+        localStorage.removeItem('selectedProjectForEndorsement');
+      } catch (error) {
+        console.error('Error parsing stored project data:', error);
+        localStorage.removeItem('selectedProjectForEndorsement');
+      }
+    }
+  }, []);
 
   const reviewProposals = [
     { id: 1, author: 'Kyla Bea Dorin', dateSubmitted: 'July 11, 2025', title: 'Renewable Energy Implementation' },

@@ -32,6 +32,7 @@ const Dashboard = () => {
       college: 'College of Computer Science',
       status: 'Under Review',
       progress: 20,
+      budget: 250000,
       submittedDate: '4/2/2025'
     },
     {
@@ -41,6 +42,7 @@ const Dashboard = () => {
       college: 'College of Engineering',
       status: 'Completed',
       progress: 100,
+      budget: 180000,
       submittedDate: '1/15/2025'
     },
     {
@@ -50,6 +52,7 @@ const Dashboard = () => {
       college: 'College of Medicine',
       status: 'Ongoing',
       progress: 45,
+      budget: 320000,
       submittedDate: '3/20/2025'
     },
     {
@@ -59,6 +62,7 @@ const Dashboard = () => {
       college: 'College of Business',
       status: 'Completed',
       progress: 100,
+      budget: 150000,
       submittedDate: '2/10/2025'
     },
     {
@@ -68,6 +72,7 @@ const Dashboard = () => {
       college: 'College of Marine Sciences',
       status: 'Ongoing',
       progress: 30,
+      budget: 450000,
       submittedDate: '4/15/2025'
     }
   ];
@@ -200,17 +205,18 @@ const Dashboard = () => {
       <div className="p-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Table Header */}
-          <div className="grid grid-cols-[2fr_1fr_1fr_120px] gap-4 p-4 border-b border-gray-200 font-semibold text-gray-700">
+          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_120px] gap-4 p-4 border-b border-gray-200 font-semibold text-gray-700">
             <div>Project Details</div>
             <div>Author & College</div>
             <div>Status & Progress</div>
+            <div>Budget</div>
             <div>Actions</div>
           </div>
 
           {/* Table Body */}
           <div className="divide-y divide-gray-100">
             {filteredResearch.map((research, index) => (
-              <div key={index} className="grid grid-cols-[2fr_1fr_1fr_120px] gap-4 p-4 hover:bg-gray-50 transition-colors duration-150">
+              <div key={index} className="grid grid-cols-[2fr_1fr_1fr_1fr_120px] gap-4 p-4 hover:bg-gray-50 transition-colors duration-150">
                 {/* Project Details */}
                 <div>
                   <Link 
@@ -245,6 +251,14 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="text-xs text-gray-600">{research.progress}% complete</div>
+                </div>
+
+                {/* Budget */}
+                <div>
+                  <div className="font-semibold text-gray-900">
+                    ₱{research.budget.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Total Budget</div>
                 </div>
 
                 {/* Actions */}

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const AccountPage = () => {
-  const [isEditing, setIsEditing] = useState(false);
   
   const userProfile = {
     name: 'John Henry Talite',
@@ -14,7 +13,8 @@ const AccountPage = () => {
   };
 
   const handleEdit = () => {
-    setIsEditing(true);
+    // Edit functionality can be implemented here
+    console.log('Edit functionality coming soon!');
   };
 
   const handleDeleteAccount = () => {

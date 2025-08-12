@@ -6,13 +6,13 @@ import {
   BiBarChart, 
   BiUpload,
   BiFolder, 
-  BiUser 
+  BiUser
 } from 'react-icons/bi';
 
 const Sidebar = () => {
   const menuItems = [
-    { path: '/', label: 'Track', icon: BiSearch },
-    { path: '/review-proposal', label: 'Review Proposals', icon: BiFile },
+    { path: '/', label: 'Tracker', icon: BiSearch },
+    { path: '/review-proposal', label: 'Endorsement', icon: BiFile },
     { path: '/progress-report', label: 'Progress Reports', icon: BiBarChart },
     { path: '/submit-report', label: 'Submit Report', icon: BiUpload },
     { path: '/resources', label: 'Resources', icon: BiFolder },

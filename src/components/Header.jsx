@@ -10,66 +10,44 @@ const Header = () => {
       title: 'New Research Proposal Submitted',
       message: 'A new research proposal has been submitted for review.',
       time: '2 hours ago',
-      unread: true,
-      type: 'proposal'
+      unread: true
     },
     {
       id: 2,
       title: 'Progress Report Due',
       message: 'Monthly progress report is due in 3 days.',
       time: '1 day ago',
-      unread: true,
-      type: 'reminder'
+      unread: true
     },
     {
       id: 3,
       title: 'Endorsement Approved',
-      message: 'Your research endorsement has been approved by the committee.',
+      message: 'Your research endorsement has been approved.',
       time: '2 days ago',
-      unread: false,
-      type: 'approval'
+      unread: false
+    },
+    {
+      id: 4,
+      title: 'Meeting Reminder',
+      message: 'Research committee meeting scheduled for tomorrow.',
+      time: '3 days ago',
+      unread: false
     }
   ]);
 
   const unreadCount = notifications.filter(n => n.unread).length;
 
-  const getTypeIcon = (type) => {
-    const iconClass = "w-4 h-4";
-    
-    switch (type) {
-      case 'proposal':
-        return (
-          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-            <svg className={`${iconClass} text-blue-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-        );
-      case 'reminder':
-        return (
-          <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-            <svg className={`${iconClass} text-amber-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-        );
-      case 'approval':
-        return (
-          <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-            <svg className={`${iconClass} text-green-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-        );
-      default:
-        return (
-          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-            <svg className={`${iconClass} text-gray-600`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4.19 4a2 2 0 00-1.8 1.1L1 8.5v8a2 2 0 002 2h14a2 2 0 002-2v-8l-1.39-3.4A2 2 0 0015.81 4H4.19z" />
-            </svg>
-          </div>
-        );
-    }
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const handleViewAllNotifications = () => {
+    setShowNotifications(false);
+    navigate('/notifications');
+  };
+
+  const handleMessagesClick = () => {
+    navigate('/messages');
   };
 
   return (
@@ -89,98 +67,93 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center">
-        <div className="relative">
-          <button
-            onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 text-white hover:bg-gray-700 rounded-lg transition-colors duration-200"
+      
+      {/* User Controls */}
+      <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
+          {/* Messages Button */}
+          <button 
+            className="p-2 hover:bg-gray-700 rounded-full relative"
+            onClick={handleMessagesClick}
+            title="Messages"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4.19 4a2 2 0 00-1.8 1.1L1 8.5v8a2 2 0 002 2h14a2 2 0 002-2v-8l-1.39-3.4A2 2 0 0015.81 4H4.19z" />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                {unreadCount}
-              </span>
-            )}
+            <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+              2
+            </span>
           </button>
-          
-          {/* Notifications Dropdown */}
-          {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-              <div className="p-4 border-b border-gray-200">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
-                  <button
-                    onClick={() => setShowNotifications(false)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              
-              <div className="max-h-96 overflow-y-auto">
-                {notifications.length === 0 ? (
-                  <div className="p-4 text-center text-gray-500">
-                    <svg className="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4.19 4a2 2 0 00-1.8 1.1L1 8.5v8a2 2 0 002 2h14a2 2 0 002-2v-8l-1.39-3.4A2 2 0 0015.81 4H4.19z" />
-                    </svg>
-                    <p>No notifications</p>
+
+          {/* Notification Button */}
+          <div className="relative">
+            <button 
+              className="p-2 hover:bg-gray-700 rounded-full relative"
+              onClick={handleNotificationClick}
+              title="Notifications"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-yellow-400 text-gray-800 text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* Notification Dropdown */}
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                {/* Dropdown Header */}
+                <div className="px-4 py-3 border-b border-gray-200">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-semibold text-gray-800">Notifications</h3>
+                    <span className="text-sm text-gray-500">{unreadCount} unread</span>
                   </div>
-                ) : (
-                  <div className="divide-y divide-gray-100">
-                    {notifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className={`p-4 hover:bg-gray-50 transition-colors duration-200 ${
-                          notification.unread ? 'bg-blue-50' : ''
-                        }`}
-                      >
-                        <div className="flex items-start space-x-3">
-                          {getTypeIcon(notification.type)}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-1">
-                              <h4 className="text-sm font-semibold text-gray-900">
-                                {notification.title}
-                              </h4>
-                              {notification.unread && (
-                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                                  New
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-gray-600 mb-2">
-                              {notification.message}
-                            </p>
-                            <p className="text-xs text-gray-400">
-                              {notification.time}
-                            </p>
-                          </div>
+                </div>
+
+                {/* Notification List */}
+                <div className="max-h-64 overflow-y-auto">
+                  {notifications.map((notification) => (
+                    <div 
+                      key={notification.id} 
+                      className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${
+                        notification.unread ? 'bg-blue-50' : ''
+                      }`}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                          notification.unread ? 'bg-blue-500' : 'bg-gray-300'
+                        }`}></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-800">
+                            {notification.title}
+                          </p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {notification.message}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            {notification.time}
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              
-              {notifications.length > 0 && (
-                <div className="p-4 border-t border-gray-200">
-                  <button 
-                    onClick={() => {
-                      setShowNotifications(false);
-                      navigate('/notifications');
-                    }}
-                    className="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    </div>
+                  ))}
+                </div>
+
+                {/* View All Button */}
+                <div className="px-4 py-3 border-t border-gray-200">
+                  <button
+                    onClick={handleViewAllNotifications}
+                    className="w-full text-center text-blue-600 hover:text-blue-800 text-sm font-medium py-2 rounded-md hover:bg-blue-50 transition-colors"
                   >
-                    View all notifications
+                    View All Notifications
                   </button>
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

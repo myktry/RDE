@@ -146,7 +146,7 @@ const ResourcesPage = () => {
       
       // Show success message (you might want to replace this with a toast notification)
       alert(`${selectedDocument.fileName} downloaded successfully!`);
-    } catch (error) {
+    } catch {
       alert('Download failed. Please try again.');
     } finally {
       setIsDownloading(false);
