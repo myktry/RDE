@@ -343,27 +343,35 @@ const Statistics = () => {
                     )}
                   </div>
 
-                  <div className="text-xs font-bold text-gray-700 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center">
-                    {item.name}
+                  <div className="w-12 h-12 rounded-lg overflow-hidden shadow-sm border-2 border-white hover:border-gray-300 transition-all duration-200">
+                    <img 
+                      src={`/sdg-goal-${item.name}.jpg`} 
+                      alt={`SDG ${item.name} - ${item.fullName}`}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="text-center text-sm font-semibold text-gray-600 mt-6 bg-gray-50/50 rounded-xl p-2">
-              Sustainable Development Goals (SDG)
+            <div className="text-center text-lg font-bold text-gray-800 mt-8 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
+              Sustainable Development Goals (SDG) Legend
             </div>
 
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 text-sm">
               {sdgData.map((item) => (
-                <div key={item.name} className="flex items-center space-x-3 p-3 bg-gray-50/50 rounded-xl hover:bg-white/70 transition-all duration-200">
-                  <span 
-                    className="w-5 h-5 rounded-full flex-shrink-0 shadow-sm" 
-                    style={{ backgroundColor: item.color }}
-                  ></span>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-gray-900">SDG {item.name}</span>
+                <div key={item.name} className="flex items-center space-x-3 p-4 bg-white/70 backdrop-blur-sm rounded-xl hover:bg-white/90 transition-all duration-200 border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-md">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-gray-200">
+                    <img 
+                      src={`/sdg-goal-${item.name}.jpg`} 
+                      alt={`SDG ${item.name} - ${item.fullName}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <span className="font-bold text-gray-900 text-sm">SDG {item.name}</span>
                     <span className="text-xs text-gray-600 leading-tight">{item.fullName}</span>
+                    <span className="text-xs font-semibold text-blue-600 mt-1">{item.value} proposals</span>
                   </div>
                 </div>
               ))}
