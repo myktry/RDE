@@ -78,7 +78,7 @@ const ProjectDetails = ({ project, onBack }) => {
         {/* Header Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           {/* Back Button */}
-          <button 
+          <button
             onClick={onBack}
             className="flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-xl transition-all duration-200 mb-6 group"
           >
@@ -94,7 +94,7 @@ const ProjectDetails = ({ project, onBack }) => {
               <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                 {project.title}
               </h1>
-              
+
               <div className="flex flex-wrap gap-4 text-gray-600">
                 <div className="flex items-center">
                   <svg className="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ const ProjectDetails = ({ project, onBack }) => {
                 </div>
                 <div className="text-sm text-red-700 font-medium mb-3">Project Progress</div>
                 <div className="w-full bg-red-200 rounded-full h-2">
-                  <div 
+                  <div
                     className="bg-red-600 h-2 rounded-full transition-all duration-500"
                     style={{ width: `${getCompletionPercentage()}%` }}
                   ></div>
@@ -147,7 +147,7 @@ const ProjectDetails = ({ project, onBack }) => {
               <p className="text-gray-600">Track your project's progress through each stage</p>
             </div>
           </div>
-          
+
           {/* Horizontal Timeline */}
           <div className="relative">
             {/* Scrollable Timeline Container */}
@@ -165,25 +165,24 @@ const ProjectDetails = ({ project, onBack }) => {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Connecting Line */}
                     {index < timelineStages.length - 1 && (
                       <div className="absolute top-3 left-full w-16 h-0.5 bg-gray-300 z-0">
-                        <div 
+                        <div
                           className="h-full bg-green-500 transition-all duration-500"
-                          style={{ 
+                          style={{
                             width: stage.status === 'completed' ? '100%' : '0%'
                           }}
                         ></div>
                       </div>
                     )}
-                    
+
                     {/* Stage Label */}
-                    <div className={`px-4 py-2 rounded-lg text-center min-w-32 ${
-                      stage.status === 'current' ? 'bg-red-50 border border-red-200' : 
-                      stage.status === 'completed' ? 'bg-green-50 border border-green-200' : 
-                      'bg-gray-50 border border-gray-200'
-                    }`}>
+                    <div className={`px-4 py-2 rounded-lg text-center min-w-32 ${stage.status === 'current' ? 'bg-red-50 border border-red-200' :
+                        stage.status === 'completed' ? 'bg-green-50 border border-green-200' :
+                          'bg-gray-50 border border-gray-200'
+                      }`}>
                       <span className={`text-sm font-medium ${getStatusTextColor(stage.status)} leading-tight`}>
                         {stage.name}
                       </span>
@@ -232,9 +231,8 @@ const ProjectDetails = ({ project, onBack }) => {
               </thead>
               <tbody>
                 {statusHistory.map((entry, index) => (
-                  <tr key={index} className={`hover:bg-gray-50 transition-colors duration-200 ${
-                    index !== statusHistory.length - 1 ? 'border-b border-gray-100' : ''
-                  }`}>
+                  <tr key={index} className={`hover:bg-gray-50 transition-colors duration-200 ${index !== statusHistory.length - 1 ? 'border-b border-gray-100' : ''
+                    }`}>
                     <td className="px-8 py-6">
                       <div className="flex items-center">
                         <div className="w-2 h-2 bg-gray-400 rounded-full mr-3"></div>
@@ -246,12 +244,10 @@ const ProjectDetails = ({ project, onBack }) => {
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full mr-3 ${
-                          index === 0 ? 'bg-red-600 animate-pulse' : 'bg-green-500'
-                        }`}></div>
-                        <span className={`text-sm font-medium ${
-                          index === 0 ? 'text-red-700' : 'text-gray-900'
-                        }`}>
+                        <div className={`w-3 h-3 rounded-full mr-3 ${index === 0 ? 'bg-red-600 animate-pulse' : 'bg-green-500'
+                          }`}></div>
+                        <span className={`text-sm font-medium ${index === 0 ? 'text-red-700' : 'text-gray-900'
+                          }`}>
                           {entry.status}
                         </span>
                       </div>
