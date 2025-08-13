@@ -38,19 +38,23 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100">
-      <Header onPageChange={setActivePage} />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar activePage={activePage} onPageChange={setActivePage} />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <main className="flex-1 overflow-auto">
-            {renderPage()}
-          </main>
-          <Footer />
-        </div>
+  <div className="h-screen flex flex-col bg-gray-50 relative">
+    <Header onPageChange={setActivePage} />
+    <div className="flex flex-1 overflow-hidden">
+      <Sidebar activePage={activePage} onPageChange={setActivePage} />
+      <div className="flex-1 flex flex-col">
+        <main className="flex-1 overflow-auto">
+          <div className="min-h-full flex flex-col">
+            <div className="flex-1">
+              {renderPage()}
+            </div>
+            <Footer />
+          </div>
+        </main>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

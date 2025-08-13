@@ -13,7 +13,7 @@ const ProgressReportPage = () => {
     {
       id: 1,
       type: 'completed',
-      typeLabel: 'Completed Project Report',
+      typeLabel: 'Research and Development Division',
       divisionId: 'RDE-001',
       division: 'Research and Development Division',
       dateSubmitted: 'March 20, 2025'
@@ -21,7 +21,7 @@ const ProgressReportPage = () => {
     {
       id: 2,
       type: 'completed',
-      typeLabel: 'Completed Project Report',
+      typeLabel: 'Research and Development Division',
       divisionId: 'RDE-002',
       division: 'Knowledge and Technology Transfer Division',
       dateSubmitted: 'March 25, 2025'
@@ -29,7 +29,7 @@ const ProgressReportPage = () => {
     {
       id: 3,
       type: 'completed',
-      typeLabel: 'Completed Project Report',
+      typeLabel: 'Research and Development Division',
       divisionId: 'RDE-003',
       division: 'Extension Division',
       dateSubmitted: 'March 20, 2025'
@@ -37,7 +37,7 @@ const ProgressReportPage = () => {
     {
       id: 4,
       type: 'completed',
-      typeLabel: 'Completed Project Report',
+      typeLabel: 'Research and Development Division',
       divisionId: 'RDE-001',
       division: 'Research and Development Division',
       dateSubmitted: 'March 20, 2025'
@@ -45,7 +45,7 @@ const ProgressReportPage = () => {
     {
       id: 5,
       type: 'completed',
-      typeLabel: 'Completed Project Report',
+      typeLabel: 'Research and Development Division',
       divisionId: 'RDE-002',
       division: 'Knowledge and Technology Transfer Division',
       dateSubmitted: 'March 25, 2025'
@@ -53,7 +53,7 @@ const ProgressReportPage = () => {
     {
       id: 6,
       type: 'completed',
-      typeLabel: 'Completed Project Report',
+      typeLabel: 'Research and Development Division',
       divisionId: 'RDE-003',
       division: 'Extension Division',
       dateSubmitted: 'March 28, 2025'
@@ -62,7 +62,7 @@ const ProgressReportPage = () => {
     {
       id: 7,
       type: 'monitoring',
-      typeLabel: 'Monitoring & Evaluation Minutes',
+      typeLabel: 'Research and Development Division',
       monitoringId: '2025-00000',
       researchCenter: 'Agricultural Research, Technology, and Innovation Center',
       dateSubmitted: 'March 20, 2025'
@@ -70,7 +70,7 @@ const ProgressReportPage = () => {
     {
       id: 8,
       type: 'monitoring',
-      typeLabel: 'Monitoring & Evaluation Minutes',
+      typeLabel: 'Research and Development Division',
       monitoringId: '2025-00001',
       researchCenter: 'Center for Research in Entrepreneurship and Enterprise Development',
       dateSubmitted: 'March 21, 2025'
@@ -78,7 +78,7 @@ const ProgressReportPage = () => {
     {
       id: 9,
       type: 'monitoring',
-      typeLabel: 'Monitoring & Evaluation Minutes',
+      typeLabel: 'Research and Development Division',
       monitoringId: '2025-00022',
       researchCenter: 'Center for Research and Innovations in Industrial Technology',
       dateSubmitted: 'March 22, 2025'
@@ -86,7 +86,7 @@ const ProgressReportPage = () => {
     {
       id: 10,
       type: 'monitoring',
-      typeLabel: 'Monitoring & Evaluation Minutes',
+      typeLabel: 'Research and Development Division',
       monitoringId: '2025-00023',
       researchCenter: 'Center for Technology-Supported Learning',
       dateSubmitted: 'March 22, 2025'
@@ -279,9 +279,9 @@ const ProgressReportPage = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Report Type</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Division</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Division/Center</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Research Center</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date Submitted</th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
                 </tr>

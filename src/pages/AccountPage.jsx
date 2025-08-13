@@ -42,7 +42,6 @@ const AccountPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Red gradient bar at top */}
-      <div className="h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
       
       <div className="p-6">
         <div className="max-w-4xl mx-auto space-y-6">
