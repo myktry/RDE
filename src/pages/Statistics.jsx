@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { ChevronDown, Download, BarChart3, TrendingUp, Users, Target } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { BarChart3, TrendingUp, Users, Target } from 'lucide-react';
 
 const Statistics = () => {
-  const [fromYear, setFromYear] = useState('2025');
-  const [toYear, setToYear] = useState('2025');
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
   const [hoveredBar, setHoveredBar] = useState(null);
   const [hoveredSdg, setHoveredSdg] = useState(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const tooltipContainerRef = useRef(null);
+  const dostTooltipContainerRef = useRef(null);
+  const sdgTooltipContainerRef = useRef(null);
 
   // Data for Research Proposal Status per RDE Agenda
   const rdeAgendaData = [
@@ -62,53 +63,50 @@ const Statistics = () => {
   const totalCompleted = rdeAgendaData.reduce((sum, item) => sum + item.completed, 0);
   const completionRate = Math.round((totalCompleted / totalProposals) * 100);
 
-  // Handle mouse movement for tooltips
-  const handleMouseMove = (e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header with enhanced styling */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 mb-8">
+        {/* Page Header (unified style) */}
+        <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900">
-              Endorsement
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+              Research Analytics Dashboard
             </h1>
-            <p className="text-gray-600 mt-2">Manage and endorse research project proposals submitted by researchers</p>
+            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+              Comprehensive overview of research proposals and outcomes
+            </p>
           </div>
         </div>
 
         {/* Overview Cards */}
-        <div className="flex justify-center space-x-6 mb-8">
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300 w-48">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <div className="text-3xl font-bold text-gray-900 mb-1">{totalProposals}</div>
-                <div className="text-gray-600 text-sm font-medium">Total Proposals</div>
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Total Proposals</p>
+                <p className="text-3xl font-bold text-gray-900">{totalProposals}</p>
               </div>
               <div className="p-3 bg-blue-100 rounded-xl">
                 <BarChart3 className="h-6 w-6 text-blue-600" />
               </div>
             </div>
           </div>
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300 w-48">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <div className="text-3xl font-bold text-orange-500 mb-1">{totalOngoing}</div>
-                <div className="text-gray-600 text-sm font-medium">Ongoing</div>
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Ongoing</p>
+                <p className="text-3xl font-bold text-orange-500">{totalOngoing}</p>
               </div>
               <div className="p-3 bg-orange-100 rounded-xl">
                 <TrendingUp className="h-6 w-6 text-orange-500" />
               </div>
             </div>
           </div>
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300 w-48">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <div className="text-3xl font-bold text-green-500 mb-1">{totalCompleted}</div>
-                <div className="text-gray-600 text-sm font-medium">Completed</div>
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Completed</p>
+                <p className="text-3xl font-bold text-green-500">{totalCompleted}</p>
               </div>
               <div className="p-3 bg-green-100 rounded-xl">
                 <Target className="h-6 w-6 text-green-500" />
@@ -117,38 +115,9 @@ const Statistics = () => {
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex justify-center space-x-6 mb-8">
-          <div className="flex items-center space-x-3">
-            <label className="text-sm font-semibold text-gray-700">From:</label>
-            <div className="relative">
-              <input
-                type="text"
-                value={fromYear}
-                onChange={(e) => setFromYear(e.target.value)}
-                className="w-24 bg-white/80 border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-              />
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-          <span className="text-gray-400 text-xl">—</span>
-          <div className="flex items-center space-x-3">
-            <label className="text-sm font-semibold text-gray-700">To:</label>
-            <div className="relative">
-              <input
-                type="text"
-                value={toYear}
-                onChange={(e) => setToYear(e.target.value)}
-                className="w-24 bg-white/80 border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-              />
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-        </div>
-
         {/* RDE Agenda Chart Container */}
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 mb-8">
-          <div className="space-y-6 relative">
+          <div className="space-y-6 relative" ref={tooltipContainerRef}>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
                 Research Proposal Status per RDE Agenda
@@ -166,12 +135,13 @@ const Statistics = () => {
                     <div className="flex-1 flex items-center space-x-4">
                       <div 
                         className="flex-1 h-12 rounded-xl overflow-hidden cursor-pointer relative flex shadow-inner bg-gray-100"
-                        onMouseEnter={(e) => {
-                          setHoveredItem(item);
-                          handleMouseMove(e);
-                        }}
-                        onMouseMove={handleMouseMove}
+                        onMouseEnter={() => setHoveredItem(item)}
                         onMouseLeave={() => setHoveredItem(null)}
+                        onMouseMove={(e) => {
+                          const rect = tooltipContainerRef.current?.getBoundingClientRect();
+                          if (!rect) return;
+                          setHoverPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                        }}
                       >
                         <div 
                           className="h-full bg-gradient-to-r from-orange-400 to-orange-500 transition-all duration-300 hover:from-orange-500 hover:to-orange-600 relative"
@@ -188,7 +158,7 @@ const Statistics = () => {
                       </div>
                       
                       <div className="w-16 text-right">
-                        <span className="text-lg font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        <span className="text-lg font-bold text-gray-900 bg-red-800 bg-clip-text text-transparent">
                           {item.total}
                         </span>
                       </div>
@@ -198,13 +168,14 @@ const Statistics = () => {
               ))}
             </div>
 
-            {/* Fixed Hover Tooltip for RDE Agenda */}
+            {/* Enhanced Hover Tooltip */}
             {hoveredItem && (
-              <div 
-                className="fixed bg-white/95 backdrop-blur-sm border border-white/40 rounded-2xl shadow-2xl p-5 text-sm z-50 pointer-events-none"
+              <div
+                className="absolute bg-white/95 backdrop-blur-sm border border-white/40 rounded-2xl shadow-2xl p-5 text-sm z-50 pointer-events-none"
                 style={{
-                  left: mousePosition.x - 250,
-                  top: mousePosition.y - 50,
+                  left: `${hoverPosition.x}px`,
+                  top: `${hoverPosition.y - 16}px`,
+                  transform: 'translate(-50%, -100%)',
                   minWidth: '280px'
                 }}
               >
@@ -250,26 +221,27 @@ const Statistics = () => {
 
         {/* Enhanced DOST 6Ps Chart Container */}
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 mb-8">
-          <div className="space-y-6">
+          <div className="space-y-6 relative" ref={dostTooltipContainerRef}>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
                 Distribution of Research Proposals by DOST 6Ps
               </h2>
             </div>
 
-            <div className="flex items-end justify-between space-x-4 h-96 px-4 relative">
+            <div className="flex items-end justify-between space-x-4 h-96 px-4">
               {dost6PsData.map((item, index) => (
                 <div key={index} className="flex flex-col items-center space-y-4 flex-1 group">
                   <div className="relative">
                     <div 
-                      className="w-20 bg-gradient-to-t from-amber-600 via-amber-500 to-yellow-400 rounded-t-xl cursor-pointer transition-all duration-300 hover:shadow-lg relative overflow-hidden"
+                      className="w-20 bg-gradient-to-t from-amber-600 via-amber-500 to-yellow-400 rounded-t-xl cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:scale-105 relative overflow-hidden"
                       style={{ height: `${(item.value / maxDostValue) * 280}px` }}
-                      onMouseEnter={(e) => {
-                        setHoveredBar(item);
-                        handleMouseMove(e);
-                      }}
-                      onMouseMove={handleMouseMove}
+                      onMouseEnter={() => setHoveredBar(item)}
                       onMouseLeave={() => setHoveredBar(null)}
+                      onMouseMove={(e) => {
+                        const rect = dostTooltipContainerRef.current?.getBoundingClientRect();
+                        if (!rect) return;
+                        setHoverPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                      }}
                     >
                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/30"></div>
@@ -283,34 +255,34 @@ const Statistics = () => {
                   </div>
                 </div>
               ))}
-              
-                             {/* Fixed Hover Tooltip for DOST 6Ps */}
-               {hoveredBar && (
-                 <div 
-                   className="fixed bg-white/95 backdrop-blur-sm border border-white/40 rounded-lg shadow-lg p-5 text-sm z-50 pointer-events-none"
-                   style={{
-                     left: mousePosition.x - 250,
-                     top: mousePosition.y - 100,
-
-                     minWidth: '200px'
-                   }}
-                 >
-                  <div className="font-bold text-gray-900 mb-3 text-base">{hoveredBar.name}</div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700 font-medium">Research Proposals</span>
-                      <span className="font-bold text-amber-600">{hoveredBar.value}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
+
+            {/* DOST 6Ps Hover Tooltip */}
+            {hoveredBar && (
+              <div
+                className="absolute bg-white/95 backdrop-blur-sm border border-white/40 rounded-2xl shadow-2xl p-5 text-sm z-50 pointer-events-none"
+                style={{
+                  left: `${hoverPosition.x - 100}px`,
+                  top: `${hoverPosition.y - 100}px`,
+                  minWidth: '200px'
+                }}
+              >
+                <div className="font-bold text-gray-900 mb-2 text-base">{hoveredBar.name}</div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-4 h-4 bg-gradient-to-t from-amber-600 to-yellow-400 rounded-full"></div>
+                    <span className="text-gray-700 font-medium">Proposals</span>
+                  </div>
+                  <span className="font-bold text-xl text-gray-900">{hoveredBar.value}</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Enhanced SDG Chart Container */}
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8">
-          <div className="space-y-6">
+          <div className="space-y-6 relative" ref={sdgTooltipContainerRef}>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
                 Distribution by Sustainable Development Goals
@@ -324,6 +296,11 @@ const Statistics = () => {
                   className="flex flex-col items-center space-y-2 flex-1 group cursor-pointer"
                   onMouseEnter={() => setHoveredSdg(item)}
                   onMouseLeave={() => setHoveredSdg(null)}
+                  onMouseMove={(e) => {
+                    const rect = sdgTooltipContainerRef.current?.getBoundingClientRect();
+                    if (!rect) return;
+                    setHoverPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                  }}
                 >
                   <div className="relative">
                     <div
@@ -336,42 +313,55 @@ const Statistics = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-white/30"></div>
                       <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                     </div>
-                    {hoveredSdg === item && (
-                      <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap z-10">
-                        {item.value} proposals
-                      </div>
-                    )}
                   </div>
 
-                  <div className="w-12 h-12 rounded-lg overflow-hidden shadow-sm border-2 border-white hover:border-gray-300 transition-all duration-200">
-                    <img 
-                      src={`/sdg-goal-${item.name}.jpg`} 
-                      alt={`SDG ${item.name} - ${item.fullName}`}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="text-xs font-bold text-gray-700 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center">
+                    {item.name}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="text-center text-lg font-bold text-gray-800 mt-8 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
-              Sustainable Development Goals (SDG) Legend
+            {/* SDG Hover Tooltip */}
+            {hoveredSdg && (
+              <div
+                className="absolute bg-white/95 backdrop-blur-sm border border-white/40 rounded-2xl shadow-2xl p-5 text-sm z-50 pointer-events-none"
+                style={{
+                  left: `${hoverPosition.x}px`,
+                  top: `${hoverPosition.y - 16}px`,
+                  transform: 'translate(-50%, -100%)',
+                  minWidth: '240px'
+                }}
+              >
+                <div className="font-bold text-gray-900 mb-2 text-base">SDG {hoveredSdg.name}</div>
+                <div className="text-gray-700 font-medium mb-3 text-sm">{hoveredSdg.fullName}</div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div 
+                      className="w-4 h-4 rounded-full" 
+                      style={{ backgroundColor: hoveredSdg.color }}
+                    ></div>
+                    <span className="text-gray-700 font-medium">Projects</span>
+                  </div>
+                  <span className="font-bold text-xl text-gray-900">{hoveredSdg.value}</span>
+                </div>
+              </div>
+            )}
+
+            <div className="text-center text-sm font-semibold text-gray-600 mt-6 bg-gray-50/50 rounded-xl p-2">
+              Sustainable Development Goals (SDG)
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 text-sm">
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-sm">
               {sdgData.map((item) => (
-                <div key={item.name} className="flex items-center space-x-3 p-4 bg-white/70 backdrop-blur-sm rounded-xl hover:bg-white/90 transition-all duration-200 border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-md">
-                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-gray-200">
-                    <img 
-                      src={`/sdg-goal-${item.name}.jpg`} 
-                      alt={`SDG ${item.name} - ${item.fullName}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <span className="font-bold text-gray-900 text-sm">SDG {item.name}</span>
+                <div key={item.name} className="flex items-center space-x-3 p-3 bg-gray-50/50 rounded-xl hover:bg-white/70 transition-all duration-200">
+                  <span 
+                    className="w-5 h-5 rounded-full flex-shrink-0 shadow-sm" 
+                    style={{ backgroundColor: item.color }}
+                  ></span>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-gray-900">SDG {item.name}</span>
                     <span className="text-xs text-gray-600 leading-tight">{item.fullName}</span>
-                    <span className="text-xs font-semibold text-blue-600 mt-1">{item.value} proposals</span>
                   </div>
                 </div>
               ))}
