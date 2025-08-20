@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const ProjectDetails = ({ project, onBack }) => {
+const ProjectDetails = ({ project, onBack, navigate }) => {
   const timelineStages = [
     { id: 1, name: 'College Endorsement', status: 'completed' },
     { id: 2, name: 'R&D Division', status: 'completed' },
@@ -73,10 +73,24 @@ const ProjectDetails = ({ project, onBack }) => {
   };
 
   const handleEndorse = () => {
-    // Store the project data in localStorage so the review proposal page can access it
-    localStorage.setItem('selectedProjectForEndorsement', JSON.stringify(project));
+    console.log('Endorse button clicked');
+    console.log('Project data to store:', project);
+    
+    // Transform the data structure to match what ProposalDetails component expects
+    const transformedProject = {
+      id: project.proposalId, // Convert proposalId to id
+      title: project.title,
+      author: project.author,
+      dateSubmitted: 'July 11, 2025', // Add missing dateSubmitted
+      budget: project.budgeting 
+    };
+    
+    console.log('Transformed project data:', transformedProject);
+    // Store the transformed project data in localStorage
+    localStorage.setItem('selectedProjectForEndorsement', JSON.stringify(transformedProject));
+    console.log('Data stored in localStorage');
     // Navigate to review proposal page
-    window.location.href = '/review-proposal';
+    navigate('/review-proposal');
   };
 
   return (
@@ -399,6 +413,7 @@ const ProposalDetail = () => {
     <ProjectDetails
       project={project}
       onBack={handleBack}
+      navigate={navigate}
     />
   );
 };

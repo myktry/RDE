@@ -9,10 +9,13 @@ const ReviewProposal = () => {
   const itemsPerPage = 10;
   // Check for stored project data from endorsement
   useEffect(() => {
+    console.log('ReviewProposal useEffect running...');
     const storedProject = localStorage.getItem('selectedProjectForEndorsement');
+    console.log('Stored project:', storedProject);
     if (storedProject) {
       try {
         const projectData = JSON.parse(storedProject);
+        console.log('Parsed project data:', projectData);
         setSelectedProposal(projectData);
         // Clear the stored data after using it
         localStorage.removeItem('selectedProjectForEndorsement');
@@ -20,6 +23,8 @@ const ReviewProposal = () => {
         console.error('Error parsing stored project data:', error);
         localStorage.removeItem('selectedProjectForEndorsement');
       }
+    } else {
+      console.log('No stored project found');
     }
   }, []);
 
@@ -56,9 +61,14 @@ const ReviewProposal = () => {
 
   const handlePageChange = (page) => setCurrentPage(page);
 
+  console.log('selectedProposal state:', selectedProposal);
+  
   if (selectedProposal) {
+    console.log('Rendering ProposalDetails component');
     return <ProposalDetails proposal={selectedProposal} onBack={handleBack} />;
   }
+  
+  console.log('Rendering regular ReviewProposal page');
 
   const SearchIcon = () => (
     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PDFViewer from './PDFViewer';
+import EditProposalForm from './EditProposalForm';
 
 const ProposalDetails = ({ proposal, onBack }) => {
-  const [showEndorsementForm, setShowEndorsementForm] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [signedSpecialOrder, setSignedSpecialOrder] = useState(null);
+  const navigate = useNavigate();
+
   const [showDocumentModal, setShowDocumentModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   // Path to PDF files in the public folder
   const pdfPath = '/Balbuena_Concept+Paper.pdf';
@@ -27,26 +29,31 @@ const ProposalDetails = ({ proposal, onBack }) => {
     { name: 'Signed Special Order (RDE Level)', available: false, pdfPath: applicationLetterPath }
   ];
 
-  const handleFileChange = (e, setter) => {
-    const file = e.target.files[0];
-    if (file) {
-      setter(file);
-    }
-  };
+
 
   const handleEndorse = () => {
-    setShowEndorsementForm(true);
+    // Store the proposal data in localStorage for the ReviewProposal page
+    localStorage.setItem('selectedProjectForEndorsement', JSON.stringify(proposal));
+    // Navigate to the ReviewProposal page
+    navigate('/review-proposal');
   };
 
-  const handleBackToDetails = () => {
-    setShowEndorsementForm(false);
+  const handleEdit = () => {
+    setShowEditForm(true);
   };
 
-  const handleSubmitEndorsement = () => {
-    // Handle endorsement submission
-    alert('Endorsement submitted successfully!');
-    setShowEndorsementForm(false);
+  const handleBackFromEdit = () => {
+    setShowEditForm(false);
   };
+
+  const handleSaveEdit = (formData) => {
+    console.log('Saving form data:', formData);
+    // Here you would typically save the data to your backend
+    alert('Proposal updated successfully!');
+    setShowEditForm(false);
+  };
+
+
 
   const handleDocumentClick = (document) => {
     if (document.available) {
@@ -106,112 +113,16 @@ const ProposalDetails = ({ proposal, onBack }) => {
     );
   };
 
-  if (showEndorsementForm) {
+
+
+  // Show edit form if edit mode is active
+  if (showEditForm) {
     return (
-      <div className="p-6 bg-gray-100 h-full overflow-y-auto">
-        {/* Back Button */}
-        <div className="mb-6">
-          <button
-            onClick={handleBackToDetails}
-            className="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            <span>← Back to Proposal Details</span>
-          </button>
-        </div>
-
-        {/* Endorsement Form */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            {proposal.title}
-          </h1>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-              <span className="text-sm font-medium text-gray-600">Proposal ID:</span>
-              <span className="text-sm text-gray-900 ml-2">{proposal.id.toString().padStart(4, '0')}</span>
-            </div>
-            <div>
-              <span className="text-sm font-medium text-gray-600">Date of Endorsement:</span>
-              <span className="text-sm text-gray-900 ml-2">{proposal.dateSubmitted}</span>
-            </div>
-          </div>
-
-          {/* Attached Documents */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Attached Documents</h3>
-            <ul className="space-y-2">
-              {attachedDocuments.map((document, index) => (
-                <li key={index} className="flex items-center">
-                  <span className={`w-2 h-2 rounded-full mr-3 ${document.available ? 'bg-blue-500' : 'bg-red-500'}`}></span>
-                  <button 
-                    onClick={() => handleDocumentClick(document)}
-                    disabled={!document.available}
-                    className={`text-sm text-left ${document.available ? 'text-blue-600 hover:text-blue-800 underline cursor-pointer' : 'text-red-600 cursor-not-allowed'}`}
-                  >
-                    {document.name}
-                  </button>
-                  {!document.available && (
-                    <span className="ml-2 text-xs text-red-500 font-medium">(Not Available)</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Important Notice */}
-          <div className="mb-6 p-4 bg-gray-50 border-l-4 border-blue-500">
-            <h4 className="font-semibold text-gray-800 mb-2">Important Notice</h4>
-            <p className="text-sm text-gray-700">
-              Please submit the following documents to proceed with the endorsement process. 
-              Fields marked with an asterisk (*) are mandatory and must be completed prior to submission.
-            </p>
-          </div>
-
-          {/* File Upload Fields */}
-          <div className="space-y-4 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Endorsement Letter *
-              </label>
-              <input
-                type="file"
-                onChange={(e) => handleFileChange(e, setSelectedFile)}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                {selectedFile ? selectedFile.name : 'No file chosen'}
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Signed Special Order *
-              </label>
-              <input
-                type="file"
-                onChange={(e) => handleFileChange(e, setSignedSpecialOrder)}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                {signedSpecialOrder ? signedSpecialOrder.name : 'No file chosen'}
-              </p>
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-end">
-            <button 
-              onClick={handleSubmitEndorsement}
-              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-medium"
-            >
-              Endorse
-            </button>
-          </div>
-        </div>
-      </div>
+      <EditProposalForm
+        proposal={proposal}
+        onBack={handleBackFromEdit}
+        onSave={handleSaveEdit}
+      />
     );
   }
 
@@ -319,7 +230,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
         {/* Action Buttons */}
         <div className="flex justify-end space-x-4">
           <button 
-            onClick={() => alert('Edit functionality coming soon!')}
+            onClick={handleEdit}
             className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
