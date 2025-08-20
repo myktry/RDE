@@ -16,6 +16,7 @@ const SubmitPage = () => {
     researchAgenda: [],
     dostSPs: [],
     sustainableDevelopmentGoals: [],
+    proposedBudget: '',
     setiScorecard: null,
     gadCertificate: null,
     matrixOfCompliance: null
@@ -115,7 +116,7 @@ const SubmitPage = () => {
     <Layout>
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Submit Report</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Submit Proposal</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
@@ -205,7 +206,19 @@ const SubmitPage = () => {
           </div>
 
           <div className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-900 mb-6 pb-2 border-b-2 border-red-600">
+            <FormField
+              label="Proposed Budget"
+              required
+              type="number"
+              value={formData.proposedBudget}
+              onChange={(value) => handleInputChange('proposedBudget', value)}
+              placeholder="Enter proposed budget amount"
+              hint="Enter the proposed budget amount in Philippine Peso (₱)"
+            />
+          </div>
+
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-900 mb-6 pb-2">
               Supporting Documents
             </h3>
             
@@ -241,7 +254,7 @@ const SubmitPage = () => {
               type="submit"
               className="px-6 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
             >
-              Submit Report
+              Submit Proposal
             </button>
           </div>
         </form>

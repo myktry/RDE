@@ -117,7 +117,7 @@ const Header = () => {
           </div>
           <div>
             <h1 className="text-lg font-bold mb-1">UNIVERSITY OF SOUTHEASTERN PHILIPPINES</h1>
-            <p className="text-sm opacity-90">Research and Development Division</p>
+            <p className="text-sm opacity-90">Proponent's Portal</p>
           </div>
         </div>
       </div>
