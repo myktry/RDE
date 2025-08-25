@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PDFViewer from './PDFViewer';
 import EditProposalForm from './EditProposalForm';
+import { useSidebar } from '../context/SidebarContext';
 
 const ProposalDetails = ({ proposal, onBack }) => {
   const navigate = useNavigate();
+  const { hideSidebar, showSidebar } = useSidebar();
 
   const [showDocumentModal, setShowDocumentModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
@@ -39,10 +41,20 @@ const ProposalDetails = ({ proposal, onBack }) => {
   };
 
   const handleEdit = () => {
+    hideSidebar(); // Hide sidebar when entering edit mode
     setShowEditForm(true);
+    // Reset all sections to collapsed state when entering edit mode
+    setExpandedSections({
+      researchAgenda: false,
+      dost6Ps: false,
+      sdg: false,
+      budget: false,
+      upload: false
+    });
   };
 
   const handleBackFromEdit = () => {
+    showSidebar(); // Show sidebar when exiting edit mode
     setShowEditForm(false);
   };
 
@@ -50,6 +62,7 @@ const ProposalDetails = ({ proposal, onBack }) => {
     console.log('Saving form data:', formData);
     // Here you would typically save the data to your backend
     alert('Proposal updated successfully!');
+    showSidebar(); // Show sidebar when saving
     setShowEditForm(false);
   };
 
