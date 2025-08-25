@@ -315,8 +315,12 @@ const Statistics = () => {
                     </div>
                   </div>
 
-                  <div className="text-xs font-bold text-gray-700 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center">
-                    {item.name}
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    <img 
+                      src={`/sdg-goal-${item.name}.jpg`} 
+                      alt={`SDG ${item.name}`}
+                      className="w-full h-full object-cover rounded-lg shadow-sm"
+                    />
                   </div>
                 </div>
               ))}
@@ -355,10 +359,11 @@ const Statistics = () => {
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-sm">
               {sdgData.map((item) => (
                 <div key={item.name} className="flex items-center space-x-3 p-3 bg-gray-50/50 rounded-xl hover:bg-white/70 transition-all duration-200">
-                  <span 
-                    className="w-5 h-5 rounded-full flex-shrink-0 shadow-sm" 
-                    style={{ backgroundColor: item.color }}
-                  ></span>
+                  <img 
+                    src={`/sdg-goal-${item.name}.jpg`} 
+                    alt={`SDG ${item.name}`}
+                    className="w-6 h-6 object-cover rounded-lg shadow-sm flex-shrink-0"
+                  />
                   <div className="flex flex-col">
                     <span className="font-bold text-gray-900">SDG {item.name}</span>
                     <span className="text-xs text-gray-600 leading-tight">{item.fullName}</span>

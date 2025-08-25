@@ -138,16 +138,9 @@ const Dashboard = () => {
           ))}
           
           {/* Total Funding Card */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">Total Funding</p>
-                <p className="text-2xl font-bold text-red-600">₱2.5M</p>
-                <p className="text-sm text-gray-600 font-medium mt-1">
-                  Research investment
-                </p>
-              </div>
-            </div>
+          <div className="bg-white p-6 rounded-lg shadow-md text-center transition-transform duration-200 hover:-translate-y-1">
+            <div className="text-4xl font-bold text-red-900 mb-3">₱2.5M</div>
+            <div className="text-gray-600 font-medium">Total Funding</div>
           </div>
         </div>
       </div>

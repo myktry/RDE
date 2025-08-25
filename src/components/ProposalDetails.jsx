@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PDFViewer from './PDFViewer';
+import EditProposalForm from './EditProposalForm';
 
 const ProposalDetails = ({ proposal, onBack }) => {
   const [showEndorsementForm, setShowEndorsementForm] = useState(false);
@@ -98,8 +99,9 @@ const ProposalDetails = ({ proposal, onBack }) => {
     }));
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = (formData) => {
     // Handle saving the edited proposal
+    console.log('Saving form data:', formData);
     alert('Proposal updated successfully!');
     setShowEditForm(false);
   };
@@ -170,237 +172,11 @@ const ProposalDetails = ({ proposal, onBack }) => {
 
   if (showEditForm) {
     return (
-      <div className="p-6 bg-gray-100 h-full overflow-y-auto">
-        {/* Back Button */}
-        <div className="mb-6">
-          <button
-            onClick={handleBackToDetails}
-            className="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            <span>← Back to Proposal Details</span>
-          </button>
-        </div>
-
-        {/* Edit Form */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">
-              Edit Research Proposal
-            </h1>
-            <div className="flex space-x-3">
-              <button
-                onClick={handleBackToDetails}
-                className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveEdit}
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-
-          {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Research Title *
-              </label>
-              <input
-                type="text"
-                value={editFormData.title}
-                onChange={(e) => handleEditFormChange('title', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Proposal ID
-              </label>
-              <input
-                type="text"
-                value={editFormData.proposalId}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Principal Researcher *
-              </label>
-              <input
-                type="text"
-                value={editFormData.researcher}
-                onChange={(e) => handleEditFormChange('researcher', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Department *
-              </label>
-              <input
-                type="text"
-                value={editFormData.department}
-                onChange={(e) => handleEditFormChange('department', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email *
-              </label>
-              <input
-                type="email"
-                value={editFormData.email}
-                onChange={(e) => handleEditFormChange('email', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                value={editFormData.phone}
-                onChange={(e) => handleEditFormChange('phone', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          {/* Project Details */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Budget (PHP) *
-              </label>
-              <input
-                type="text"
-                value={editFormData.budget}
-                onChange={(e) => handleEditFormChange('budget', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Duration *
-              </label>
-              <input
-                type="text"
-                value={editFormData.duration}
-                onChange={(e) => handleEditFormChange('duration', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Start Date *
-              </label>
-              <input
-                type="date"
-                value={editFormData.startDate}
-                onChange={(e) => handleEditFormChange('startDate', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          {/* Research Description */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Research Description *
-            </label>
-            <textarea
-              value={editFormData.description}
-              onChange={(e) => handleEditFormChange('description', e.target.value)}
-              rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Research Objectives */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Research Objectives *
-              </label>
-              <button
-                onClick={handleAddObjective}
-                className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm transition-colors"
-              >
-                + Add Objective
-              </button>
-            </div>
-            {editFormData.objectives.map((objective, index) => (
-              <div key={index} className="flex items-center space-x-3 mb-3">
-                <span className="text-sm font-medium text-gray-600 w-8">{index + 1}.</span>
-                <input
-                  type="text"
-                  value={objective}
-                  onChange={(e) => handleObjectiveChange(index, e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <button
-                  onClick={() => handleRemoveObjective(index)}
-                  className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm transition-colors"
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* Methodology */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Methodology *
-            </label>
-            <textarea
-              value={editFormData.methodology}
-              onChange={(e) => handleEditFormChange('methodology', e.target.value)}
-              rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Expected Outcomes */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Expected Outcomes *
-            </label>
-            <textarea
-              value={editFormData.expectedOutcomes}
-              onChange={(e) => handleEditFormChange('expectedOutcomes', e.target.value)}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-            <button
-              onClick={handleBackToDetails}
-              className="px-6 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSaveEdit}
-              className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
-            >
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </div>
+      <EditProposalForm 
+        proposal={proposal} 
+        onBack={handleBackToDetails} 
+        onSave={handleSaveEdit} 
+      />
     );
   }
 

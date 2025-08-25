@@ -103,12 +103,12 @@ const Header = () => {
 
   return (
     <div className="relative">
-      <header className="bg-gradient-to-r from-red-800 to-orange-600 text-white px-8 py-4 flex justify-between items-center shadow-md">
+                           <header className="bg-gradient-to-r from-red-900 to-red-900 text-white px-8 py-4 flex justify-between items-center shadow-md">
         <div className="flex items-center">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 flex items-center justify-center">
               <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                <span className="text-red-800 font-bold text-sm">USeP</span>
+                                 <span className="text-red-800 font-bold text-sm">USeP</span>
               </div>
             </div>
             <div>

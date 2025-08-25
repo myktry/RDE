@@ -21,7 +21,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-red-800 text-white py-5 shadow-lg h-full">
+    <div className="w-64 bg-red-900 text-white py-5 shadow-lg h-full">
       {/* Navigation Menu */}
       <nav className="flex flex-col h-full">
         {menuItems.map((item) => {
