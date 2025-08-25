@@ -15,7 +15,7 @@ const Account = () => {
         <Header />
         
         {/* Main Content Area */}
-        <main className="flex-1 p-6 overflow-auto ml-64">
+        <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-4xl mx-auto">
             {/* Page Title */}
             <h1 className="text-3xl font-bold text-gray-800 mb-6">Account</h1>

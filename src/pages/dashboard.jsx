@@ -168,7 +168,7 @@ export default function Dashboard() {
         <Header />
         
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-auto ml-64">
+        <main className="flex-1 p-4 overflow-auto">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Year Filter with Better UI */}
             <div className="bg-white rounded-lg shadow-lg p-4">

@@ -119,7 +119,7 @@ const Proposals = () => {
         <Header />
 
         {/* Content Area */}
-        <main className="flex-1 p-6 overflow-auto ml-64">
+        <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-6xl mx-auto">
             {/* Page Header */}
             <div className="mb-8">

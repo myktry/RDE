@@ -68,7 +68,7 @@ export default function Header() {
   const unreadCount = notifications.filter(n => n.unread).length;
 
   return (
-    <header className="w-full bg-gradient-to-r from-red-900 to-orange-600 text-white px-4 sm:px-6 py-3 flex items-center justify-between shadow-lg">
+    <header className="w-full bg-gradient-to-r from-red-900 to-orange-600 text-white px-4 sm:px-6 py-3 flex items-center justify-between shadow-lg lg:ml-0">
       {/* Left: University info with logo */}
       <div className="flex items-center space-x-4">
         <div className="w-12 h-12 flex items-center justify-center">
