@@ -1,0 +1,39 @@
+SAMPLE APPLICATION LETTER FORMAT
+
+[Date]
+
+[Your Name]
+[Your Position]
+[Your Department]
+University of Southeastern Philippines
+[Your Address]
+[City, Province, Postal Code]
+
+To:
+[Recipient Name]
+[Recipient Position]
+[Recipient Department]
+University of Southeastern Philippines
+[Recipient Address]
+[City, Province, Postal Code]
+
+Subject: [Your Subject Line]
+
+Dear [Recipient Name],
+
+[Opening paragraph - Introduce yourself and state the purpose of your letter]
+
+[Body paragraphs - Provide details, background, and supporting information]
+
+[Closing paragraph - Summarize your request and express appreciation]
+
+Sincerely,
+
+[Your Name]
+[Your Signature]
+
+[Your Contact Information]
+Email: [your.email@usep.edu.ph]
+Phone: [your phone number]
+
+Enclosures: [List any attached documents] 
