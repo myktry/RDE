@@ -104,22 +104,22 @@ const StatisticsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
             Statistics
           </h1>
-          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed px-4">
             Comprehensive analytics and insights for research, development, and extension activities
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8" onMouseMove={handleMouseMove}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8" onMouseMove={handleMouseMove}>
       {/* Filter Bar */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-gray-700">From Year:</label>
               <select
@@ -133,7 +133,7 @@ const StatisticsPage = () => {
               </select>
             </div>
             
-            <span className="text-gray-500">-</span>
+            <span className="hidden sm:inline text-gray-500">-</span>
             
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-gray-700">To Year:</label>
@@ -148,14 +148,14 @@ const StatisticsPage = () => {
               </select>
             </div>
 
-            <span className="text-gray-500">|</span>
+            <span className="hidden sm:inline text-gray-500">|</span>
 
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-gray-700">Division:</label>
               <select
                 value={selectedDivision}
                 onChange={(e) => setSelectedDivision(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 min-w-64"
+                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 min-w-48 sm:min-w-64"
               >
                 {divisions.map((division) => (
                   <option key={division.id} value={division.id}>
@@ -175,26 +175,26 @@ const StatisticsPage = () => {
       </div>
 
       {/* Project Status Overview of the Three Divisions */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-6">
           Project Status Overview {selectedDivision && `- ${divisions.find(d => d.id === selectedDivision)?.name}`}
         </h3>
         
         {/* Bar Chart */}
-        <div className="flex items-end justify-between px-8 mb-6">
+        <div className="flex items-end justify-between px-4 sm:px-8 mb-6 overflow-x-auto">
           {filteredDivisionData.map((division, index) => {
             const maxValue = Math.max(...filteredDivisionData.map(d => Math.max(d.ongoing, d.completed)));
             return (
-              <div key={index} className="flex flex-col items-center space-y-4 flex-1">
+              <div key={index} className="flex flex-col items-center space-y-4 flex-1 min-w-0 mx-2">
                 {/* Division Name */}
-                <h4 className="text-sm font-medium text-gray-700 text-center max-w-40">{division.name}</h4>
+                <h4 className="text-xs sm:text-sm font-medium text-gray-700 text-center max-w-32 sm:max-w-40">{division.name}</h4>
 
                 {/* Bar Group */}
-                <div className="flex items-end space-x-4">
+                <div className="flex items-end space-x-2 sm:space-x-4">
                   {/* On-going Bar */}
                   <div className="flex flex-col items-center space-y-2">
                     <div
-                      className={`w-20 rounded-t-sm cursor-pointer transition-all duration-200 hover:opacity-80 ${division.color}`}
+                      className={`w-12 sm:w-20 rounded-t-sm cursor-pointer transition-all duration-200 hover:opacity-80 ${division.color}`}
                       style={{ height: `${(division.ongoing / maxValue) * 200}px` }}
                       onMouseEnter={(e) => setHoveredBar({
                         type: 'On-going',
@@ -211,7 +211,7 @@ const StatisticsPage = () => {
                   {/* Completed Bar */}
                   <div className="flex flex-col items-center space-y-2">
                   <div 
-                      className={`w-20 rounded-t-sm cursor-pointer transition-all duration-200 hover:opacity-80 ${division.color}`}
+                      className={`w-12 sm:w-20 rounded-t-sm cursor-pointer transition-all duration-200 hover:opacity-80 ${division.color}`}
                       style={{ height: `${(division.completed / maxValue) * 200}px` }}
                       onMouseEnter={(e) => setHoveredBar({
                         type: 'Completed',
@@ -231,26 +231,26 @@ const StatisticsPage = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex justify-center space-x-6">
+        <div className="flex flex-wrap justify-center space-x-4 sm:space-x-6">
           {filteredDivisionData.map((division, index) => (
             <div key={index} className="flex items-center space-x-2">
               <div className={`w-3 h-3 ${division.color} rounded-full`}></div>
-              <span className="text-sm text-gray-600">{division.name}</span>
+              <span className="text-xs sm:text-sm text-gray-600">{division.name}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* RDE Agenda Progress Distribution by Division */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-6">
           RDE Agenda Progress Distribution {selectedDivision && `- ${divisions.find(d => d.id === selectedDivision)?.name}`}
         </h3>
         
         {/* Chart Container with Y-axis */}
-        <div className="flex items-end space-x-6 mb-4">
+        <div className="flex items-end space-x-4 sm:space-x-6 mb-4 overflow-x-auto">
           {/* Y-axis */}
-          <div className="flex flex-col justify-between h-52 text-xs text-gray-500">
+          <div className="flex flex-col justify-between h-52 text-xs text-gray-500 flex-shrink-0">
             <span>100</span>
             <span>75</span>
             <span>50</span>
@@ -259,7 +259,7 @@ const StatisticsPage = () => {
           </div>
 
           {/* Bars */}
-          <div className="flex-1 flex items-end justify-between">
+          <div className="flex-1 flex items-end justify-between min-w-max">
             {agendaData.map((item, index) => {
               const maxDivisionValue = Math.max(
                 item.rddCompleted + item.rddOngoing,
@@ -267,13 +267,13 @@ const StatisticsPage = () => {
                 item.edCompleted + item.edOngoing
               );
               return (
-                <div key={index} className="flex flex-col items-center space-y-2">
+                <div key={index} className="flex flex-col items-center space-y-2 mx-1 sm:mx-2">
                   {/* Bar Group for each agenda category */}
-                  <div className="flex items-end space-x-2">
+                  <div className="flex items-end space-x-1 sm:space-x-2">
                     {/* RDD Bar - Only show if no division selected or RDD selected */}
                     {(!selectedDivision || selectedDivision === 'rdd') && (
                       <div className="flex flex-col items-center space-y-1">
-                        <div className="w-8 relative" style={{ height: `${((item.rddCompleted + item.rddOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="w-6 sm:w-8 relative" style={{ height: `${((item.rddCompleted + item.rddOngoing) / maxDivisionValue) * 200}px` }}>
                       <div className="h-full flex flex-col">
                             {/* RDD Ongoing - Blurred/Transparent Red */}
                         <div 
@@ -298,7 +298,7 @@ const StatisticsPage = () => {
                     {/* KTTD Bar - Only show if no division selected or KTTD selected */}
                     {(!selectedDivision || selectedDivision === 'kttd') && (
                       <div className="flex flex-col items-center space-y-1">
-                        <div className="w-8 relative" style={{ height: `${((item.kttdCompleted + item.kttdOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="w-6 sm:w-8 relative" style={{ height: `${((item.kttdCompleted + item.kttdOngoing) / maxDivisionValue) * 200}px` }}>
                           <div className="h-full flex flex-col">
                             {/* KTTD Ongoing - Blurred/Transparent Yellow */}
                             <div
@@ -323,7 +323,7 @@ const StatisticsPage = () => {
                     {/* ED Bar - Only show if no division selected or ED selected */}
                     {(!selectedDivision || selectedDivision === 'ed') && (
                       <div className="flex flex-col items-center space-y-1">
-                        <div className="w-8 relative" style={{ height: `${((item.edCompleted + item.edOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="w-6 sm:w-8 relative" style={{ height: `${((item.edCompleted + item.edOngoing) / maxDivisionValue) * 200}px` }}>
                           <div className="h-full flex flex-col">
                             {/* ED Ongoing - Blurred/Transparent Green */}
                         <div 
@@ -367,16 +367,16 @@ const StatisticsPage = () => {
         )}
 
         {/* Legend */}
-        <div className="flex justify-center space-x-6">
+        <div className="flex flex-wrap justify-center space-x-4 sm:space-x-6">
             {(!selectedDivision || selectedDivision === 'rdd') && (
               <>
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-red-800 rounded-full"></div>
-                  <span className="text-sm text-gray-600">RDD Completed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">RDD Completed</span>
                 </div>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-red-400 bg-opacity-50 rounded-full"></div>
-                  <span className="text-sm text-gray-600">RDD On-going</span>
+                  <span className="text-xs sm:text-sm text-gray-600">RDD On-going</span>
                 </div>
               </>
             )}
@@ -384,11 +384,11 @@ const StatisticsPage = () => {
               <>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-yellow-600 rounded-full"></div>
-                  <span className="text-sm text-gray-600">KTTD Completed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">KTTD Completed</span>
               </div>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-yellow-400 bg-opacity-50 rounded-full"></div>
-                  <span className="text-sm text-gray-600">KTTD On-going</span>
+                  <span className="text-xs sm:text-sm text-gray-600">KTTD On-going</span>
                 </div>
               </>
             )}
@@ -396,11 +396,11 @@ const StatisticsPage = () => {
               <>
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-green-700 rounded-full"></div>
-                  <span className="text-sm text-gray-600">ED Completed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">ED Completed</span>
                 </div>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-green-400 bg-opacity-50 rounded-full"></div>
-                  <span className="text-sm text-gray-600">ED On-going</span>
+                  <span className="text-xs sm:text-sm text-gray-600">ED On-going</span>
               </div>
               </>
             )}
@@ -408,15 +408,15 @@ const StatisticsPage = () => {
       </div>
 
       {/* DOST 6P's Progress Distribution by Division */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-6">
           DOST 6P's Progress Distribution {selectedDivision && `- ${divisions.find(d => d.id === selectedDivision)?.name}`}
         </h3>
         
                 {/* Chart Container with Y-axis */}
-        <div className="flex items-end space-x-6 mb-4">
+        <div className="flex items-end space-x-4 sm:space-x-6 mb-4 overflow-x-auto">
           {/* Y-axis */}
-          <div className="flex flex-col justify-between h-52 text-xs text-gray-500">
+          <div className="flex flex-col justify-between h-52 text-xs text-gray-500 flex-shrink-0">
             <span>100</span>
             <span>75</span>
             <span>50</span>
@@ -425,7 +425,7 @@ const StatisticsPage = () => {
           </div>
           
           {/* Bars */}
-          <div className="flex-1 flex items-end justify-between">
+          <div className="flex-1 flex items-end justify-between min-w-max">
             {dostData.map((item, index) => {
               const maxDivisionValue = Math.max(
                 item.rddCompleted + item.rddOngoing,
@@ -433,13 +433,13 @@ const StatisticsPage = () => {
                 item.edCompleted + item.edOngoing
               );
               return (
-                <div key={index} className="flex flex-col items-center space-y-2">
+                <div key={index} className="flex flex-col items-center space-y-2 mx-1 sm:mx-2">
                   {/* Bar Group for each DOST category */}
-                  <div className="flex items-end space-x-2">
+                  <div className="flex items-end space-x-1 sm:space-x-2">
                     {/* RDD Bar - Only show if no division selected or RDD selected */}
                     {(!selectedDivision || selectedDivision === 'rdd') && (
                       <div className="flex flex-col items-center space-y-1">
-                        <div className="w-8 relative" style={{ height: `${((item.rddCompleted + item.rddOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="w-6 sm:w-8 relative" style={{ height: `${((item.rddCompleted + item.rddOngoing) / maxDivisionValue) * 200}px` }}>
                       <div className="h-full flex flex-col">
                             {/* RDD Ongoing - Blurred/Transparent Red */}
                         <div 
@@ -464,7 +464,7 @@ const StatisticsPage = () => {
                     {/* KTTD Bar - Only show if no division selected or KTTD selected */}
                     {(!selectedDivision || selectedDivision === 'kttd') && (
                       <div className="flex flex-col items-center space-y-1">
-                        <div className="w-8 relative" style={{ height: `${((item.kttdCompleted + item.kttdOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="w-6 sm:w-8 relative" style={{ height: `${((item.kttdCompleted + item.kttdOngoing) / maxDivisionValue) * 200}px` }}>
                           <div className="h-full flex flex-col">
                             {/* KTTD Ongoing - Blurred/Transparent Yellow */}
                             <div 
@@ -489,7 +489,7 @@ const StatisticsPage = () => {
                     {/* ED Bar - Only show if no division selected or ED selected */}
                     {(!selectedDivision || selectedDivision === 'ed') && (
                       <div className="flex flex-col items-center space-y-1">
-                        <div className="w-8 relative" style={{ height: `${((item.edCompleted + item.edOngoing) / maxDivisionValue) * 200}px` }}>
+                        <div className="w-6 sm:w-8 relative" style={{ height: `${((item.edCompleted + item.edOngoing) / maxDivisionValue) * 200}px` }}>
                           <div className="h-full flex flex-col">
                             {/* ED Ongoing - Blurred/Transparent Green */}
                         <div 
@@ -511,7 +511,7 @@ const StatisticsPage = () => {
                       </div>
                     )}
                   </div>
-                  <span className="text-xs text-gray-600 text-center mt-2 max-w-20">{item.category}</span>
+                  <span className="text-xs text-gray-600 text-center mt-2 max-w-16 sm:max-w-20">{item.category}</span>
                 </div>
               );
             })}
@@ -519,16 +519,16 @@ const StatisticsPage = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex justify-center space-x-6">
+        <div className="flex flex-wrap justify-center space-x-4 sm:space-x-6">
             {(!selectedDivision || selectedDivision === 'rdd') && (
               <>
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-red-800 rounded-full"></div>
-                  <span className="text-sm text-gray-600">RDD Completed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">RDD Completed</span>
                 </div>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-[#b91c1c]/60 rounded-full"></div>
-                  <span className="text-sm text-gray-600">RDD On-going</span>
+                  <span className="text-xs sm:text-sm text-gray-600">RDD On-going</span>
                 </div>
               </>
             )}
@@ -536,11 +536,11 @@ const StatisticsPage = () => {
               <>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-yellow-600 rounded-full"></div>
-                  <span className="text-sm text-gray-600">KTTD Completed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">KTTD Completed</span>
               </div>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-yellow-300/70 rounded-full"></div>
-                  <span className="text-sm text-gray-600">KTTD On-going</span>
+                  <span className="text-xs sm:text-sm text-gray-600">KTTD On-going</span>
                 </div>
               </>
             )}
@@ -548,11 +548,11 @@ const StatisticsPage = () => {
               <>
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-green-700 rounded-full"></div>
-                  <span className="text-sm text-gray-600">ED Completed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">ED Completed</span>
                 </div>
                 <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-green-300/70 rounded-full"></div>
-                  <span className="text-sm text-gray-600">ED On-going</span>
+                  <span className="text-xs sm:text-sm text-gray-600">ED On-going</span>
               </div>
               </>
             )}
@@ -560,13 +560,13 @@ const StatisticsPage = () => {
       </div>
 
       {/* Sustainable Development Goal Distribution by Division */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-6">
           Sustainable Development Goal Distribution {selectedDivision && `- ${divisions.find(d => d.id === selectedDivision)?.name}`}
         </h3>
         
         <div className="overflow-x-auto">
-          <div className="flex items-end justify-between gap-2 min-w-max px-4">
+          <div className="flex items-end justify-between gap-1 sm:gap-2 min-w-max px-4">
             {sdgData.map((item, index) => {
               // Calculate max value based on visible divisions
               const visibleData = selectedDivision 
@@ -585,7 +585,7 @@ const StatisticsPage = () => {
               
               return (
                 <div key={index} className="flex flex-col items-center space-y-2">
-                  <div className="w-8 relative" style={{ height: `${(visibleData / maxVisibleValue) * 200}px` }}>
+                  <div className="w-6 sm:w-8 relative" style={{ height: `${(visibleData / maxVisibleValue) * 200}px` }}>
                     <div className="h-full flex flex-col">
                       {/* RDD - Only show if no division selected or RDD selected */}
                       {(!selectedDivision || selectedDivision === 'rdd') && (
@@ -742,11 +742,11 @@ const StatisticsPage = () => {
         </div>
 
         {/* Legend */}
-        <div className="mt-6 flex justify-center space-x-6">
+        <div className="mt-6 flex flex-wrap justify-center space-x-4 sm:space-x-6">
           {filteredDivisionData.map((division, index) => (
             <div key={index} className="flex items-center space-x-2">
               <div className={`w-3 h-3 ${division.color} rounded-full`}></div>
-              <span className="text-sm text-gray-600">{division.name}</span>
+              <span className="text-xs sm:text-sm text-gray-600">{division.name}</span>
             </div>
           ))}
         </div>
@@ -754,74 +754,74 @@ const StatisticsPage = () => {
         {/* SDG Goals Legend */}
         <div className="mt-8">
           <h4 className="text-lg font-semibold text-gray-800 mb-6 text-center">Sustainable Development Goals</h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-1.jpg" alt="SDG Goal 1" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">1. No Poverty</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">1. No Poverty</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-2.jpg" alt="SDG Goal 2" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">2. Zero Hunger</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">2. Zero Hunger</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-3.jpg" alt="SDG Goal 3" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">3. Good Health</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">3. Good Health</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-4.jpg" alt="SDG Goal 4" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">4. Quality Education</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">4. Quality Education</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-5.jpg" alt="SDG Goal 5" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">5. Gender Equality</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">5. Gender Equality</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-6.jpg" alt="SDG Goal 6" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">6. Clean Water</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">6. Clean Water</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-7.jpg" alt="SDG Goal 7" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">7. Affordable Energy</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">7. Affordable Energy</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-8.jpg" alt="SDG Goal 8" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">8. Decent Work</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">8. Decent Work</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-9.jpg" alt="SDG Goal 9" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">9. Industry Innovation</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">9. Industry Innovation</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-10.jpg" alt="SDG Goal 10" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">10. Reduced Inequalities</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">10. Reduced Inequalities</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-11.jpg" alt="SDG Goal 11" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">11. Sustainable Cities</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">11. Sustainable Cities</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-12.jpg" alt="SDG Goal 12" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">12. Responsible Consumption</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">12. Responsible Consumption</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-13.jpg" alt="SDG Goal 13" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">13. Climate Action</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">13. Climate Action</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-14.jpg" alt="SDG Goal 14" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">14. Life Below Water</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">14. Life Below Water</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-15.jpg" alt="SDG Goal 15" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">15. Life on Land</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">15. Life on Land</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-16.jpg" alt="SDG Goal 16" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">16. Peace & Justice</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">16. Peace & Justice</span>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <img src="/sdg-goal-17.jpg" alt="SDG Goal 17" className="w-8 h-8 object-contain" />
-              <span className="text-sm font-medium text-gray-700">17. Partnerships</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-700">17. Partnerships</span>
             </div>
           </div>
         </div>

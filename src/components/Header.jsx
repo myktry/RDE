@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Header = ({ onPageChange }) => {
+const Header = ({ onPageChange, onMenuClick }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications] = useState([
     {
@@ -49,30 +49,47 @@ const Header = ({ onPageChange }) => {
   };
 
   return (
-    <header className="bg-red-900 text-white px-6 py-4 flex justify-between items-center">
-      <div className="flex items-center space-x-4">
+    <header className="bg-red-900 text-white px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden p-2 hover:bg-red-700 rounded-md transition-colors duration-200"
+          aria-label="Open menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
         {/* University Logo */}
-        <div className="w-12 h-12 flex items-center justify-center">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center flex-shrink-0">
           <img 
             src="/usep-logo.png" 
             alt="University of Southeastern Philippines Logo"
-            className="w-12 h-12 object-contain"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
           />
         </div>
         
         {/* University Title */}
-        <div>
-          <h1 className="text-lg font-bold">UNIVERSITY OF SOUTHEASTERN PHILIPPINES</h1>
-          <p className="text-sm">Research, Development and Extension</p>
+        <div className="hidden sm:block">
+          <h1 className="text-base sm:text-lg font-bold">UNIVERSITY OF SOUTHEASTERN PHILIPPINES</h1>
+          <p className="text-xs sm:text-sm">Research, Development and Extension</p>
+        </div>
+        
+        {/* Mobile Title */}
+        <div className="sm:hidden">
+          <h1 className="text-sm font-bold">USeP RDE</h1>
+          <p className="text-xs">Research Tracker</p>
         </div>
       </div>
       
       {/* User Controls */}
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        <div className="flex items-center space-x-1 sm:space-x-2">
           {/* Messages Button */}
           <button 
-            className="p-2 hover:bg-red-700 rounded-full relative"
+            className="p-2 hover:bg-red-700 rounded-full relative transition-colors duration-200"
             onClick={handleMessagesClick}
             title="Messages"
           >
@@ -84,7 +101,7 @@ const Header = ({ onPageChange }) => {
           {/* Notification Button */}
           <div className="relative">
             <button 
-              className="p-2 hover:bg-red-700 rounded-full relative"
+              className="p-2 hover:bg-red-700 rounded-full relative transition-colors duration-200"
               onClick={handleNotificationClick}
               title="Notifications"
             >
@@ -100,7 +117,7 @@ const Header = ({ onPageChange }) => {
 
             {/* Notification Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+              <div className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-xl border border-gray-200 z-50">
                 {/* Dropdown Header */}
                 <div className="px-4 py-3 border-b border-gray-200">
                   <div className="flex justify-between items-center">

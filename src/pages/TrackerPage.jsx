@@ -194,25 +194,25 @@ const TrackerPage = ({ onPageChange }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
             Research Project Tracker
           </h1>
-          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed px-4">
             Monitor and manage all research projects with comprehensive tracking and analytics
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Enhanced Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-all duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 mb-2">Total Projects</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.total}</p>
                 <p className="text-sm text-green-600 font-medium mt-1">
                   <span className="inline-flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,35 +223,35 @@ const TrackerPage = ({ onPageChange }) => {
                 </p>
               </div>
               <div className="p-3 bg-blue-100 rounded-xl">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-all duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 mb-2">Completed</p>
-                <p className="text-3xl font-bold text-green-600">{stats.completed}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-green-600">{stats.completed}</p>
                 <p className="text-sm text-gray-500 font-medium mt-1">
                   {Math.round((stats.completed / stats.total) * 100)}% completion rate
                 </p>
               </div>
               <div className="p-3 bg-green-100 rounded-xl">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-all duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 mb-2">Ongoing</p>
-                <p className="text-3xl font-bold text-orange-600">{stats.ongoing}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-orange-600">{stats.ongoing}</p>
                 <p className="text-sm text-orange-600 font-medium mt-1">
                   <span className="inline-flex items-center">
                     <div className="w-2 h-2 bg-orange-600 rounded-full mr-1 animate-pulse"></div>
@@ -260,18 +260,18 @@ const TrackerPage = ({ onPageChange }) => {
                 </p>
               </div>
               <div className="p-3 bg-orange-100 rounded-xl">
-                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-all duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 mb-2">Total Funding</p>
-                <p className="text-2xl font-bold text-purple-600">{stats.totalFunding}</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-600">{stats.totalFunding}</p>
                 <p className="text-sm text-purple-600 font-medium mt-1">
                   Research investment
                 </p>
@@ -281,17 +281,17 @@ const TrackerPage = ({ onPageChange }) => {
         </div>
 
         {/* Enhanced Filter and Search Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Project Filters & Search</h2>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6">Project Filters & Search</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
             {/* From Year Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">From Year</label>
               <select 
                 value={fromYear} 
                 onChange={(e) => setFromYear(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+                className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
               >
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
@@ -305,7 +305,7 @@ const TrackerPage = ({ onPageChange }) => {
               <select 
                 value={toYear} 
                 onChange={(e) => setToYear(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+                className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
               >
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
@@ -319,7 +319,7 @@ const TrackerPage = ({ onPageChange }) => {
               <select 
                 value={status} 
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+                className="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
               >
                 <option value="">All Status</option>
                 <option value="Completed">Completed</option>
@@ -337,9 +337,9 @@ const TrackerPage = ({ onPageChange }) => {
                   placeholder="Search by title, author, ID, or college..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+                  className="w-full pl-3 sm:pl-4 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
                 />
-                <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center pointer-events-none">
                   <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -349,7 +349,7 @@ const TrackerPage = ({ onPageChange }) => {
           </div>
 
           {/* Results Summary */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-6 border-t border-gray-200 space-y-2 sm:space-y-0">
             <div className="text-sm text-gray-600">
               Showing <span className="font-semibold text-gray-900">{filteredAndSortedProjects.length}</span> of <span className="font-semibold text-gray-900">{stats.total}</span> projects
               {searchTerm && (
@@ -375,42 +375,45 @@ const TrackerPage = ({ onPageChange }) => {
 
         {/* Enhanced Project Table */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center justify-between">
+          <div className="p-4 sm:p-6 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">Research Projects</h2>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Research Projects</h2>
                 <p className="text-gray-600 mt-1">Comprehensive list of all research initiatives</p>
               </div>
               
-              <div className="flex items-center space-x-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                 <div className="text-sm text-gray-500">Sort by:</div>
-                <select 
-                  value={sortBy} 
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                >
-                  <option value="title">Title</option>
-                  <option value="author">Author</option>
-                  <option value="status">Status</option>
-                  <option value="dateSubmitted">Date</option>
-                  <option value="progress">Progress</option>
-                </select>
-                
-                <button
-                  onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                >
-                  <svg className={`w-4 h-4 text-gray-600 transform transition-transform duration-200 ${sortOrder === 'desc' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
-                  </svg>
-                </button>
+                <div className="flex items-center space-x-2">
+                  <select 
+                    value={sortBy} 
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  >
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="status">Status</option>
+                    <option value="dateSubmitted">Date</option>
+                    <option value="progress">Progress</option>
+                  </select>
+                  
+                  <button
+                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                    className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <svg className={`w-4 h-4 text-gray-600 transform transition-transform duration-200 ${sortOrder === 'desc' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           {filteredAndSortedProjects.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              {/* Desktop Table */}
+              <table className="w-full hidden lg:table">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Project Details</th>
@@ -486,6 +489,76 @@ const TrackerPage = ({ onPageChange }) => {
                   ))}
                 </tbody>
               </table>
+
+              {/* Mobile Cards */}
+              <div className="lg:hidden divide-y divide-gray-200">
+                {filteredAndSortedProjects.map((project) => (
+                  <div key={project.id} className="p-4 hover:bg-gray-50 transition-colors duration-200">
+                    <div className="space-y-3">
+                      {/* Project Title and ID */}
+                      <div>
+                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                          {project.title}
+                        </h3>
+                        <p className="text-xs text-gray-500">ID: {project.proposalId}</p>
+                        <p className="text-xs text-gray-500">Submitted: {new Date(project.dateSubmitted).toLocaleDateString()}</p>
+                      </div>
+
+                      {/* Author and College */}
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{project.author}</p>
+                        <p className="text-xs text-gray-500">{project.college}</p>
+                      </div>
+
+                      {/* Status and Progress */}
+                      <div>
+                        <div className="flex items-center mb-2">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            project.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                            project.status === 'Ongoing' ? 'bg-orange-100 text-orange-800' :
+                            'bg-blue-100 text-blue-800'
+                          }`}>
+                            {project.status}
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
+                          <div 
+                            className={`h-2 rounded-full transition-all duration-500 ${
+                              project.progress === 100 ? 'bg-green-500' :
+                              project.progress >= 50 ? 'bg-orange-500' : 'bg-blue-500'
+                            }`}
+                            style={{ width: `${project.progress}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-xs text-gray-500">{project.progress}% complete</p>
+                      </div>
+
+                      {/* Funding and Priority */}
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-sm font-semibold text-gray-900">{project.funding}</div>
+                          <div className={`text-xs ${
+                            project.priority === 'High' ? 'text-red-600' :
+                            project.priority === 'Medium' ? 'text-orange-600' : 'text-green-600'
+                          }`}>
+                            {project.priority} Priority
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleProjectClick(project)}
+                          className="inline-flex items-center px-3 py-2 border border-red-300 rounded-lg text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 hover:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200"
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          View
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="text-center py-12">

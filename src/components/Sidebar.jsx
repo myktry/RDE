@@ -54,20 +54,33 @@ const Sidebar = ({ activePage, onPageChange }) => {
   };
 
   return (
-    <aside className="bg-red-900 text-white w-64 flex-shrink-0 flex flex-col">
-      <nav className="flex-1 p-4 space-y-2">
+    <aside className="bg-red-900 text-white w-64 flex-shrink-0 flex flex-col h-full">
+      {/* Mobile close button */}
+      <div className="lg:hidden flex justify-end p-4">
+        <button
+          onClick={() => onPageChange(activePage)} // This will trigger the close in App.jsx
+          className="p-2 hover:bg-red-700 rounded-md transition-colors duration-200"
+          aria-label="Close menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <nav className="flex-1 px-4 pb-4 space-y-2">
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={() => onPageChange(item.id)}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`w-full flex items-center space-x-3 px-3 sm:px-4 py-3 rounded-lg transition-colors duration-200 ${
               activePage === item.id
                 ? 'bg-gray-300 text-gray-800'
                 : 'text-white hover:bg-red-800'
             }`}
           >
             {getIcon(item.icon)}
-            <span className="font-medium">{item.label}</span>
+            <span className="font-medium text-sm sm:text-base">{item.label}</span>
           </button>
         ))}
       </nav>
