@@ -59,7 +59,7 @@ const Sidebar = ({ activePage, onPageChange }) => {
       <div className="lg:hidden flex justify-end p-4">
         <button
           onClick={() => onPageChange(activePage)} // This will trigger the close in App.jsx
-          className="p-2 hover:bg-red-700 rounded-md transition-colors duration-200"
+          className="p-2 rounded-md transition-colors duration-200"
           aria-label="Close menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ const Sidebar = ({ activePage, onPageChange }) => {
         </button>
       </div>
 
-      <nav className="flex-1 px-4 pb-4 space-y-2">
+      <nav className="mt-5 flex-1 px-4 pb-4 space-y-2">
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -76,7 +76,7 @@ const Sidebar = ({ activePage, onPageChange }) => {
             className={`w-full flex items-center space-x-3 px-3 sm:px-4 py-3 rounded-lg transition-colors duration-200 ${
               activePage === item.id
                 ? 'bg-gray-300 text-gray-800'
-                : 'text-white hover:bg-red-800'
+                : 'text-white'
             }`}
           >
             {getIcon(item.icon)}
