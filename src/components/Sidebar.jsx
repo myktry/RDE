@@ -76,7 +76,7 @@ const Sidebar = ({ activePage, onPageChange }) => {
             className={`w-full flex items-center space-x-3 px-3 sm:px-4 py-3 rounded-lg transition-colors duration-200 ${
               activePage === item.id
                 ? 'bg-gray-300 text-gray-800'
-                : 'text-white'
+                : 'text-white hover:bg-red-700'
             }`}
           >
             {getIcon(item.icon)}
