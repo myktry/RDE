@@ -49,7 +49,7 @@ const Header = ({ onPageChange, onMenuClick }) => {
   };
 
   return (
-    <header className="bg-red-900 text-white px-4 sm:px-6 py-4 flex justify-between items-center">
+    <header className="bg-red-900 text-white h-20 px-8 flex justify-between items-center shadow-md">
       <div className="flex items-center space-x-2 sm:space-x-4">
         {/* Mobile Menu Button */}
         <button
