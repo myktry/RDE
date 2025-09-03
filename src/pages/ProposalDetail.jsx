@@ -303,53 +303,7 @@ const ProjectDetails = ({ project, onBack, navigate }) => {
           </div>
         </div>
 
-        {/* Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
-            <div className="flex items-center mb-4">
-              <div className="p-2 bg-blue-600 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-blue-900">View Documents</h3>
-            </div>
-            <p className="text-blue-700 text-sm mb-4">Access all project-related documents and files</p>
-            <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-              Browse Files →
-            </button>
-          </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
-            <div className="flex items-center mb-4">
-              <div className="p-2 bg-green-600 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-green-900">Contact Support</h3>
-            </div>
-            <p className="text-green-700 text-sm mb-4">Get help with your project submission</p>
-            <button className="text-green-600 hover:text-green-700 font-medium text-sm">
-              Get Help →
-            </button>
-          </div>
-
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
-            <div className="flex items-center mb-4">
-              <div className="p-2 bg-purple-600 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-purple-900">Guidelines</h3>
-            </div>
-            <p className="text-purple-700 text-sm mb-4">Review submission guidelines and requirements</p>
-            <button className="text-purple-600 hover:text-purple-700 font-medium text-sm">
-              View Guide →
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

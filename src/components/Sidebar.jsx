@@ -20,7 +20,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="h-full bg-blue-900 text-white py-5 shadow-lg overflow-y-auto">
+    <div className="h-full bg-red-900 text-white py-5 shadow-lg overflow-y-auto">
       {/* Navigation Menu */}
       <nav className="flex flex-col">
         {menuItems.map((item) => {
@@ -33,7 +33,7 @@ const Sidebar = () => {
                 `flex items-center gap-4 px-6 py-4 transition-colors duration-300 ${
                   isActive 
                     ? 'bg-white text-gray-900 shadow-md' 
-                    : 'text-white hover:bg-blue-800'
+                    : 'text-white'
                 }`
               }
             >
