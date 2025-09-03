@@ -21,9 +21,9 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-red-900 text-white py-5 shadow-lg h-full">
+    <div className="bg-red-900 text-white w-64 flex-shrink-0 flex flex-col h-full">
       {/* Navigation Menu */}
-      <nav className="flex flex-col h-full">
+      <nav className="flex flex-col h-full mt-5">
         {menuItems.map((item) => {
           const IconComponent = item.icon;
           return (
@@ -31,7 +31,7 @@ const Sidebar = () => {
               key={item.path}
               to={item.path}
               className={({ isActive }) => 
-                `flex items-center gap-4 px-6 py-4 transition-colors duration-300 ${
+                `w-full flex items-center gap-4 px-6 py-4 rounded-lg transition-colors duration-300 ${
                   isActive 
                     ? 'bg-gray-200 text-gray-900 shadow-md' 
                     : 'text-white hover:bg-red-700'
