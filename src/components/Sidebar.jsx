@@ -12,7 +12,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-red-800 text-white fixed h-full top-5 left-0 z-30">
+    <div className="w-64 bg-red-900 text-white fixed h-full top-5 left-0 z-30">
       <nav className="pt-20 pb-6 h-full flex flex-col">
         <ul className="space-y-2 px-4 flex-1">
           <li>

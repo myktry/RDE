@@ -107,14 +107,16 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-red-800 to-orange-600 text-white px-8 py-4 flex justify-between items-center shadow-md fixed top-0 left-0 right-0 z-40">
+    <header className="bg-red-900 text-white px-8 py-4 flex justify-between items-center shadow-md fixed top-0 left-0 right-0 z-40">
       <div className="flex items-center">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 flex items-center justify-center">
-            <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-              <span className="text-red-800 font-bold text-xs">USeP</span>
+           <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center flex-shrink-0">
+              <img
+                src="/usep-logo.png"
+                alt="University of Southeastern Philippines Logo"
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+              />
             </div>
-          </div>
           <div>
             <h1 className="text-lg font-bold mb-1">UNIVERSITY OF SOUTHEASTERN PHILIPPINES</h1>
             <p className="text-sm opacity-90">Proponent's Portal</p>
@@ -230,7 +232,7 @@ const Header = () => {
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
               2
             </span>
           </button>

@@ -242,7 +242,7 @@ const Projects = () => {
                     <td className="px-6 py-4">
                       <button 
                         onClick={() => handleViewDetails(project.id)}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                        className="border border-red-500 text-red-500 bg-white px-3 py-1 rounded text-sm font-medium hover:bg-red-50 transition-colors duration-150 flex items-center gap-1"
                       >
                         <Eye size={16} />
                         View Details
