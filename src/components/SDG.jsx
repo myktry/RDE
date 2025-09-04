@@ -53,37 +53,63 @@ export default function SDGReport({ data, options }) {
         display: false
       },
       tooltip: {
-        callbacks: {
-          label: function (context) {
-            const value = context.parsed;
-            return `Proposals: ${value}`;
-          },
-          title: function (context) {
-            return `SDG ${context[0].dataIndex + 1}`;
+        enabled: false,
+        external: function(context) {
+          // Tooltip Element
+          let tooltipEl = document.getElementById('chartjs-tooltip');
+
+          // Create element on first render
+          if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.innerHTML = `
+              <div style="background: rgba(245, 245, 245, 0.98); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); max-width: 200px;">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                  <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 8px;">
+                    <img id="tooltip-sdg-icon" src="" alt="SDG Icon" style="width: 50px; height: 50px; border-radius: 8px; display: block; margin: 0 auto;" />
+                  </div>
+                  <div id="tooltip-sdg-title" style="font-weight: bold; color: #1f2937; font-size: 11px; margin-bottom: 6px; text-align: center; width: 100%;"></div>
+                  <div id="tooltip-sdg-value" style="color: #374151; font-size: 16px; font-weight: bold; text-align: center; width: 100%;"></div>
+                </div>
+              </div>
+            `;
+            document.body.appendChild(tooltipEl);
           }
-        },
-        backgroundColor: 'rgba(245, 245, 245, 0.98)',
-        titleColor: '#1f2937',
-        bodyColor: '#374151',
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-        borderWidth: 1,
-        cornerRadius: 12,
-        displayColors: true,
-        padding: 16,
-        titleFont: {
-          size: 14,
-          weight: 'bold'
-        },
-        bodyFont: {
-          size: 13,
-          lineHeight: 1.6
-        },
-        boxPadding: 8,
-        usePointStyle: true,
-        boxWidth: 12,
-        boxHeight: 12,
-        bodySpacing: 4,
-        bodyAlign: 'left'
+
+          // Hide if no tooltip
+          const tooltipModel = context.tooltip;
+          if (tooltipModel.opacity === 0) {
+            tooltipEl.style.opacity = 0;
+            return;
+          }
+
+          // Set content
+          if (tooltipModel.dataPoints) {
+            const dataPoint = tooltipModel.dataPoints[0];
+            const sdgNumber = dataPoint.dataIndex + 1;
+            const sdgLabel = sdgLabels[dataPoint.dataIndex];
+            const value = dataPoint.parsed;
+            
+            const img = tooltipEl.querySelector('#tooltip-sdg-icon');
+            const title = tooltipEl.querySelector('#tooltip-sdg-title');
+            const valueEl = tooltipEl.querySelector('#tooltip-sdg-value');
+            
+            img.src = `/sdg-goal-${sdgNumber}.jpg`;
+            img.alt = `SDG ${sdgNumber}: ${sdgLabel}`;
+            title.textContent = `SDG ${sdgNumber}: ${sdgLabel}`;
+            valueEl.textContent = `Proposals: ${value}`;
+          }
+
+          // Positioning
+          const position = context.chart.canvas.getBoundingClientRect();
+          tooltipEl.style.opacity = 1;
+          tooltipEl.style.position = 'absolute';
+          tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+          tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - 10 + 'px';
+          tooltipEl.style.pointerEvents = 'none';
+          tooltipEl.style.zIndex = 1000;
+          tooltipEl.style.transform = 'translate(-50%, -100%)';
+        }
       }
 
     },
@@ -240,10 +266,11 @@ export default function SDGReport({ data, options }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {sdgLabels.map((label, index) => (
             <div key={index} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white hover:shadow-sm transition-all duration-200">
-              <div
-                className="w-4 h-4 rounded-full border-2 border-gray-300 shadow-sm"
-                style={{ backgroundColor: sdgColors[index] }}
-              ></div>
+              <img
+                src={`/sdg-goal-${index + 1}.jpg`}
+                alt={`SDG ${index + 1}: ${label}`}
+                className="w-8 h-8 rounded-lg shadow-sm object-cover"
+              />
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-gray-800">SDG {index + 1}</span>
                 <span className="text-xs text-gray-600">{label}</span>
