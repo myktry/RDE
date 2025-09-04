@@ -67,11 +67,14 @@ export default function Header() {
     <header className="w-full bg-gradient-to-r from-red-900 via-red-800 to-orange-700 text-white shadow-lg border-b border-red-800/50 fixed top-0 z-20">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-white/20 ring-2 ring-white/30 shadow-lg">
-            <svg className="h-7 w-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          </div>
+        <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center flex-shrink-0">
+          <img 
+            src="/usep-logo.png" 
+            alt="University of Southeastern Philippines Logo"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </div>
+        
           <div className="leading-tight">
             <div className="text-base font-bold uppercase tracking-wider text-white/95">University of Southeastern Philippines</div>
             <div className="text-sm text-white/80 font-medium">OSUURU</div>
