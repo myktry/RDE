@@ -67,24 +67,24 @@ export default function Header() {
     <header className="w-full bg-gradient-to-r from-red-900 via-red-800 to-orange-700 text-white shadow-lg border-b border-red-800/50 fixed top-0 z-20">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-4">
-        <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center flex-shrink-0">
-          <img 
-            src="/usep-logo.png" 
-            alt="University of Southeastern Philippines Logo"
-            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-          />
-        </div>
-        
+          <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center flex-shrink-0">
+            <img
+              src="/usep-logo.png"
+              alt="University of Southeastern Philippines Logo"
+              className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+            />
+          </div>
+
           <div className="leading-tight">
             <div className="text-base font-bold uppercase tracking-wider text-white/95">University of Southeastern Philippines</div>
             <div className="text-sm text-white/80 font-medium">OSUURU</div>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
           {/* Notification Bell */}
           <div className="relative">
-            <button 
+            <button
               onClick={() => setShowNotifications(!showNotifications)}
               className="relative inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-200 hover:scale-105 shadow-md"
             >
@@ -107,7 +107,7 @@ export default function Header() {
                     <span className="text-sm text-gray-500">{unreadCount} unread</span>
                   </div>
                 </div>
-                
+
                 <div className="max-h-96 overflow-y-auto">
                   {notifications.map((notification) => (
                     <div key={notification.id} className="p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200">
@@ -133,9 +133,9 @@ export default function Header() {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="p-4 border-t border-gray-200">
-                  <button 
+                  <button
                     onClick={() => navigate('/notifications')}
                     className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                   >
