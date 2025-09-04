@@ -6,6 +6,8 @@ const ProposalDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+
+
   // Mock project data - in a real app this would come from props or API
   const project = {
     id: id || 'PRO-2025-00022',
@@ -98,9 +100,9 @@ const ProposalDetail = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto space-y-8 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="w-full max-w-full mx-auto space-y-8 px-2 sm:px-4 md:px-6 lg:px-8 overflow-hidden" style={{ maxWidth: '100vw', width: '100%' }}>
         {/* Header Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8">
           {/* Back Button */}
           <div className="flex items-center justify-between mb-6">
             <button
@@ -114,7 +116,7 @@ const ProposalDetail = () => {
             </button>
           </div>
 
-           {/* Project Title and Info */}
+          {/* Project Title and Info */}
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
             <div className="flex-1">
               <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
@@ -140,7 +142,7 @@ const ProposalDetail = () => {
             </div>
 
             {/* Progress Card */}
-            <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-4 sm:p-6 w-full lg:min-w-[280px] lg:w-auto">
+            <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-3 sm:p-4 md:p-6 w-full lg:min-w-[240px] xl:min-w-[280px] lg:w-auto flex-shrink-0">
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-red-600 mb-1">
                   {getCompletionPercentage()}%
@@ -160,7 +162,7 @@ const ProposalDetail = () => {
           </div>
         </div>
 
-{/* Status Timeline Section */}
+        {/* Status Timeline Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center mb-6 sm:mb-8 space-y-4 sm:space-y-0">
             <div className="p-3 bg-red-100 rounded-xl mr-0 sm:mr-4 w-fit">
@@ -220,9 +222,9 @@ const ProposalDetail = () => {
           </div>
         </div>
 
-         {/* Status History Section */}
+        {/* Status History Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-6 sm:p-8 pb-6">
+          <div className="p-4 sm:p-6 md:p-8 pb-6">
             <div className="flex flex-col sm:flex-row sm:items-center mb-6 space-y-4 sm:space-y-0">
               <div className="p-3 bg-blue-100 rounded-xl mr-0 sm:mr-4 w-fit">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,20 +239,20 @@ const ProposalDetail = () => {
           </div>
 
           {/* Enhanced Status History Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto scrollbar-hide">
+            <table className="w-full min-w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-y border-gray-200">
-                  <th className="px-4 sm:px-8 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 text-left text-sm font-semibold text-gray-700 min-w-24">
                     Date & Time
                   </th>
-                  <th className="px-4 sm:px-8 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 text-left text-sm font-semibold text-gray-700 min-w-20">
                     Status
                   </th>
-                  <th className="px-4 sm:px-8 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 text-left text-sm font-semibold text-gray-700 min-w-48">
                     Action Details
                   </th>
-                  <th className="px-4 sm:px-8 py-4 text-left text-sm font-semibold text-gray-700">
+                  <th className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 text-left text-sm font-semibold text-gray-700 min-w-20">
                     Priority
                   </th>
                 </tr>
@@ -259,7 +261,7 @@ const ProposalDetail = () => {
                 {statusHistory.map((entry, index) => (
                   <tr key={index} className={`hover:bg-gray-50 transition-colors duration-200 ${index !== statusHistory.length - 1 ? 'border-b border-gray-100' : ''
                     }`}>
-                    <td className="px-4 sm:px-8 py-4 sm:py-6">
+                    <td className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
                       <div className="flex items-center">
                         <div className="w-2 h-2 bg-gray-400 rounded-full mr-3"></div>
                         <div>
@@ -268,7 +270,7 @@ const ProposalDetail = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 sm:px-8 py-4 sm:py-6">
+                    <td className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
                       <div className="flex items-center">
                         <div className={`w-3 h-3 rounded-full mr-3 ${index === 0 ? 'bg-red-600 animate-pulse' : 'bg-green-500'
                           }`}></div>
@@ -278,12 +280,12 @@ const ProposalDetail = () => {
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 sm:px-8 py-4 sm:py-6">
-                      <span className="text-sm text-gray-600 leading-relaxed">
+                    <td className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
+                      <span className="text-sm text-gray-600 leading-relaxed break-words max-w-xs">
                         {entry.action || 'No additional details'}
                       </span>
                     </td>
-                    <td className="px-4 sm:px-8 py-4 sm:py-6">
+                    <td className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getPriorityColor(entry.priority)}`}>
                         {entry.priority?.toUpperCase() || 'NORMAL'}
                       </span>
