@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 const ProposalDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState({
+    terminalReport: null,
+    evidence6Ps: null
+  });
 
 
 
@@ -98,6 +103,24 @@ const ProposalDetail = () => {
     return Math.round(((completedStages + currentStage * 0.5) / timelineStages.length) * 100);
   };
 
+  const handleCompletionClick = () => {
+    setShowUploadModal(true);
+  };
+
+  const handleFileUpload = (fileType, file) => {
+    setUploadedFiles(prev => ({
+      ...prev,
+      [fileType]: file
+    }));
+  };
+
+  const handleSubmitCompletion = () => {
+    // Here you would typically send the files to your backend
+    console.log('Submitting completion files:', uploadedFiles);
+    setShowUploadModal(false);
+    // You might want to show a success message here
+  };
+
   return (
     <Layout>
       <div className="w-full max-w-full mx-auto space-y-8 px-2 sm:px-4 md:px-6 lg:px-8 overflow-hidden" style={{ maxWidth: '100vw', width: '100%' }}>
@@ -173,6 +196,7 @@ const ProposalDetail = () => {
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Project Timeline</h2>
               <p className="text-gray-600">Track your project's progress through each stage</p>
+              <p className="text-xs text-gray-400 mt-1">← Scroll horizontally to view all stages →</p>
             </div>
           </div>
 
@@ -184,7 +208,12 @@ const ProposalDetail = () => {
                 {timelineStages.map((stage, index) => (
                   <div key={stage.id} className="flex flex-col items-center relative mx-4 sm:mx-8">
                     {/* Stage Dot */}
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${getStatusColor(stage.status)} mb-4 relative z-10`}>
+                    <div 
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${getStatusColor(stage.status)} mb-4 relative z-10 ${
+                        stage.name === 'For Completion' ? 'cursor-pointer hover:scale-110 transition-transform duration-200' : ''
+                      }`}
+                      onClick={stage.name === 'For Completion' ? handleCompletionClick : undefined}
+                    >
                       {stage.status === 'completed' && (
                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center border-2 border-green-200">
                           <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -207,11 +236,16 @@ const ProposalDetail = () => {
                     )}
 
                     {/* Stage Label */}
-                    <div className={`px-3 sm:px-4 py-2 rounded-lg text-center min-w-24 sm:min-w-32 ${stage.status === 'current' ? 'bg-red-50 border border-red-200' :
+                    <div 
+                      className={`px-3 sm:px-4 py-2 rounded-lg text-center min-w-24 sm:min-w-32 ${stage.status === 'current' ? 'bg-red-50 border border-red-200' :
                         stage.status === 'completed' ? 'bg-green-50 border border-green-200' :
                           'bg-gray-50 border border-gray-200'
+                      } ${stage.name === 'For Completion' ? 'cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors duration-200' : ''}`}
+                      onClick={stage.name === 'For Completion' ? handleCompletionClick : undefined}
+                    >
+                      <span className={`text-xs sm:text-sm font-medium ${getStatusTextColor(stage.status)} leading-tight ${
+                        stage.name === 'For Completion' ? 'hover:text-blue-700' : ''
                       }`}>
-                      <span className={`text-xs sm:text-sm font-medium ${getStatusTextColor(stage.status)} leading-tight`}>
                         {stage.name}
                       </span>
                     </div>
@@ -297,6 +331,109 @@ const ProposalDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" style={{ scrollBehavior: 'smooth' }}>
+          <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto scrollbar-hide" style={{ scrollBehavior: 'smooth' }}>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-900">Submit Completion Documents</h3>
+                <button
+                  onClick={() => setShowUploadModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {/* Terminal Report Upload */}
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-red-400 transition-colors">
+                  <div className="mb-3">
+                    <svg className="w-10 h-10 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Terminal Report</h4>
+                  <p className="text-sm text-gray-600 mb-3">Upload PDF file containing technical and financial report</p>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => handleFileUpload('terminalReport', e.target.files[0])}
+                    className="hidden"
+                    id="terminal-report"
+                  />
+                  <label
+                    htmlFor="terminal-report"
+                    className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Choose File
+                  </label>
+                  {uploadedFiles.terminalReport && (
+                    <p className="text-sm text-green-600 mt-2">
+                      ✓ {uploadedFiles.terminalReport.name}
+                    </p>
+                  )}
+                </div>
+
+                {/* Evidence of 6P's Upload */}
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-red-400 transition-colors">
+                  <div className="mb-3">
+                    <svg className="w-10 h-10 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Evidence of 6P's</h4>
+                  <p className="text-sm text-gray-600 mb-3">Upload PDF file containing evidence of People, Planet, Prosperity, Peace, Partnership, and Purpose</p>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => handleFileUpload('evidence6Ps', e.target.files[0])}
+                    className="hidden"
+                    id="evidence-6ps"
+                  />
+                  <label
+                    htmlFor="evidence-6ps"
+                    className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Choose File
+                  </label>
+                  {uploadedFiles.evidence6Ps && (
+                    <p className="text-sm text-green-600 mt-2">
+                      ✓ {uploadedFiles.evidence6Ps.name}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-4 mt-6">
+                <button
+                  onClick={() => setShowUploadModal(false)}
+                  className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmitCompletion}
+                  disabled={!uploadedFiles.terminalReport || !uploadedFiles.evidence6Ps}
+                  className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                >
+                  Submit Completion
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
