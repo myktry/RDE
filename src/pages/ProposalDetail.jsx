@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { BiArrowBack } from 'react-icons/bi';
 
 const ProposalDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showCertificateModal, setShowCertificateModal] = useState(false);
+  const [certificateIssued, setCertificateIssued] = useState(false);
 
   // Mock project data - in a real app this would come from props or API
   const project = {
@@ -12,6 +15,64 @@ const ProposalDetail = () => {
     title: 'ARAY KO: Identifying pain through eye contact',
     author: 'Nico Eslawan',
     proposalId: id || 'PRO-2025-00022'
+  };
+
+  // Mock completion documents data - supporting multiple documents
+  const completionDocuments = {
+    terminalReport: {
+      name: 'Terminal Report',
+      description: 'Technical and financial report',
+      documents: [
+        {
+          fileName: 'terminal_report_pro_2025_00022.pdf',
+          uploadDate: '2025-01-15',
+          size: '2.4 MB',
+          type: 'Main Report'
+        },
+        {
+          fileName: 'financial_summary_pro_2025_00022.pdf',
+          uploadDate: '2025-01-16',
+          size: '1.2 MB',
+          type: 'Financial Summary'
+        },
+        {
+          fileName: 'technical_appendices_pro_2025_00022.pdf',
+          uploadDate: '2025-01-17',
+          size: '3.1 MB',
+          type: 'Technical Appendices'
+        }
+      ]
+    },
+    evidence6Ps: {
+      name: 'Evidence of 6P\'s',
+      description: 'Evidence of People, Planet, Prosperity, Peace, Partnership, and Purpose',
+      documents: [
+        {
+          fileName: 'evidence_6ps_pro_2025_00022.pdf',
+          uploadDate: '2025-01-15',
+          size: '1.8 MB',
+          type: 'Main Evidence'
+        },
+        {
+          fileName: 'people_impact_photos.pdf',
+          uploadDate: '2025-01-16',
+          size: '4.2 MB',
+          type: 'People Impact Photos'
+        },
+        {
+          fileName: 'environmental_impact_assessment.pdf',
+          uploadDate: '2025-01-17',
+          size: '2.7 MB',
+          type: 'Environmental Impact'
+        },
+        {
+          fileName: 'partnership_agreements.pdf',
+          uploadDate: '2025-01-18',
+          size: '1.5 MB',
+          type: 'Partnership Documents'
+        }
+      ]
+    }
   };
 
   // Timeline stages data
@@ -100,6 +161,28 @@ const ProposalDetail = () => {
     const completedStages = timelineStages.filter(stage => stage.status === 'completed').length;
     const currentStage = timelineStages.find(stage => stage.status === 'current') ? 1 : 0;
     return Math.round(((completedStages + currentStage * 0.5) / timelineStages.length) * 100);
+  };
+
+  const handleOpenPDF = (fileName) => {
+    // Use the sample PDF file from the public folder
+    const pdfPath = '/sample-document.pdf';
+    window.open(pdfPath, '_blank');
+  };
+
+  const handleCompletionClick = () => {
+    setShowCompletionModal(true);
+  };
+
+  const handleIssueCertificate = () => {
+    setShowCertificateModal(true);
+  };
+
+  const handleConfirmCertificate = () => {
+    setCertificateIssued(true);
+    setShowCertificateModal(false);
+    setShowCompletionModal(false);
+    // In a real application, this would trigger an API call to issue the certificate
+    alert('Certificate has been issued successfully!');
   };
 
   return (
@@ -199,7 +282,12 @@ const ProposalDetail = () => {
                 {timelineStages.map((stage, index) => (
                   <div key={stage.id} className="flex flex-col items-center relative mx-8">
                     {/* Stage Dot */}
-                    <div className={`w-12 h-12 rounded-full ${getStatusColor(stage.status)} mb-4 relative z-10`}>
+                    <div 
+                      className={`w-12 h-12 rounded-full ${getStatusColor(stage.status)} mb-4 relative z-10 ${
+                        stage.name === 'For Completion' ? 'cursor-pointer hover:scale-110 transition-transform duration-200' : ''
+                      }`}
+                      onClick={stage.name === 'For Completion' ? handleCompletionClick : undefined}
+                    >
                       {stage.status === 'completed' && (
                         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-green-200">
                           <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -222,12 +310,19 @@ const ProposalDetail = () => {
                     )}
                     
                     {/* Stage Label */}
-                    <div className={`px-4 py-2 rounded-lg text-center min-w-32 ${
-                      stage.status === 'current' ? 'bg-red-50 border border-red-200' : 
-                      stage.status === 'completed' ? 'bg-green-50 border border-green-200' : 
-                      'bg-gray-50 border border-gray-200'
-                    }`}>
-                      <span className={`text-sm font-medium ${getStatusTextColor(stage.status)} leading-tight`}>
+                    <div 
+                      className={`px-4 py-2 rounded-lg text-center min-w-32 ${
+                        stage.status === 'current' ? 'bg-red-50 border border-red-200' : 
+                        stage.status === 'completed' ? 'bg-green-50 border border-green-200' : 
+                        'bg-gray-50 border border-gray-200'
+                      } ${
+                        stage.name === 'For Completion' ? 'cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-all duration-200' : ''
+                      }`}
+                      onClick={stage.name === 'For Completion' ? handleCompletionClick : undefined}
+                    >
+                      <span className={`text-sm font-medium ${getStatusTextColor(stage.status)} leading-tight ${
+                        stage.name === 'For Completion' ? 'hover:text-blue-700' : ''
+                      }`}>
                         {stage.name}
                       </span>
                     </div>
@@ -323,6 +418,226 @@ const ProposalDetail = () => {
           </p>
         </div>
       </div>
+
+      {/* Completion Documents Modal */}
+      {showCompletionModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900">Completion Documents</h3>
+              <button
+                onClick={() => setShowCompletionModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-6">
+              {/* Terminal Report Section */}
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-start space-x-4 mb-4">
+                  <div className="p-3 bg-red-100 rounded-xl">
+                    <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-gray-900 mb-2">{completionDocuments.terminalReport.name}</h4>
+                    <p className="text-gray-600 mb-4">{completionDocuments.terminalReport.description}</p>
+                    <div className="text-sm text-gray-500 mb-3">
+                      <span className="font-medium">{completionDocuments.terminalReport.documents.length} documents uploaded</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Terminal Report Documents List */}
+                <div className="space-y-3">
+                  {completionDocuments.terminalReport.documents.map((doc, index) => (
+                    <div key={index} className="bg-white rounded-lg p-4 border border-gray-200 flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-red-50 rounded-lg">
+                          <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-900">{doc.type}</div>
+                          <div className="text-sm text-gray-500">
+                            {doc.uploadDate} • {doc.size}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleOpenPDF(doc.fileName)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>View</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Evidence of 6P's Section */}
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-start space-x-4 mb-4">
+                  <div className="p-3 bg-blue-100 rounded-xl">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-gray-900 mb-2">{completionDocuments.evidence6Ps.name}</h4>
+                    <p className="text-gray-600 mb-4">{completionDocuments.evidence6Ps.description}</p>
+                    <div className="text-sm text-gray-500 mb-3">
+                      <span className="font-medium">{completionDocuments.evidence6Ps.documents.length} documents uploaded</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Evidence 6P's Documents List */}
+                <div className="space-y-3">
+                  {completionDocuments.evidence6Ps.documents.map((doc, index) => (
+                    <div key={index} className="bg-white rounded-lg p-4 border border-gray-200 flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-blue-50 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-900">{doc.type}</div>
+                          <div className="text-sm text-gray-500">
+                            {doc.uploadDate} • {doc.size}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleOpenPDF(doc.fileName)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span>View</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex justify-between items-center p-6 border-t border-gray-200">
+              <div className="text-sm text-gray-500">
+                {certificateIssued ? (
+                  <div className="flex items-center space-x-2 text-green-600">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="font-medium">Certificate Issued</span>
+                  </div>
+                ) : (
+                  <span>All documents reviewed and ready for certificate issuance</span>
+                )}
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowCompletionModal(false)}
+                  className="px-6 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200"
+                >
+                  Close
+                </button>
+                {!certificateIssued && (
+                  <button
+                    onClick={handleIssueCertificate}
+                    className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Issue the Certificate</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Certificate Issuance Confirmation Modal */}
+      {showCertificateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900">Issue Completion Certificate</h3>
+              <button
+                onClick={() => setShowCertificateModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">Confirm Certificate Issuance</h4>
+                <p className="text-gray-600">
+                  Are you sure you want to issue the completion certificate for this project? 
+                  This action will mark the project as officially completed.
+                </p>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                <div className="text-sm text-gray-600">
+                  <div className="font-medium text-gray-900 mb-2">Project Details:</div>
+                  <div className="space-y-1">
+                    <div><span className="font-medium">Title:</span> {project.title}</div>
+                    <div><span className="font-medium">ID:</span> {project.proposalId}</div>
+                    <div><span className="font-medium">Author:</span> {project.author}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex justify-end space-x-3 p-6 border-t border-gray-200">
+              <button
+                onClick={() => setShowCertificateModal(false)}
+                className="px-6 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmCertificate}
+                className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Issue Certificate</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
