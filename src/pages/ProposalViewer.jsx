@@ -70,15 +70,15 @@ const ProposalViewer = () => {
       <Sidebar />
       
       {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:ml-72">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <Header />
         
         {/* Main Content Area */}
         <main className="flex-1 p-4 overflow-auto">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             {/* Navigation */}
-            <div className="mb-6">
+            <div className="mb-4">
               <button
                 onClick={() => navigate('/proposals')}
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition-colors"
@@ -90,10 +90,10 @@ const ProposalViewer = () => {
 
             {/* Proposal Header */}
             <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">
+              <h1 className="text-4xl font-bold text-gray-800 mb-4">
                 {proposal.title}
               </h1>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-base">
                 <div>
                   <span className="font-semibold text-gray-700">Proposal ID:</span>
                   <span className="ml-2 text-gray-600">{proposal.id}</span>
@@ -127,9 +127,9 @@ const ProposalViewer = () => {
                             : 'hover:bg-gray-50 text-gray-700'
                         }`}
                       >
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-3">
                           <FaFileAlt className="w-4 h-4" />
-                          <span className="text-sm">{document.name}</span>
+                          <span className="text-sm font-medium">{document.name}</span>
                         </div>
                       </button>
                     ))}
