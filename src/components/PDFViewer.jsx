@@ -59,13 +59,6 @@ const PDFViewer = ({ pdfPath, title = 'Document' }) => {
         <h3 className="text-base md:text-lg font-semibold truncate">{title}</h3>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => window.open(pdfPath, '_blank')}
-            title="Open in new tab"
-            className="p-2 hover:bg-gray-700 rounded transition"
-          >
-            <FaEye className="w-4 h-4" />
-          </button>
-          <button
             onClick={toggleFullscreen}
             title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
             className="p-2 hover:bg-gray-700 rounded transition"
@@ -83,12 +76,6 @@ const PDFViewer = ({ pdfPath, title = 'Document' }) => {
                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mb-4"></div>
                <p className="text-lg font-semibold">Loading PDF...</p>
                <p className="text-sm text-gray-600">Please wait while the document loads</p>
-               <button
-                 onClick={() => window.open(pdfPath, '_blank')}
-                 className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
-               >
-                 Try Opening PDF in New Tab
-               </button>
              </div>
            )}
                      {pdfPath && !pdfError && !isLoading ? (
@@ -110,17 +97,6 @@ const PDFViewer = ({ pdfPath, title = 'Document' }) => {
                   ? 'There was an error loading the PDF file.'
                   : 'Please check the file path or upload a PDF.'}
               </p>
-              {pdfPath && (
-                <>
-                  <p className="text-xs text-gray-400 mb-2">Attempted to load: {pdfPath}</p>
-                  <button
-                    onClick={() => window.open(pdfPath, '_blank')}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
-                  >
-                    Open in New Tab
-                  </button>
-                </>
-              )}
             </div>
           )}
         </div>
